@@ -24,7 +24,6 @@ const getAuthUser = async () => {
 
 export default async function TopPage() {
   const authUser = await getAuthUser();
-  console.log(authUser);
 
   return (
     <>
