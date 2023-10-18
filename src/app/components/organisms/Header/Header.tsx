@@ -1,8 +1,12 @@
 import type { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { getAuthUser } from "@/app/lib/getAuthUser";
+import { LogoutButton } from "../../atoms/LogoutButton";
 
-export const Header: FC = () => {
+export const Header: FC = async () => {
+  const authUser = await getAuthUser();
+  
   return (
     <header className="flex justify-between items-center border-b">
       <div className="leading-9">
@@ -26,8 +30,9 @@ export const Header: FC = () => {
         <button title="検索" className="px-2">
           <i className="bi bi-search"></i>
         </button>
-        <Link href="/signup" className="inline-block">新規登録</Link>
-        <Link href="/login" className="inline-block">ログイン</Link>
+
+        {authUser ? null : <Link href="/signup" className="inline-block">新規登録</Link>}
+        {authUser ? <LogoutButton /> : <Link href="/login" className="inline-block">ログイン</Link>}
       </nav>
     </header>
   );
