@@ -5,6 +5,7 @@ import type { User } from "@/app/types/User";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import Cookies from "js-cookie";
 
 export const SignupForm: FC = () => {
   const [error, setError] = useState("");
@@ -27,18 +28,33 @@ export const SignupForm: FC = () => {
 
   const onSubmit: SubmitHandler<User> = async (data) => {
     try {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sanctum/csrf-cookie`, {
+        credentials: "include",
+      });
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/users`, {
         method: "POST",
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json",
+          "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN") ?? "",
         },
         body: JSON.stringify({ name: data.name, email: data.email, password: data.password, password_confirmation: data.password_confirmation }),
+        credentials: "include",
       });
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.message);
       }
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/login`, {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN") ?? "",
+        },
+        body: JSON.stringify({ email: data.email, password: data.password }),
+        credentials: "include",
+      });
       router.replace("/");
     } catch (error: any) {
       setError(error.message);
