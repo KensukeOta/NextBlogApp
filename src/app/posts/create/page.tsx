@@ -14,6 +14,6 @@ export default async function PostCreatePage() {
   }
 
   return (
-    <PostForm authUser = {authUser} />
+    <PostForm authUser={authUser} />
   );
 }
