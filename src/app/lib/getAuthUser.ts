@@ -12,8 +12,8 @@ export const getAuthUser = async () => {
       credentials: "include"
     });
     if (!res.ok) {
-      const errors = await res.json();
-      throw new Error(errors.message);
+      const err = await res.json();
+      throw new Error(err.message);
     }
     const data = await res.json();
     return data.authUser;
