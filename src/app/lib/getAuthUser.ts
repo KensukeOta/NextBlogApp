@@ -4,9 +4,9 @@ export const getAuthUser = async () => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user`, {
       headers: {
-        Accept: "application/json",
-        Cookie: headers().get("cookie") ?? "",
-        referer: headers().get("referer") ?? ""
+        "Accept": "application/json",
+        "Cookie": headers().get("cookie") ?? "",
+        "referer": headers().get("referer") ?? ""
       },
       cache: "no-store",
       credentials: "include"
