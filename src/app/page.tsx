@@ -25,9 +25,14 @@ const PostItems = async () => {
 
   return (
     <>
-      {postItems.map((post: Post) => (
-        <PostItem key={post.id} post={post} />
-      ))}
+      {postItems.length > 0 ? (
+        postItems.map((post) => (
+          <PostItem key={post.id} post={post} />
+        ))
+      ) : (
+        <p className="font-bold text-center p-2">記事が投稿されていません</p>
+      )
+    }
     </>
   );
 };
