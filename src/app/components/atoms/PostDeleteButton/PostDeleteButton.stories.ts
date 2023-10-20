@@ -12,5 +12,5 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
-
+  args: { post: { id: 1, title: "test", body: "test", user_id: 1, user: { id: 1, name: "test", email: "test@example.com", password: "test", password_confirmation: "test" } } }
 };

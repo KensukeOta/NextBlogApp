@@ -17,7 +17,7 @@ export const PostItem: FC<AuthUser & PostProps> = ({ authUser, post }) => {
       <nav className="flex justify-between">
         by {post.user.name}
         {authUser && authUser.id === post.user_id ? <PostEditLinkButton post={post} /> : null}
-        {authUser && authUser.id === post.user_id ? <PostDeleteButton /> : null}
+        {authUser && authUser.id === post.user_id ? <PostDeleteButton post={post} /> : null}
       </nav>
     </article>
   );
