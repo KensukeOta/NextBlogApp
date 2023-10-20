@@ -1,11 +1,13 @@
+import type { Post } from "./types/Post";
 import { Suspense } from "react";
 import { getAuthUser } from "./lib/getAuthUser";
 import { PostLinkButton } from "./components/atoms/PostLinkButton/PostLinkButton";
-import { Post } from "./types/Post";
 import { PostItem } from "./components/organisms/PostItem";
 
 let postItems: Post[];
 const PostItems = async () => {
+  const authUser = await getAuthUser();
+
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/posts`, {
       headers: {
@@ -27,7 +29,7 @@ const PostItems = async () => {
     <>
       {postItems.length > 0 ? (
         postItems.map((post) => (
-          <PostItem key={post.id} post={post} />
+          <PostItem key={post.id} authUser={authUser} post={post} />
         ))
       ) : (
         <p className="font-bold text-center p-2">記事が投稿されていません</p>
