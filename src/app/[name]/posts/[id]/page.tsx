@@ -1,7 +1,9 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import "github-markdown-css/github-markdown.css";
+import { getPost } from "@/app/lib/getPost";
 
 export async function generateMetadata(
   { params }: { params: { id: number } }
@@ -31,31 +33,16 @@ export async function generateMetadata(
   };
 }
 
-const getPost = async (id: number) => {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/posts/${id}`, {
-      headers: {
-        "Accept": "application/json",
-      },
-      cache: "no-store",
-    });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.message);
-    }
-    const data = await res.json();
-    return data.post;
-  } catch (error) {
-    console.log(error)
-  }
-};
-
 export default async function PostPage({
-  params: { id },
+  params: { id, name },
 }: {
-  params: { id: number }
+  params: { id: number, name: string }
 }) {
   const post = await getPost(id);
+
+  if (post.user.name !== name) {
+    redirect("/");
+  }
   
   return (
     <section>
