@@ -27,7 +27,7 @@ export async function generateMetadata(
   }
 
   return {
-    title: post.title,
+    title: `${post.title} - NextBlogApp`,
   };
 }
 
