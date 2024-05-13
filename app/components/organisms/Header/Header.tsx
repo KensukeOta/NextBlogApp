@@ -1,7 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import { auth } from "@/auth";
+import { LogoutButton } from "@/app/components/atoms/LogoutButton"
 
-export const Header = () => {
+export const Header = async () => {
+  const session = await auth();
+  
   return (
     <header className="flex justify-between items-center border-b">
       <div className="leading-9">
@@ -26,8 +30,9 @@ export const Header = () => {
           <i className="bi bi-search"></i>
         </button>
 
-        <Link href="/signup" className="inline-block">新規登録</Link>
-        <Link href="/login" className="inline-block">ログイン</Link>
+        {session?.user && <LogoutButton />}
+        {!session?.user && <Link href="/signup" className="inline-block">新規登録</Link>}
+        {!session?.user && <Link href="/login" className="inline-block">ログイン</Link>}
       </nav>
     </header>
   );
