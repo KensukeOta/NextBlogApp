@@ -1,6 +1,17 @@
-import { signIn } from "@/auth";
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { auth, signIn } from "@/auth";
 
-export default function Page() {
+export const metadata: Metadata = {
+  title: "ログイン",
+};
+
+export default async function Page() {
+  const session = await auth();
+  if (session?.user) {
+    redirect("/");
+  }
+  
   return (
     <form
       action={async () => {
