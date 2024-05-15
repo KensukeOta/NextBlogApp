@@ -20,16 +20,33 @@ export const providerMap = providers.map((provider) => {
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers,
   callbacks: {
-    jwt({ token, user }) {
-      if (user) { // サインイン時にユーザーが利用可能
-        token.id = user.id; // トークンにidを追加
+    async signIn({ user, account }) {
+      const uid = account?.providerAccountId;
+      const name = user.name;
+      const email = user.email;
+      const image = user.image;
+      const provider = account?.provider;
+
+      try {
+        const res = await fetch(`${process.env.API_URL}/v1/api/users`, {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ uid, name, email, image, provider }),
+        });
+        if (!res.ok) {
+          const errors = await res.json();
+          throw new Error(errors.message);
+        } else {
+          return true
+        }
+      } catch (error) {
+        console.log(error);
+        return false
       }
-      return token;
-    },
-    session({ session, token }) {
-      session.user.id = token.id as string; // セッションにidを追加
-      return session;
-    },
+    }
   },
   pages: {
     signIn: "/login",
