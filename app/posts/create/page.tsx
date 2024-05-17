@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "記事投稿フォーム",
 };
 
-export default async function() {
+export default async function Page() {
   return (
     <PostForm />
   );
