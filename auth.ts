@@ -20,6 +20,27 @@ export const providerMap = providers.map((provider) => {
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers,
   callbacks: {
+    jwt({ token, user }) {
+      if (user) {
+        token.email = user.email
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      try {
+        const res = await fetch(`${process.env.API_URL}/v1/api/users/email/${token.email}`, {
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          }
+        });
+        const data = await res.json();
+        session.user.id = data.id;
+      } catch (error) {
+        console.log(error);
+      }
+      return session
+    },
     async signIn({ user, account }) {
       const uid = account?.providerAccountId;
       const name = user.name;
