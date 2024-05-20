@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { SessionProvider } from "next-auth/react";
 import { PostForm } from "@/app/components/organisms/PostForm";
 
 export const metadata: Metadata = {
@@ -7,6 +8,8 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   return (
-    <PostForm />
+    <SessionProvider>
+      <PostForm />
+    </SessionProvider>
   );
 }
