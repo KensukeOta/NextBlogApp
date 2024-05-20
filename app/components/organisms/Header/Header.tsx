@@ -34,7 +34,7 @@ export const Header = async () => {
         {session?.user && <LogoutButton />}
         {!session?.user && <Link href="/signup" className="inline-block">新規登録</Link>}
         {!session?.user && <Link href="/login" className="inline-block">ログイン</Link>}
-        <PostLinkButton />
+        {session?.user && <PostLinkButton />}
       </nav>
     </header>
   );
