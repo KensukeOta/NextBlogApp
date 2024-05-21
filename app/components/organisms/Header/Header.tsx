@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { auth } from "@/auth";
-import { LogoutButton } from "@/app/components/atoms/LogoutButton"
 import { PostLinkButton } from "@/app/components/atoms/PostLinkButton";
+import { UserMenu } from "../UserMenu";
+import { SessionProvider } from "next-auth/react";
 
 export const Header = async () => {
   const session = await auth();
@@ -31,9 +32,9 @@ export const Header = async () => {
           <i className="bi bi-search"></i>
         </button>
 
-        {session?.user && <LogoutButton />}
         {!session?.user && <Link href="/signup" className="inline-block">新規登録</Link>}
         {!session?.user && <Link href="/login" className="inline-block">ログイン</Link>}
+        {session?.user && <SessionProvider><UserMenu /></SessionProvider>}
         {session?.user && <PostLinkButton />}
       </nav>
     </header>
