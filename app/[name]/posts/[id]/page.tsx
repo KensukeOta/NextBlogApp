@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { Post } from "@/app/types/Post";
+import { redirect } from "next/navigation";
 import { fetchPost } from "@/app/lib/data";
 
 export async function generateMetadata(
@@ -19,6 +20,10 @@ export default async function Page({
   params: { id: number, name: string }
 }) {
   const post: Post = await fetchPost(id);
+
+  if (post.user.name !== name) {
+    redirect("/");
+  }
 
   return (
     <section>
