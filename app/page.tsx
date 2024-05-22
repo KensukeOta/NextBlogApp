@@ -7,12 +7,16 @@ export default async function Home() {
   const session = await auth();
   const posts: Post[] = await fetchAllPosts();
 
-  const postItems = posts.map(post => (
-    <PostItem
-      key={post.id}
-      post={post}
-    />
-  ));
+  const postItems = posts.length > 0 ? (
+    posts.map(post => (
+      <PostItem
+        key={post.id}
+        post={post}
+      />
+    ))
+  ) : (
+    <p className="font-bold text-center">記事が投稿されていません</p>
+  );
     
   return (
     <>
