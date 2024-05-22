@@ -21,7 +21,7 @@ export default async function Page({
 }) {
   const post: Post = await fetchPost(id);
 
-  if (post.user.name !== name) {
+  if (post.user.name !== decodeURIComponent(name)) {
     redirect("/");
   }
 
