@@ -22,7 +22,7 @@ export async function fetchAllPosts() {
   }
 }
 
-export async function fetchPost(id: number) {
+export async function fetchPost(id: string) {
   noStore();
 
   try {

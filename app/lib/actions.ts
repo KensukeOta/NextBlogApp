@@ -60,3 +60,45 @@ export async function createPost(prevState: State | undefined, formData: FormDat
   revalidatePath("/");
   redirect("/");
 }
+
+export async function updatePost(postId: string, prevState: State | undefined, formData: FormData) {
+  // Validate form using Zod
+  const validatedFields = FormSchema.safeParse({
+    title: formData.get("title"),
+    body: formData.get("body"),
+    user_id: formData.get("user_id"),
+  });
+
+  // If form validation fails, return errors early. Otherwise, continue.
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "送信に失敗しました",
+    };
+  }
+
+  // Prepare data for insertion into the database
+  const { title, body, user_id } = validatedFields.data;
+
+  try {
+    const res = await fetch(`${process.env.API_URL}/v1/api/posts/${postId}`, {
+      method: "PATCH",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title, body, user_id })
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors);
+    }
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+
+  revalidatePath("/");
+  redirect("/");
+}

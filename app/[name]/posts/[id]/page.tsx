@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { fetchPost } from "@/app/lib/data";
 
 export async function generateMetadata(
-  { params }: { params: { id: number } }
+  { params }: { params: { id: string } }
 ): Promise<Metadata> {
   const id = params.id;
   const post: Post = await fetchPost(id);
@@ -17,7 +17,7 @@ export async function generateMetadata(
 export default async function Page({
   params: { id, name }
 }: {
-  params: { id: number, name: string }
+  params: { id: string, name: string }
 }) {
   const post: Post = await fetchPost(id);
 
