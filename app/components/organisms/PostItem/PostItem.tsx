@@ -2,6 +2,7 @@ import type { Post } from "@/app/types/Post";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { PostEditLinkButton } from "@/app/components/atoms/PostEditLinkButton";
+import { PostDeleteButton } from "@/app/components/atoms/PostDeleteButton";
 
 export const PostItem = async ({ post }: { post: Post }) => {
   const session = await auth();
@@ -17,6 +18,7 @@ export const PostItem = async ({ post }: { post: Post }) => {
       <nav className="flex justify-between">
         by {post.user.name}
         {session?.user && session.user.id === post.user_id ? <PostEditLinkButton post={post} /> : null}
+        {session?.user && session.user.id === post.user_id ? <PostDeleteButton post={post} /> : null}
       </nav>
     </article>
   );

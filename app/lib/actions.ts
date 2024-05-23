@@ -102,3 +102,25 @@ export async function updatePost(postId: string, prevState: State | undefined, f
   revalidatePath("/");
   redirect("/");
 }
+
+export async function deletePost(postId: string) {
+  try {
+    const res = await fetch(`${process.env.API_URL}/v1/api/posts/${postId}`, {
+      method: "DELETE",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors);
+    }
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+
+  revalidatePath("/");
+}
