@@ -2,6 +2,7 @@ import type { Provider } from "next-auth/providers";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";
+import Credentials from "next-auth/providers/credentials";
 
 const providers: Provider[] = [
   Google,
@@ -49,13 +50,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const provider = account?.provider;
 
       try {
-        const res = await fetch(`${process.env.API_URL}/v1/api/users`, {
+        const res = await fetch(`${process.env.API_URL}/v1/api/auth/${provider}/callback`, {
           method: "POST",
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ uid, name, email, image, provider }),
+          body: JSON.stringify({ uid, name, email, image }),
         });
         if (!res.ok) {
           const errors = await res.json();
