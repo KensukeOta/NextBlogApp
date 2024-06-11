@@ -1,6 +1,6 @@
 'use client';
 
-import type { State } from "@/app/lib/actions";
+import type { PostState } from "@/app/lib/actions";
 import { useSession } from "next-auth/react";
 import { useFormState } from "react-dom";
 import { createPost } from "@/app/lib/actions";
@@ -10,7 +10,7 @@ import { SubmitButton } from "@/app/components/atoms/SubmitButton";
 export const PostForm = () => {
   const session = useSession();
 
-  const initialState: State = { message: "", errors: {} };
+  const initialState: PostState = { message: "", errors: {} };
   const [state, formAction] = useFormState(createPost, initialState);
 
   return (

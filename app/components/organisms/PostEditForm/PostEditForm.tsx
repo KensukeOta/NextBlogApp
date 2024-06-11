@@ -1,13 +1,13 @@
 "use client";
 
 import type { Post } from "@/app/types/Post";
-import type { State } from "@/app/lib/actions";
+import type { PostState } from "@/app/lib/actions";
 import { updatePost } from "@/app/lib/actions";
 import { useFormState } from "react-dom";
 import { SubmitButton } from "@/app/components/atoms/SubmitButton";
 
 export const PostEditForm = ({ post }: { post: Post }) => {
-  const initialState: State = { message: "", errors: {} };
+  const initialState: PostState = { message: "", errors: {} };
   const updatePostWithId = updatePost.bind(null, post.id);
   const [state, formAction] = useFormState(updatePostWithId, initialState);
 

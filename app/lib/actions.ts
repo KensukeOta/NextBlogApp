@@ -10,7 +10,7 @@ const FormSchema = z.object({
   user_id: z.string().refine(value => value.trim() !== "", { message: "user_idは入力必須項目です" }),
 });
 
-export type State = {
+export type PostState = {
   errors?: {
     title?: string[];
     body?: string[];
@@ -19,7 +19,7 @@ export type State = {
   message?: string | null;
 };
 
-export async function createPost(prevState: State | undefined, formData: FormData) {
+export async function createPost(prevState: PostState | undefined, formData: FormData) {
   // Validate form using Zod
   const validatedFields = FormSchema.safeParse({
     title: formData.get("title"),
@@ -61,7 +61,7 @@ export async function createPost(prevState: State | undefined, formData: FormDat
   redirect("/");
 }
 
-export async function updatePost(postId: string, prevState: State | undefined, formData: FormData) {
+export async function updatePost(postId: string, prevState: PostState | undefined, formData: FormData) {
   // Validate form using Zod
   const validatedFields = FormSchema.safeParse({
     title: formData.get("title"),
