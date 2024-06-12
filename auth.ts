@@ -19,7 +19,7 @@ const providers: Provider[] = [
         console.log(credentials.email)
         console.log(credentials.password)
         // logic to verify if user exists
-        const res = await fetch(`${process.env.API_URL}/v1/api/users/login`, {
+        const res = await fetch(`${process.env.API_URL}/v1/api/sessions`, {
           method: "POST",
           headers: {
             "Accept": "application/json",
