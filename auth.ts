@@ -7,6 +7,39 @@ import Credentials from "next-auth/providers/credentials";
 const providers: Provider[] = [
   Google,
   GitHub,
+  Credentials({
+    credentials: {
+      email: {},
+      password: {}
+    },
+    authorize: async (credentials) => {
+      try {
+        let user = null;
+  
+        console.log(credentials.email)
+        console.log(credentials.password)
+        // logic to verify if user exists
+        const res = await fetch(`${process.env.API_URL}/v1/api/users/login`, {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: credentials.email, password: credentials.password}),
+        })
+        if (!res.ok) {
+          console.log(await res.json())
+        }
+        user = await res.json()
+        console.log(user)
+        // return user object with the their profile data
+        return user
+      } catch (error) {
+        return null
+      }
+    }
+
+  })
 ];
 
 export const providerMap = providers.map((provider) => {
@@ -43,6 +76,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session
     },
     async signIn({ user, account }) {
+      if (account?.provider === "credentials") {
+        return true;
+      }
       const uid = account?.providerAccountId;
       const name = user.name;
       const email = user.email;
@@ -56,7 +92,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             "Accept": "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ uid, name, email, image }),
+          body: JSON.stringify({ uid, name, email, image, provider }),
         });
         if (!res.ok) {
           const errors = await res.json();
