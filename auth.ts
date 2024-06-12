@@ -54,19 +54,22 @@ export const providerMap = providers.map((provider) => {
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers,
   callbacks: {
-    jwt({ token, user }) {
+    jwt({ token, user, account }) {
       if (user) {
         token.email = user.email
+        token.provider = account?.provider
       }
       return token;
     },
     async session({ session, token }) {
       try {
-        const res = await fetch(`${process.env.API_URL}/v1/api/users/email/${token.email}`, {
+        const res = await fetch(`${process.env.API_URL}/v1/api/users/show_by_email_and_provider`, {
+          method: "POST",
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
-          }
+          },
+          body: JSON.stringify({ email: token.email, provider: token.provider  })
         });
         const data = await res.json();
         session.user.id = data.id;
