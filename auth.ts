@@ -25,7 +25,7 @@ const providers: Provider[] = [
             "Accept": "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: credentials.email, password: credentials.password}),
+          body: JSON.stringify({ email: credentials.email, password: credentials.password, provider: "credentials" }),
         })
         if (!res.ok) {
           console.log(await res.json())
