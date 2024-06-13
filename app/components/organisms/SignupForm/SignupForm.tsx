@@ -4,6 +4,7 @@ import type { SignupState } from "@/app/lib/actions";
 import Link from "next/link"
 import { useFormState } from "react-dom";
 import { createUser } from "@/app/lib/actions";
+import { SubmitButton } from "../../atoms/SubmitButton";
 
 export const SignupForm = () => {
   const initialState: SignupState = { message: "", errors: {} };
@@ -62,7 +63,7 @@ export const SignupForm = () => {
               </p>
             ))}
         </div>
-        <button type="submit">登録</button>
+        <SubmitButton>登録</SubmitButton>
       </form>
 
       <div>

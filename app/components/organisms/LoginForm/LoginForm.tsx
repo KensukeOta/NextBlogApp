@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { signIn } from "@/auth"
+import { SubmitButton } from "../../atoms/SubmitButton";
 
 export const LoginForm = () => {
   return (
@@ -14,7 +15,7 @@ export const LoginForm = () => {
         <input name="email" id="email" type="email" className="block border" />
         <label htmlFor="password" className="block">パスワード</label>
         <input name="password" id="password" type="password" className="block border" />
-        <button type="submit">ログイン</button>
+        <SubmitButton>ログイン</SubmitButton>
       </form>
       
       <div>
