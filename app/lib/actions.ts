@@ -87,11 +87,13 @@ export async function createUser(prevState: SignupState | undefined, formData: F
     if (!res.ok) {
       const errors = await res.json();
       console.log(errors);
-      throw new Error(errors);
+      throw new Error(errors.error);
     }
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
-    return;
+    return {
+      message: error.message as string,
+    };
   }
   await signIn("credentials", { email: email, password: password, redirectTo: "/" })
 }
