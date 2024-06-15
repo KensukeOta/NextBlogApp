@@ -28,7 +28,9 @@ const providers: Provider[] = [
           body: JSON.stringify({ email: credentials.email, password: credentials.password, provider: "credentials" }),
         })
         if (!res.ok) {
-          console.log(await res.json())
+          const errors = await res.json();
+          console.log(errors);
+          throw new Error();
         }
         user = await res.json()
         console.log(user)
@@ -37,8 +39,7 @@ const providers: Provider[] = [
       } catch (error) {
         return null
       }
-    }
-
+    },
   })
 ];
 

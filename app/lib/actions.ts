@@ -3,38 +3,15 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { signIn } from "@/auth";
-import { z } from "zod";
+import { postFormSchema, loginSchema, signupFormSchema } from "./zod";
 
-const SignupFormSchema = z.object({
-  name: z.string()
-    .min(2, { message: "2文字以上で入力してください" })
-    .max(50, { message: "50文字以内で入力してください" })
-    .refine(value => value.trim() !== "", { message: "入力必須項目です" }),
-  email: z.string()
-    .email("無効なメールアドレスです")
-    .max(254, { message: "254文字以内で入力してください" })
-    .refine(value => value.trim() !== "", { message: "入力必須項目です" }),
-  password: z.string()
-    .min(8, "8文字以上で入力してください")
-    .max(32, "32文字以内で入力してください")
-    .refine(value => value.trim() !== "", { message: "入力必須項目です" }),
-  password_confirmation: z.string()
-    .refine(value => value.trim() !== "", { message: "入力必須項目です" }),
-}).superRefine((data, ctx) => {
-  if (data.password !== data.password_confirmation) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: "パスワードが一致しません",
-      path: ["password_confirmation"], // エラーメッセージを表示するフィールド
-    });
-  }
-});
-
-const PostFormSchema = z.object({
-  title: z.string().max(50, { message: "50文字以内で入力してください" }).refine(value => value.trim() !== "", { message: "入力必須項目です" }),
-  body: z.string().max(10000, { message: "10000文字以内で入力してください" }).refine(value => value.trim() !== "", { message: "入力必須項目です" }),
-  user_id: z.string().refine(value => value.trim() !== "", { message: "user_idは入力必須項目です" }),
-});
+export type LoginState = {
+  errors?: {
+    email?: string[];
+    password?: string[];
+  };
+  message?: string | null;
+};
 
 export type SignupState = {
   errors?: {
@@ -55,9 +32,38 @@ export type PostState = {
   message?: string | null;
 };
 
+export async function authenticate(prevState: LoginState | undefined, formData: FormData) {
+  // Validate form using Zod
+  const validatedFields = loginSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
+  });
+
+  // If form validation fails, return errors early. Otherwise, continue.
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "送信に失敗しました",
+    };
+  }
+
+  // Prepare data for insertion into the database
+  const { email, password } = validatedFields.data;
+
+  try {
+    await signIn("credentials", { email, password, redirect: false })
+  } catch (error: any) {
+    return {
+      message: "ログインに失敗しました",
+    }
+  }
+
+  redirect("/");
+}
+
 export async function createUser(prevState: SignupState | undefined, formData: FormData) {
   // Validate form using Zod
-  const validatedFields = SignupFormSchema.safeParse({
+  const validatedFields = signupFormSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
     password: formData.get("password"),
@@ -100,7 +106,7 @@ export async function createUser(prevState: SignupState | undefined, formData: F
 
 export async function createPost(prevState: PostState | undefined, formData: FormData) {
   // Validate form using Zod
-  const validatedFields = PostFormSchema.safeParse({
+  const validatedFields = postFormSchema.safeParse({
     title: formData.get("title"),
     body: formData.get("body"),
     user_id: formData.get("user_id"),
@@ -142,7 +148,7 @@ export async function createPost(prevState: PostState | undefined, formData: For
 
 export async function updatePost(postId: string, prevState: PostState | undefined, formData: FormData) {
   // Validate form using Zod
-  const validatedFields = PostFormSchema.safeParse({
+  const validatedFields = postFormSchema.safeParse({
     title: formData.get("title"),
     body: formData.get("body"),
     user_id: formData.get("user_id"),
