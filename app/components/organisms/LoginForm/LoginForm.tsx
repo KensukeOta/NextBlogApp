@@ -11,7 +11,7 @@ export const LoginForm = () => {
   
   return (
     <>
-      <form action={formAction}>
+      <form action={formAction} className="w-full">
         <div id="auth-error" aria-live="polite" aria-atomic="true">
           {state?.message &&
             <p className="text-red-500">
@@ -20,7 +20,7 @@ export const LoginForm = () => {
           }
         </div>
         <label htmlFor="email" className="block">メールアドレス</label>
-        <input name="email" id="email" type="email" className="border" />
+        <input name="email" id="email" type="email" className="border px-4 py-2 w-full" />
         <div id="email-error" aria-live="polite" aria-atomic="true">
           {state?.errors?.email &&
             state.errors.email.map((error: string) => (
@@ -31,7 +31,7 @@ export const LoginForm = () => {
         </div>
 
         <label htmlFor="password" className="block">パスワード</label>
-        <input name="password" id="password" type="password" className="border" />
+        <input name="password" id="password" type="password" className="border px-4 py-2 w-full" />
         <div id="password-error" aria-live="polite" aria-atomic="true">
           {state?.errors?.password &&
             state.errors.password.map((error: string) => (
@@ -44,7 +44,7 @@ export const LoginForm = () => {
       </form>
       
       <div>
-        <span className="text-xs mr-2">アカウントをお持ちではないですか？</span>
+        <span className="text-xs mr-1">アカウントをお持ちではないですか？</span>
         <Link href="/signup" className="text-xs text-blue-500 hover:opacity-70">新規登録</Link>
       </div>
     </>

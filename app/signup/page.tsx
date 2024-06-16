@@ -16,8 +16,10 @@ export default async function Page() {
   
   return (
     <div className="h-full flex flex-col items-center justify-center gap-2 text-center">
-      <SignupForm />
-      <OAuthMenu />
+      <div className="h-full flex flex-col items-center justify-center gap-2 w-80 px-8 py-5">
+        <SignupForm />
+        <OAuthMenu />
+      </div>
     </div>
   );
 }

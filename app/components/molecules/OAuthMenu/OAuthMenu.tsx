@@ -14,10 +14,10 @@ export const OAuthMenu = () => {
             "use server"
             await signIn(provider.id, { redirectTo: "/" })
           }}
-          className="flex items-center justify-center"
+          className="flex items-center justify-center w-full"
           key={provider.id}
         >
-          <SubmitButton className="flex items-center gap-2 px-4 py-3 border rounded-lg hover:bg-blue-300">
+          <SubmitButton className="flex items-center justify-center gap-2 px-4 py-3 border rounded-lg w-full hover:bg-blue-300">
             <i className={`bi bi-${provider.name.toLowerCase()} text-2xl`}></i>
             <span>{provider.name}でログインする</span>
           </SubmitButton>
