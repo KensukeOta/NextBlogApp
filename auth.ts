@@ -90,6 +90,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const provider = account?.provider;
 
       try {
+        const res = await fetch(`${process.env.API_URL}/v1/api/users/show_by_email_and_provider`, {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, provider })
+        });
+        if (res.ok) {
+          return true
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
+      try {
         const res = await fetch(`${process.env.API_URL}/v1/api/auth/${provider}/callback`, {
           method: "POST",
           headers: {
