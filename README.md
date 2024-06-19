@@ -10,6 +10,7 @@ Next.jsのApp Routerを使用したブログアプリです。
 - CSSフレームワーク: __Tailwind CSS3.4.3__
 - フォームバリデーションライブラリ: __Zod3.23.8__
 - 認証ライブラリ: __Auth.js(next-auth5.0.0-beta.18)__
+- マークダウンライブラリ: __react-markdown9.0.1__, __remark-gfm4.0.0__, __github-markdown-css5.6.1__
 - アイコンライブラリ: __Bootstrap Icons1.11.3__
 - コンポーネント設計: __Atomic Design__
 - バージョン管理ツール: __Git__ / __GitHub__
@@ -19,8 +20,11 @@ Next.jsのApp Routerを使用したブログアプリです。
 ## 機能
 - ログイン機能
 - ユーザー登録機能
+- Googleログイン機能
+- GitHubログイン機能
 - 記事投稿機能
 - 記事一覧表示機能
 - 記事詳細表示機能
 - 記事更新機能
 - 記事削除機能
+- マークダウン機能
