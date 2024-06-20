@@ -43,7 +43,7 @@ export const PostForm = () => {
               </p>
             ))}
         </div>
-        <div className="">
+        <div>
           <input
             type="text"
             name="title"

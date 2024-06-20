@@ -1,6 +1,6 @@
-import type { Post } from "./types/Post";
+import type { Post } from "@/app/types/Post";
 import { auth } from "@/auth";
-import { fetchAllPosts } from "./lib/data";
+import { fetchAllPosts } from "@/app/lib/data";
 import { PostItem } from "@/app/components/organisms/PostItem";
 
 export default async function Home() {

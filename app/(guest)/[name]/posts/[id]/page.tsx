@@ -31,7 +31,7 @@ export default async function Page({
 
   return (
     <section>
-      <h1 className="font-bold text-2xl">{post.title}</h1>
+      <h1 className="font-bold text-3xl">{post.title}</h1>
       <p className="flex mt-2 text-base">by <UserIcon user={post.user} width={24} height={24} />{post.user.name}</p>
 
       <div className="mt-12">

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { LoginForm } from "../components/organisms/LoginForm";
-import { OAuthMenu } from "../components/molecules/OAuthMenu";
+import { LoginForm } from "@/app/components/organisms/LoginForm";
+import { OAuthMenu } from "@/app/components/molecules/OAuthMenu";
 
 export const metadata: Metadata = {
   title: "ログイン",
