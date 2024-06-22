@@ -64,13 +64,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async session({ session, token }) {
       try {
-        const res = await fetch(`${process.env.API_URL}/v1/api/users/show_by_email_and_provider`, {
-          method: "POST",
+        const res = await fetch(`${process.env.API_URL}/v1/api/users/show_by_email_and_provider?email=${encodeURIComponent(token.email as string)}&provider=${token.provider as string}`, {
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: token.email, provider: token.provider  })
         });
         const data = await res.json();
         session.user.id = data.id;
@@ -90,13 +88,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const provider = account?.provider;
 
       try {
-        const res = await fetch(`${process.env.API_URL}/v1/api/users/show_by_email_and_provider`, {
-          method: "POST",
+        const res = await fetch(`${process.env.API_URL}/v1/api/users/show_by_email_and_provider?email=${encodeURIComponent(email as string)}&provider=${provider as string}`, {
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, provider })
         });
         if (res.ok) {
           return true
