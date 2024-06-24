@@ -2,6 +2,7 @@ import type { Post } from "@/app/types/Post";
 import { auth } from "@/auth";
 import { fetchAllPosts } from "@/app/lib/data";
 import { PostItem } from "@/app/components/organisms/PostItem";
+import { DefaultLayout } from "@/app/components/templates/DefaultLayout/DefaultLayout";
 
 export default async function Home() {
   const session = await auth();
@@ -19,12 +20,12 @@ export default async function Home() {
   );
     
   return (
-    <>
+    <DefaultLayout className="py-6">
       <h1>Welcome {session?.user ? session.user.name : "stranger"}</h1>
 
       <section className="mt-2">
         {postItems}
       </section>
-    </>
+    </DefaultLayout>
   );
 }

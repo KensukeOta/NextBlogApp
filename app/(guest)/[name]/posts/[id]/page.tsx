@@ -7,6 +7,7 @@ import remarkGfm from "remark-gfm";
 import "github-markdown-css/github-markdown.css";
 import { fetchPost } from "@/app/lib/data";
 import { UserIcon } from "@/app/components/atoms/UserIcon";
+import { DefaultLayout } from "@/app/components/templates/DefaultLayout/DefaultLayout";
 
 export async function generateMetadata(
   { params }: { params: { id: string } }
@@ -31,13 +32,15 @@ export default async function Page({
   }
 
   return (
-    <section>
-      <h1 className="font-bold text-3xl">{post.title}</h1>
-      <p className="flex mt-2 text-base">by <Link href={`/${post.user.name}`} className="hover:underline"><UserIcon user={post.user} width={24} height={24} />{post.user.name}</Link></p>
+    <DefaultLayout className="py-12">
+      <section className="h-full bg-white px-4 py-6">
+        <h1 className="font-bold text-3xl">{post.title}</h1>
+        <p className="flex mt-2 text-base">by <Link href={`/${post.user.name}`} className="hover:underline"><UserIcon user={post.user} width={24} height={24} />{post.user.name}</Link></p>
 
-      <div className="mt-12">
-        <Markdown remarkPlugins={[remarkGfm]} className="markdown-body">{post.body}</Markdown>
-      </div>
-    </section>
+        <div className="mt-12">
+          <Markdown remarkPlugins={[remarkGfm]} className="markdown-body">{post.body}</Markdown>
+        </div>
+      </section>
+    </DefaultLayout>
   );
 }

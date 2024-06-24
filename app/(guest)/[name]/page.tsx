@@ -3,6 +3,7 @@ import type { User } from "@/app/types/User";
 import { fetchUser } from "@/app/lib/data";
 import { UserIcon } from "@/app/components/atoms/UserIcon";
 import { PostItem } from "@/app/components/organisms/PostItem";
+import { DefaultLayout } from "@/app/components/templates/DefaultLayout/DefaultLayout";
 
 export function generateMetadata(
   { params }: { params: { name: string } }
@@ -32,14 +33,14 @@ export default async function Page({
   );
   
   return (
-    <div>
-      <section className="p-6 rounded-lg text-center">
+    <DefaultLayout className="p-4">
+      <section className="bg-white p-6 rounded-lg text-center">
         <UserIcon user={user} height={72} width={72} />
         <h1 className="font-bold mt-4">{user.name}</h1>
       </section>
-      <section className="px-6">
+      <section>
         {postItems}
       </section>
-    </div>
+    </DefaultLayout>
   );
 }

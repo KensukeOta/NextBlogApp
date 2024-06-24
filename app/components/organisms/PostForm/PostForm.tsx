@@ -73,7 +73,7 @@ export const PostForm = () => {
               onChange={handleInputChange(setBody)}
               className="flex-1 h-full bg-gray-200 p-2"
             />
-            <div className="flex-1 p-2">
+            <div className="flex-1 bg-white p-2">
               <Markdown remarkPlugins={[remarkGfm]} className="markdown-body">{body}</Markdown>
             </div>
           </div>

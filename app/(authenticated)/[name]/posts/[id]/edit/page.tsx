@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { fetchPost } from "@/app/lib/data";
 import { PostEditForm } from "@/app/components/organisms/PostEditForm";
+import { DefaultLayout } from "@/app/components/templates/DefaultLayout/DefaultLayout";
 
 export const metadata: Metadata = {
   title: "記事更新フォーム",
@@ -19,6 +20,8 @@ export default async function Page({ params }: { params: { id: string, name: str
   }
   
   return (
-    <PostEditForm post={post}  />
+    <DefaultLayout className="py-3">
+      <PostEditForm post={post}  />
+    </DefaultLayout>
   );
 }
