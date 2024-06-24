@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { Post } from "@/app/types/Post";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -32,7 +33,7 @@ export default async function Page({
   return (
     <section>
       <h1 className="font-bold text-3xl">{post.title}</h1>
-      <p className="flex mt-2 text-base">by <UserIcon user={post.user} width={24} height={24} />{post.user.name}</p>
+      <p className="flex mt-2 text-base">by <Link href={`/${post.user.name}`} className="hover:underline"><UserIcon user={post.user} width={24} height={24} />{post.user.name}</Link></p>
 
       <div className="mt-12">
         <Markdown remarkPlugins={[remarkGfm]} className="markdown-body">{post.body}</Markdown>

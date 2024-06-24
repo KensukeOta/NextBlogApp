@@ -9,14 +9,14 @@ export const PostItem = async ({ post }: { post: Post }) => {
   
   return (
     <article className="border p-2">
-      <h2 className="font-bold">
+      <h2 className="font-bold text-left">
         <Link href={`/${post.user.name}/posts/${post.id}`} className="inline-block w-full hover:underline">
           {post.title}
         </Link>
       </h2>
 
       <nav className="flex justify-between">
-        by {post.user.name}
+        <p>by <Link href={`/${post.user.name}`} className="hover:underline">{post.user.name}</Link></p>
         {session?.user && session.user.id === post.user_id ? <PostEditLinkButton post={post} /> : null}
         {session?.user && session.user.id === post.user_id ? <PostDeleteButton post={post} /> : null}
       </nav>

@@ -1,13 +1,16 @@
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { LogoutButton } from "@/app/components/atoms/LogoutButton";
 
 export const DropdownMenu = () => {
+  const session = useSession();
+  
   return (
     <div className="absolute top-full right-0">
       <ul className="border bg-white px-2 py-3 text-center rounded-lg w-40 z-50">
         <li>
           <Link
-            href="#"
+            href={`/${session.data?.user?.name}`}
             className="inline-block w-full hover:bg-slate-200 rounded-lg"
           >
             マイページ
