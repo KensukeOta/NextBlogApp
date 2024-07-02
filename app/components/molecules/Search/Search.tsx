@@ -2,6 +2,7 @@
 
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useDebouncedCallback } from 'use-debounce';
 
 export const Search = ({ placeholder }: { placeholder: string }) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -15,7 +16,9 @@ export const Search = ({ placeholder }: { placeholder: string }) => {
     setIsOpen(!isOpen);
   };
 
-  const handleSearch = (term: string) => {
+  const handleSearch = useDebouncedCallback((term: string) => {
+    console.log(`Searching... ${term}`);
+    
     const params = new URLSearchParams(searchParams);
     params.set('page', '1');
     if (term) {
@@ -24,7 +27,7 @@ export const Search = ({ placeholder }: { placeholder: string }) => {
       params.delete('query');
     }
     replace(`${pathname}?${params.toString()}`);
-  };
+  }, 300);
 
   useEffect(() => {
     if (isOpen) {
