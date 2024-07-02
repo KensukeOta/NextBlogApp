@@ -44,7 +44,7 @@ export async function fetchAllPosts() {
   }
 }
 
-const ITEMS_PER_PAGE = 3;
+const ITEMS_PER_PAGE = 5;
 export async function fetchFilteredPosts(
   query: string,
   currentPage: number,
