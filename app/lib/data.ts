@@ -44,7 +44,7 @@ export async function fetchAllPosts() {
   }
 }
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 3;
 export async function fetchFilteredPosts(
   query: string,
   currentPage: number,
@@ -66,6 +66,29 @@ export async function fetchFilteredPosts(
     }
     const data = await res.json();
     return data.allPosts;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function fetchPostsPages(query: string) {
+  noStore();
+
+  try {
+    const res = await fetch(`${process.env.API_URL}/v1/api/posts?query=${query}`, {
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors);
+    }
+    const data = await res.json();
+    const totalPages = Math.ceil(data.allPosts.length / ITEMS_PER_PAGE);
+    return totalPages;
   } catch (error) {
     console.log(error);
   }
