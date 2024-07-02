@@ -1,31 +1,25 @@
-import type { Post } from "@/app/types/Post";
 import { auth } from "@/auth";
-import { fetchAllPosts } from "@/app/lib/data";
-import { PostItem } from "@/app/components/organisms/PostItem";
 import { DefaultLayout } from "@/app/components/templates/DefaultLayout/DefaultLayout";
+import { Posts } from "../components/organisms/Posts";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+    page?: string;
+  }
+}) {
   const session = await auth();
-  const posts: Post[] = await fetchAllPosts();
 
-  const postItems = posts.length > 0 ? (
-    posts.map(post => (
-      <PostItem
-        key={post.id}
-        post={post}
-      />
-    ))
-  ) : (
-    <p className="font-bold text-center">記事が投稿されていません</p>
-  );
+  const query = searchParams?.query || '';
+  const currentPage = Number(searchParams?.page) || 1;
     
   return (
     <DefaultLayout className="py-6">
-      <h1>Welcome {session?.user ? session.user.name : "stranger"}</h1>
+      <h1 className="mt-2">Welcome {session?.user ? session.user.name : "stranger"}</h1>
 
-      <section className="mt-2">
-        {postItems}
-      </section>
+      <Posts query={query} currentPage={currentPage} />
     </DefaultLayout>
   );
 }
