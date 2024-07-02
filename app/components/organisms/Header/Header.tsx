@@ -1,15 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
+import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { PostLinkButton } from "@/app/components/atoms/PostLinkButton";
 import { UserMenu } from "../UserMenu";
-import { SessionProvider } from "next-auth/react";
+import { Search } from "@/app/components/molecules/Search";
 
 export const Header = async () => {
   const session = await auth();
   
   return (
-    <header className="flex justify-between items-center border-b">
+    <header className="flex justify-between items-center border-b relative">
       <div className="leading-9">
         <button className="px-2 rounded-full hover:bg-gray-200">
           <i className="bi bi-list"></i>
@@ -27,11 +28,9 @@ export const Header = async () => {
         </h1>
       </div>
 
-      <nav className="leading-9">
-        <button title="検索" className="px-2">
-          <i className="bi bi-search"></i>
-        </button>
+      <Search placeholder="記事を検索" />
 
+      <nav className="leading-9">
         {!session?.user && <Link href="/signup" className="inline-block">新規登録</Link>}
         {!session?.user && <Link href="/login" className="inline-block">ログイン</Link>}
         {session?.user && <SessionProvider><UserMenu /></SessionProvider>}
