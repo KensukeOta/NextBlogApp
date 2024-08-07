@@ -21,7 +21,8 @@ export default async function Page({
   params: { name: string }
 }) {
   const user: User = await fetchUser(params.name);
-  const postItems = user.posts.length > 0 ? (
+  
+  const postItems = user.posts?.length > 0 ? (
     user.posts.map(post => (
       <PostItem
         key={post.id}

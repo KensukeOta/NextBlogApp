@@ -64,7 +64,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async session({ session, token }) {
       try {
-        const res = await fetch(`${process.env.API_URL}/v1/users/show_by_email_and_provider?email=${encodeURIComponent(token.email as string)}&provider=${token.provider as string}`, {
+        const res = await fetch(`${process.env.API_URL}/v1/users?email=${encodeURIComponent(token.email as string)}&provider=${encodeURIComponent(token.provider as string)}`, {
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
