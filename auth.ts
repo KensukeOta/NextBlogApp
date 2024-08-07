@@ -88,21 +88,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const provider = account?.provider;
 
       try {
-        const res = await fetch(`${process.env.API_URL}/v1/users/show_by_email_and_provider?email=${encodeURIComponent(email as string)}&provider=${provider as string}`, {
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-          },
-        });
-        if (res.ok) {
-          return true
-        }
-      } catch (error) {
-        console.log(error);
-      }
-
-      try {
-        const res = await fetch(`${process.env.API_URL}/v1/auth/${provider}/callback`, {
+        const res = await fetch(`${process.env.API_URL}/v1/oauth`, {
           method: "POST",
           headers: {
             "Accept": "application/json",
