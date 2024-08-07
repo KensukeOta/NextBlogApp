@@ -19,7 +19,7 @@ const providers: Provider[] = [
         console.log(credentials.email)
         console.log(credentials.password)
         // logic to verify if user exists
-        const res = await fetch(`${process.env.API_URL}/v1/api/sessions`, {
+        const res = await fetch(`${process.env.API_URL}/v1/sessions`, {
           method: "POST",
           headers: {
             "Accept": "application/json",
@@ -64,7 +64,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async session({ session, token }) {
       try {
-        const res = await fetch(`${process.env.API_URL}/v1/api/users/show_by_email_and_provider?email=${encodeURIComponent(token.email as string)}&provider=${token.provider as string}`, {
+        const res = await fetch(`${process.env.API_URL}/v1/users/show_by_email_and_provider?email=${encodeURIComponent(token.email as string)}&provider=${token.provider as string}`, {
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
@@ -88,7 +88,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const provider = account?.provider;
 
       try {
-        const res = await fetch(`${process.env.API_URL}/v1/api/users/show_by_email_and_provider?email=${encodeURIComponent(email as string)}&provider=${provider as string}`, {
+        const res = await fetch(`${process.env.API_URL}/v1/users/show_by_email_and_provider?email=${encodeURIComponent(email as string)}&provider=${provider as string}`, {
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
@@ -102,7 +102,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
 
       try {
-        const res = await fetch(`${process.env.API_URL}/v1/api/auth/${provider}/callback`, {
+        const res = await fetch(`${process.env.API_URL}/v1/auth/${provider}/callback`, {
           method: "POST",
           headers: {
             "Accept": "application/json",

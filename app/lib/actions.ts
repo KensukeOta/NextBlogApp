@@ -82,7 +82,7 @@ export async function createUser(prevState: SignupState | undefined, formData: F
   const { name, email, password, password_confirmation } = validatedFields.data;
 
   try {
-    const res = await fetch(`${process.env.API_URL}/v1/api/users`, {
+    const res = await fetch(`${process.env.API_URL}/v1/users`, {
       method: "POST",
       headers: {
         "Accept": "application/json",
@@ -124,7 +124,7 @@ export async function createPost(prevState: PostState | undefined, formData: For
   const { title, body, user_id } = validatedFields.data;
 
   try {
-    const res = await fetch(`${process.env.API_URL}/v1/api/posts`, {
+    const res = await fetch(`${process.env.API_URL}/v1/posts`, {
       method: "POST",
       headers: {
         "Accept": "application/json",
@@ -166,7 +166,7 @@ export async function updatePost(postId: string, prevState: PostState | undefine
   const { title, body, user_id } = validatedFields.data;
 
   try {
-    const res = await fetch(`${process.env.API_URL}/v1/api/posts/${postId}`, {
+    const res = await fetch(`${process.env.API_URL}/v1/posts/${postId}`, {
       method: "PATCH",
       headers: {
         "Accept": "application/json",
@@ -190,7 +190,7 @@ export async function updatePost(postId: string, prevState: PostState | undefine
 
 export async function deletePost(postId: string) {
   try {
-    const res = await fetch(`${process.env.API_URL}/v1/api/posts/${postId}`, {
+    const res = await fetch(`${process.env.API_URL}/v1/posts/${postId}`, {
       method: "DELETE",
       headers: {
         "Accept": "application/json",
