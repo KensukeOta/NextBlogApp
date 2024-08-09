@@ -116,9 +116,9 @@ function PaginationArrow({
     );
 
   return isDisabled ? (
-    <div className={className}>{icon}</div>
+    <div className={className} data-testid={`arrow-${direction}`} aria-disabled={isDisabled}>{icon}</div>
   ) : (
-    <Link className={className} href={href}>
+    <Link className={className} href={href} data-testid={`arrow-${direction}`}>
       {icon}
     </Link>
   );
