@@ -12,6 +12,8 @@ Next.jsのApp Routerを使用したブログアプリです。
 - 認証ライブラリ: __Auth.js(next-auth5.0.0-beta.18)__
 - マークダウンライブラリ: __react-markdown9.0.1__, __remark-gfm4.0.0__, __github-markdown-css5.6.1__
 - アイコンライブラリ: __Bootstrap Icons1.11.3__, __@heroicons/react2.1.4__
+- 単体テスト・統合テスト: __Jest29.7.0__, __@testing-library/react16.0.0__
+- E2Eテスト: __Playwright1.46.1__
 - その他ライブラリ: __clsx2.1.1__
 - コンポーネント設計: __Atomic Design__
 - バージョン管理ツール: __Git__ / __GitHub__

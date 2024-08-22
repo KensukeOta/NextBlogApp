@@ -209,3 +209,48 @@ export async function deletePost(postId: string) {
 
   revalidatePath("/");
 }
+
+export async function createLike(userId: string, postId: string) {
+  try {
+    const res = await fetch(`${process.env.API_URL}/v1/likes`, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ user_id: userId, post_id: postId }),
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors);
+    }
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+
+  revalidatePath("/")
+}
+
+export async function deleteLike(likeId: string) {
+  try {
+    const res = await fetch(`${process.env.API_URL}/v1/likes/${likeId}`, {
+      method: "DELETE",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors);
+    }
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+
+  revalidatePath("/")
+}
