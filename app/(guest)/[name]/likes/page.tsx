@@ -22,18 +22,18 @@ export default async function Page({
   params: { name: string }
 }) {
   const user: User = await fetchUser(params.name);
-  
-  const postItems = user.posts.length > 0 ? (
-    user.posts.map(post => (
+
+  const postItems = user.likes.length > 0 ? (
+    user.likes.map(like => (
       <PostItem
-        key={post.id}
-        post={post}
+        key={like.id}
+        post={like.post}
       />
     ))
   ) : (
-    <p className="font-bold text-center">記事が投稿されていません</p>
+    <p className="font-bold text-center">いいねした記事がありません</p>
   );
-  
+
   return (
     <DefaultLayout className="p-4">
       <UserProfile user={user} />
