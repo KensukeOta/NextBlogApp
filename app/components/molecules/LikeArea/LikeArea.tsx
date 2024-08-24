@@ -27,7 +27,10 @@ export const LikeArea = ({ post }: { post: Post }) => {
   return (
     <form action={handleSubmit}>
       <section className="flex gap-1">
-        <SubmitButton className={`rounded-full ${liked ? "text-red-500 hover:bg-gray-200" : "hover:text-red-500 hover:bg-pink-100"}`}>
+        <SubmitButton
+          className={`rounded-full ${liked ? "text-red-500 hover:bg-gray-200" : "hover:text-red-500 hover:bg-pink-100"}`}
+          ariaLabel={liked ? "いいね解除" : "いいね"}
+        >
           <i className={`${liked ? "bi bi-heart-fill" : "bi bi-heart"}`}></i>
         </SubmitButton>
         <span>{post.likes.length}</span>

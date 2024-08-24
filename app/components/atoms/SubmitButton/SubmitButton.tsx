@@ -4,10 +4,12 @@ import { useFormStatus } from "react-dom";
 
 export const SubmitButton = ({
   children,
-  className = "w-full mt-4 p-2 bg-black text-white hover:opacity-70"
+  className = "w-full mt-4 p-2 bg-black text-white hover:opacity-70",
+  ariaLabel,
 }: {
   children: React.ReactNode,
-  className?: string
+  className?: string,
+  ariaLabel?: any,
 }) => {
   const { pending } = useFormStatus();
   
@@ -16,6 +18,7 @@ export const SubmitButton = ({
       type="submit"
       disabled={pending}
       className={className}
+      aria-label={ariaLabel}
     >
       {children}
     </button>
