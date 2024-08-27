@@ -37,4 +37,5 @@ export const postFormSchema = z.object({
   title: z.string().max(50, { message: "50文字以内で入力してください" }).refine(value => value.trim() !== "", { message: "入力必須項目です" }),
   body: z.string().max(10000, { message: "10000文字以内で入力してください" }).refine(value => value.trim() !== "", { message: "入力必須項目です" }),
   user_id: z.string().refine(value => value.trim() !== "", { message: "user_idは入力必須項目です" }),
+  tags: z.string()
 });

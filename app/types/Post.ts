@@ -1,4 +1,5 @@
 import type { Like } from "./Like";
+import type { Tag } from "./Tag";
 import type { User } from "./User";
 
 export interface Post {
@@ -8,4 +9,5 @@ export interface Post {
   user_id: string;
   user: User;
   likes: Like[];
+  tags: Tag[];
 }

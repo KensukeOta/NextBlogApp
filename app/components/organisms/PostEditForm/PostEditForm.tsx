@@ -7,6 +7,7 @@ import { useFormState } from "react-dom";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import "github-markdown-css/github-markdown.css";
+import { WithContext as ReactTags } from "react-tag-input";
 import { updatePost } from "@/app/lib/actions";
 import { SubmitButton } from "@/app/components/atoms/SubmitButton";
 
@@ -14,6 +15,47 @@ export const PostEditForm = ({ post }: { post: Post }) => {
   const initialState: PostState = { message: "", errors: {} };
   const updatePostWithId = updatePost.bind(null, post.id);
   const [state, formAction] = useFormState(updatePostWithId, initialState);
+  const formattedTags = post.tags.map(tag => ({
+    id: String(tag.id), // id を文字列に変換
+    text: tag.name, // name を text に変換
+    className: "",
+  }));
+
+  const [tags, setTags] = useState(formattedTags);
+
+  const handleDelete = (index: number) => {
+    setTags(tags.filter((_, i) => i !== index));
+  };
+
+  const onTagUpdate = (index: number, newTag: any) => {
+    const updatedTags = [...tags];
+    updatedTags.splice(index, 1, newTag);
+    setTags(updatedTags);
+  };
+
+  const handleAddition = (tag: any) => {
+    setTags((prevTags) => {
+      return [...prevTags, tag];
+    });
+  };
+
+  const handleDrag = (tag: any, currPos: number, newPos: number) => {
+    const newTags = tags.slice();
+
+    newTags.splice(currPos, 1);
+    newTags.splice(newPos, 0, tag);
+
+    // re-render
+    setTags(newTags);
+  };
+
+  const handleTagClick = (index: number) => {
+    console.log("The tag at index " + index + " was clicked");
+  };
+
+  const onClearAll = () => {
+    setTags([]);
+  };
 
   const [title, setTitle] = useState(post.title);
   const [body, setBody] = useState(post.body);
@@ -21,6 +63,8 @@ export const PostEditForm = ({ post }: { post: Post }) => {
   const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setter(e.target.value);
   };
+
+  const tagsString = tags.map(tag => tag.text).join(",");
 
   return (
     <form action={formAction} className="h-full">
@@ -53,6 +97,38 @@ export const PostEditForm = ({ post }: { post: Post }) => {
           />
         </div>
 
+        <ReactTags
+          tags={tags}
+          inputFieldPosition="top"
+          handleDelete={handleDelete}
+          handleAddition={handleAddition}
+          handleDrag={handleDrag}
+          handleTagClick={handleTagClick}
+          autoFocus={false}
+          onTagUpdate={onTagUpdate}
+          classNames={{
+            tag: "bg-black text-white p-1 mr-1",
+            tagInputField: "border w-full p-2 mt-2",
+            remove: "ml-1",
+            tags: "tagsClass",
+            tagInput: "tagInputClass",
+            selected: "selectedClass",
+            suggestions: "suggestionsClass",
+            activeSuggestion: "activeSuggestionClass",
+            editTagInput: "editTagInputClass",
+            editTagInputField: "editTagInputField",
+            clearAll: "clearAllClass",
+          }}
+          maxLength={10}
+          placeholder="文字を入力し、エンターキーを押すとタグが作れます。最大5個、10文字以内で入力してください。"
+          editable
+          clearAll
+          onClearAll={onClearAll}
+          maxTags={5}
+          allowAdditionFromPaste
+        />
+        <input type="hidden" name="tags" value={tagsString} />
+
         <div id="body-error" aria-live="polite" aria-atomic="true">
           {state?.errors?.body &&
             state.errors.body.map((error: string) => (
@@ -61,7 +137,7 @@ export const PostEditForm = ({ post }: { post: Post }) => {
               </p>
             ))}
         </div>
-        <div className="h-[calc(100%-10.625rem)] mt-2">
+        <div className="h-[calc(100%-19.969rem)] mt-2">
           <div className="flex h-full">
             <textarea
               name="body"
