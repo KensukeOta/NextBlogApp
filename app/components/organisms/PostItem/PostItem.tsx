@@ -17,6 +17,20 @@ export const PostItem = async ({ post }: { post: Post }) => {
         </Link>
       </h2>
 
+      <ul className="flex gap-1 mt-2">
+        <i className="bi bi-tag"></i>
+        {post.tags.map(tag => (
+          <li>
+            <Link
+              href={`/tags/${tag.name}`}
+              className="bg-gray-100 px-1.5 text-sm text-black/60"
+            >
+              {tag.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+
       <p>by <Link href={`/${post.user.name}`} className="hover:underline">{post.user.name}</Link></p>
       <nav className="flex justify-between">
         <SessionProvider>

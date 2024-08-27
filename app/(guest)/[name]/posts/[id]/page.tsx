@@ -37,6 +37,21 @@ export default async function Page({
     <DefaultLayout className="py-12">
       <section className="h-full bg-white px-4 py-6">
         <h1 className="font-bold text-3xl">{post.title}</h1>
+
+        <ul className="flex gap-1 mt-4">
+          <i className="bi bi-tag"></i>
+          {post.tags.map(tag => (
+            <li>
+              <Link
+                href={`/tags/${tag.name}`}
+                className="bg-gray-100 px-1.5 text-sm text-black/60"
+              >
+                {tag.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+
         <p className="flex mt-2 text-base">by <Link href={`/${post.user.name}`} className="hover:underline"><UserIcon user={post.user} width={24} height={24} />{post.user.name}</Link></p>
         <SessionProvider>
           <LikeArea post={post} />
