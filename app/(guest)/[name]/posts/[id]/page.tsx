@@ -41,7 +41,7 @@ export default async function Page({
         <ul className="flex gap-1 mt-4">
           <i className="bi bi-tag"></i>
           {post.tags.map(tag => (
-            <li>
+            <li key={tag.id}>
               <Link
                 href={`/tags/${tag.name}`}
                 className="bg-gray-100 px-1.5 text-sm text-black/60"

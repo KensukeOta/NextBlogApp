@@ -20,10 +20,10 @@ export const PostItem = async ({ post }: { post: Post }) => {
       <ul className="flex gap-1 mt-2">
         <i className="bi bi-tag"></i>
         {post.tags.map(tag => (
-          <li>
+          <li key={tag.id}>
             <Link
               href={`/tags/${tag.name}`}
-              className="bg-gray-100 px-1.5 text-sm text-black/60"
+              className="bg-gray-100 px-1.5 text-sm text-black/60 rounded hover:bg-gray-200"
             >
               {tag.name}
             </Link>
