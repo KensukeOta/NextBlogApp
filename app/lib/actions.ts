@@ -110,6 +110,7 @@ export async function createPost(prevState: PostState | undefined, formData: For
     title: formData.get("title"),
     body: formData.get("body"),
     user_id: formData.get("user_id"),
+    tags: formData.get("tags"),
   });
 
   // If form validation fails, return errors early. Otherwise, continue.
@@ -121,7 +122,7 @@ export async function createPost(prevState: PostState | undefined, formData: For
   }
 
   // Prepare data for insertion into the database
-  const { title, body, user_id } = validatedFields.data;
+  const { title, body, user_id, tags } = validatedFields.data;
 
   try {
     const res = await fetch(`${process.env.API_URL}/v1/posts`, {
@@ -130,7 +131,7 @@ export async function createPost(prevState: PostState | undefined, formData: For
         "Accept": "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ title, body, user_id })
+      body: JSON.stringify({ title, body, user_id, tags: tags.split(",") })
     });
     if (!res.ok) {
       const errors = await res.json();
@@ -152,6 +153,7 @@ export async function updatePost(postId: string, prevState: PostState | undefine
     title: formData.get("title"),
     body: formData.get("body"),
     user_id: formData.get("user_id"),
+    tags: formData.get("tags"),
   });
 
   // If form validation fails, return errors early. Otherwise, continue.
@@ -163,7 +165,7 @@ export async function updatePost(postId: string, prevState: PostState | undefine
   }
 
   // Prepare data for insertion into the database
-  const { title, body, user_id } = validatedFields.data;
+  const { title, body, user_id, tags } = validatedFields.data;
 
   try {
     const res = await fetch(`${process.env.API_URL}/v1/posts/${postId}`, {
@@ -172,7 +174,7 @@ export async function updatePost(postId: string, prevState: PostState | undefine
         "Accept": "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ title, body, user_id })
+      body: JSON.stringify({ title, body, user_id, tags: tags.split(",") })
     });
     if (!res.ok) {
       const errors = await res.json();
