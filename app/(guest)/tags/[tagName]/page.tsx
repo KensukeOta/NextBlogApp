@@ -10,7 +10,7 @@ export function generateMetadata(
   const tagName = decodeURIComponent(params.tagName);
 
   return {
-    title: `#${tagName}がつけられた記事一覧`,
+    title: `#${tagName}と関連がある記事一覧`,
   };
 }
 
@@ -34,7 +34,7 @@ export default async function Page({
 
   return (
     <DefaultLayout className="p-4">
-      <h1 className="font-bold">#{`「${decodeURIComponent(params.tagName)}」のタグがつけられた記事`}</h1>
+      <h1 className="font-bold">#{`「${decodeURIComponent(params.tagName)}」と関連がある記事`}</h1>
 
       <section className="mt-4">
         {postItems}

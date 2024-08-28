@@ -104,6 +104,29 @@ export async function createUser(prevState: SignupState | undefined, formData: F
   await signIn("credentials", { email: email, password: password, redirectTo: "/" })
 }
 
+export async function updateTags(userId: string, tags: string) {
+  try {
+    const res = await fetch(`${process.env.API_URL}/v1/users/${userId}/update_tags`, {
+      method: "PATCH",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ tags: tags.split(",") })
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors);
+    }
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+
+  revalidatePath("/");
+}
+
 export async function createPost(prevState: PostState | undefined, formData: FormData) {
   // Validate form using Zod
   const validatedFields = postFormSchema.safeParse({
