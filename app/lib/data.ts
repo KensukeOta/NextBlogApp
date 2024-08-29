@@ -115,3 +115,47 @@ export async function fetchPost(id: string) {
     console.log(error);
   }
 }
+
+export async function fetchFollowingUsers(name: string) {
+  noStore();
+
+  try {
+    const res = await fetch(`${process.env.API_URL}/v1/users/${name}/recent_followings`, {
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function fetchFollowers(name: string) {
+  noStore();
+
+  try {
+    const res = await fetch(`${process.env.API_URL}/v1/users/${name}/recent_followers`, {
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}

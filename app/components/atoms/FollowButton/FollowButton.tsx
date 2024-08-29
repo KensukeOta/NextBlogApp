@@ -1,9 +1,9 @@
 "use client";
 
-import { createFollow, deleteFollow } from "@/app/lib/actions";
 import type { User } from "@/app/types/User";
 import { useSession } from "next-auth/react";
-import { SubmitButton } from "../SubmitButton";
+import { createFollow, deleteFollow } from "@/app/lib/actions";
+import { SubmitButton } from "@/app/components/atoms/SubmitButton";
 
 export const FollowButton = ({ user }: { user: User }) => {
   const session = useSession();
