@@ -279,3 +279,49 @@ export async function deleteLike(likeId: string) {
 
   revalidatePath("/")
 }
+
+export async function createFollow(followerId: string, followId: string) {
+  try {
+    const res = await fetch(`${process.env.API_URL}/v1/follows`, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ follower_id: followerId, following_id: followId }),
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors);
+    }
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+
+  revalidatePath("/")
+}
+
+export async function deleteFollow(followerId: string, followId: string) {
+  try {
+    const res = await fetch(`${process.env.API_URL}/v1/follows`, {
+      method: "DELETE",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ follower_id: followerId, following_id: followId }),
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors);
+    }
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+
+  revalidatePath("/")
+}
