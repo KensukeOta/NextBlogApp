@@ -1,8 +1,10 @@
 import type { User } from "@/app/types/User";
 import Link from "next/link";
 import { auth } from "@/auth";
+import { SessionProvider } from "next-auth/react";
 import { UserIcon } from "@/app/components/atoms/UserIcon";
 import { UserTagsForm } from "@/app/components/organisms/UserTagsForm"
+import { FollowButton } from "@/app/components/atoms/FollowButton";
 
 export const UserProfile = async ({ user }: { user: User }) => {
   const session = await auth();
@@ -25,7 +27,20 @@ export const UserProfile = async ({ user }: { user: User }) => {
         ))}
       </ul>
       {session?.user?.id === user.id && <UserTagsForm user={user} />}
-      
+
+      <div className="border-t flex items-center justify-around mt-2 pt-2">
+        <Link href="#" className="text-xs hover:underline">
+          {user.followings.length}
+          <br />
+          フォロー
+        </Link>
+        <Link href="#" className="text-xs hover:underline">
+          {user.followers.length}
+          <br />
+          フォロワー
+        </Link>
+      </div>
+      {session?.user?.id !== user.id && <SessionProvider><FollowButton user={user} /></SessionProvider>}
     </section>
   );
 };

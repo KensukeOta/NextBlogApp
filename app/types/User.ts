@@ -10,4 +10,6 @@ export interface User {
   posts: Post[];
   likes: Like[];
   tags: Tag[];
+  followings: User[];
+  followers: User[];
 }
