@@ -159,3 +159,25 @@ export async function fetchFollowers(name: string) {
     console.log(error);
   }
 }
+
+export async function fetchTimeline(userId: string) {
+  noStore();
+
+  try {
+    const res = await fetch(`${process.env.API_URL}/v1/users/${userId}/timeline`, {
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}

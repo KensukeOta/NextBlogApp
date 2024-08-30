@@ -18,7 +18,7 @@ export const DropdownMenu = () => {
         </li>
         <li>
           <Link
-            href="#"
+            href="/timeline"
             className="inline-block w-full hover:bg-slate-200 rounded-lg"
           >
             タイムライン
