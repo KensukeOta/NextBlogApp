@@ -1,6 +1,7 @@
 'use client';
 
 import type { User } from "@/app/types/User";
+import type { ReactTagInput } from "@/app/types/ReactTagInput";
 import { useState } from "react";
 import { WithContext as ReactTags } from "react-tag-input";
 import { SubmitButton } from "@/app/components/atoms/SubmitButton";
@@ -16,7 +17,7 @@ export const UserTagsForm = ({ user }: {user: User}) => {
 
   const [isHidden, setIsHidden] = useState(true);
 
-  const [tags, setTags] = useState(formattedTags);
+  const [tags, setTags] = useState<Array<ReactTagInput>>(formattedTags);
   const tagsString = tags.map(tag => tag.text).join(",");
 
   const handleSubmit = () => {

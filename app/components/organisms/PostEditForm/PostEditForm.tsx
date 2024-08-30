@@ -2,6 +2,7 @@
 
 import type { Post } from "@/app/types/Post";
 import type { PostState } from "@/app/lib/actions";
+import type { ReactTagInput } from "@/app/types/ReactTagInput";
 import { useState } from "react";
 import { useFormState } from "react-dom";
 import Markdown from "react-markdown";
@@ -21,7 +22,7 @@ export const PostEditForm = ({ post }: { post: Post }) => {
     className: "",
   }));
 
-  const [tags, setTags] = useState(formattedTags);
+  const [tags, setTags] = useState<Array<ReactTagInput>>(formattedTags);
 
   const handleDelete = (index: number) => {
     setTags(tags.filter((_, i) => i !== index));

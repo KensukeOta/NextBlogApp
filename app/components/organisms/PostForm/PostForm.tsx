@@ -1,6 +1,7 @@
 'use client';
 
 import type { PostState } from "@/app/lib/actions";
+import type { ReactTagInput } from "@/app/types/ReactTagInput";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useFormState } from "react-dom";
@@ -18,11 +19,7 @@ export const PostForm = () => {
   const initialState: PostState = { message: "", errors: {} };
   const [state, formAction] = useFormState(createPost, initialState);
 
-  const [tags, setTags] = useState([
-    { id: "India", text: "India", className: "" },
-    { id: "Vietnam", text: "Vietnam", className: "" },
-    { id: "Turkey", text: "Turkey", className: "" },
-  ]);
+  const [tags, setTags] = useState<Array<ReactTagInput>>([]);
 
   const handleDelete = (index: number) => {
     setTags(tags.filter((_, i) => i !== index));
