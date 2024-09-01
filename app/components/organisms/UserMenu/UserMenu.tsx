@@ -30,6 +30,11 @@ export const UserMenu = () => {
     };
   }, []);
 
+  // メニューを閉じる関数
+  const handleCloseMenu = () => {
+    setIsOpen(false);
+  };
+
   return (
     <div ref={menuRef} className="relative inline-block">
       <button onClick={handleToggle}>
@@ -40,7 +45,7 @@ export const UserMenu = () => {
         />
       </button>
 
-      {isOpen && <DropdownMenu />}
+      {isOpen && <DropdownMenu onCloseMenu={handleCloseMenu} />}
     </div>
   );
 };

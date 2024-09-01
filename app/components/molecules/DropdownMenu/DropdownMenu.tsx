@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { LogoutButton } from "@/app/components/atoms/LogoutButton";
 
-export const DropdownMenu = () => {
+export const DropdownMenu = ({ onCloseMenu }: { onCloseMenu: () => void }) => {
   const session = useSession();
   
   return (
@@ -12,6 +12,7 @@ export const DropdownMenu = () => {
           <Link
             href={`/${session.data?.user?.name}`}
             className="inline-block w-full hover:bg-slate-200 rounded-lg"
+            onClick={onCloseMenu}
           >
             マイページ
           </Link>
@@ -20,6 +21,7 @@ export const DropdownMenu = () => {
           <Link
             href="/timeline"
             className="inline-block w-full hover:bg-slate-200 rounded-lg"
+            onClick={onCloseMenu}
           >
             タイムライン
           </Link>
@@ -28,6 +30,7 @@ export const DropdownMenu = () => {
           <Link
             href="/posts/create"
             className="inline-block w-full hover:bg-slate-200 rounded-lg md:hidden"
+            onClick={onCloseMenu}
           >
             記事を投稿する
           </Link>
