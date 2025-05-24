@@ -1,0 +1,19 @@
+# Build outputs
+.next
+out
+dist
+build
+
+# Dependencies
+node_modules
+
+# Static files
+public
+
+# Test artifacts
+coverage
+test-results
+
+# Misc
+*.lock
+.env*
