@@ -1,3 +1,4 @@
+import { signOut } from "@/auth";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -18,6 +19,14 @@ export const Header = () => {
         <Link href="/login" className="flex h-full items-center">
           ログイン
         </Link>
+        <form
+          action={async () => {
+            "use server";
+            await signOut({ redirectTo: "/login" });
+          }}
+        >
+          <button type="submit">ログアウト</button>
+        </form>
       </nav>
     </header>
   );
