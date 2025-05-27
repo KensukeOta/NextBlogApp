@@ -1,8 +1,11 @@
-import { signOut } from "@/auth";
 import Image from "next/image";
 import Link from "next/link";
+import { auth } from "@/auth";
+import { LogoutButton } from "@/app/components/atoms/LogoutButton";
 
-export const Header = () => {
+export const Header = async () => {
+  const session = await auth();
+
   return (
     <header className="flex min-h-12 justify-between border-b">
       <h1 className="flex h-full items-center">
@@ -13,20 +16,18 @@ export const Header = () => {
       </h1>
 
       <nav className="flex h-full items-center">
-        <Link href="/signup" className="flex h-full items-center">
-          新規登録
-        </Link>
-        <Link href="/login" className="flex h-full items-center">
-          ログイン
-        </Link>
-        <form
-          action={async () => {
-            "use server";
-            await signOut({ redirectTo: "/login" });
-          }}
-        >
-          <button type="submit">ログアウト</button>
-        </form>
+        {!session ? (
+          <>
+            <Link href="/signup" className="flex h-full items-center">
+              新規登録
+            </Link>
+            <Link href="/login" className="flex h-full items-center">
+              ログイン
+            </Link>
+          </>
+        ) : (
+          <LogoutButton />
+        )}
       </nav>
     </header>
   );
