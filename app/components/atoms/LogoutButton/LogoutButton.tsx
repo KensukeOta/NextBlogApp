@@ -13,7 +13,12 @@ export const LogoutButton = () => {
   };
 
   return (
-    <button type="submit" onClick={handleLogout} disabled={isLoding}>
+    <button
+      type="submit"
+      onClick={handleLogout}
+      disabled={isLoding}
+      className="flex w-full gap-2 rounded-sm px-2 py-1 leading-7 hover:cursor-pointer hover:bg-slate-200 disabled:cursor-default"
+    >
       ログアウト
     </button>
   );

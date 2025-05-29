@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { auth } from "@/auth";
-import { LogoutButton } from "../../atoms/LogoutButton";
+import { SessionProvider } from "next-auth/react";
+import { UserMenu } from "../UserMenu/UserMenu";
 
 export const Header = async () => {
   const session = await auth();
@@ -26,21 +27,9 @@ export const Header = async () => {
             </Link>
           </>
         ) : (
-          <>
-            <button
-              type="button"
-              aria-label="ユーザーメニューを開く"
-              className="user-icon flex h-full items-center hover:cursor-pointer"
-            >
-              <Image
-                src={session.user?.image ?? "/noavatar.png"}
-                alt="ユーザー画像"
-                width={32}
-                height={32}
-              />
-            </button>
-            <LogoutButton />
-          </>
+          <SessionProvider>
+            <UserMenu />
+          </SessionProvider>
         )}
       </nav>
     </header>
