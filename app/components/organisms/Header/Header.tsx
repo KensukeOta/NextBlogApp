@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
-import { UserMenu } from "../UserMenu/UserMenu";
+import { UserMenu } from "../UserMenu";
 
 export const Header = async () => {
   const session = await auth();
