@@ -74,6 +74,13 @@ export async function createUser(prevState: SignupState | undefined, formData: F
     };
   }
 
+  const {
+    name: validName,
+    email: validEmail,
+    password: validPassword,
+    password_confirmation: validPasswordConfirmation,
+  } = validatedFields.data;
+
   try {
     const res = await fetch(`${process.env.API_URL}/v1/users`, {
       method: "POST",
@@ -82,7 +89,13 @@ export async function createUser(prevState: SignupState | undefined, formData: F
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user: { name, email, password, password_confirmation, provider: "credentials" },
+        user: {
+          name: validName,
+          email: validEmail,
+          password: validPassword,
+          password_confirmation: validPasswordConfirmation,
+          provider: "credentials",
+        },
       }),
     });
     if (!res.ok) {
@@ -99,7 +112,12 @@ export async function createUser(prevState: SignupState | undefined, formData: F
     }
     return {
       message: errorMessage,
-      values: { name, email, password, password_confirmation },
+      values: {
+        name: validName,
+        email: validEmail,
+        password: validPassword,
+        password_confirmation: validPasswordConfirmation,
+      },
     };
   }
 
