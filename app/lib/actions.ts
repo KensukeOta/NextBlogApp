@@ -80,9 +80,15 @@ export async function createUser(prevState: SignupState | undefined, formData: F
       console.log(errors);
       throw new Error(errors.error);
     }
-  } catch (error: any) {
+  } catch (error) {
+    let errorMessage = "不明なエラーが発生しました";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    } else if (typeof error === "string") {
+      errorMessage = error;
+    }
     return {
-      message: error.message as string,
+      message: errorMessage,
     };
   }
 
