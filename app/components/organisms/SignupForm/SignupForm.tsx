@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { createUser, SignupState } from "@/app/lib/actions";
 
 export const SignupForm = () => {
-  const initialState: SignupState = { message: null, errors: {} };
+  const initialState: SignupState = { message: null, errors: {}, values: {} };
   const [state, formAction, isPending] = useActionState(createUser, initialState);
 
   return (
@@ -22,6 +22,7 @@ export const SignupForm = () => {
         placeholder="名前"
         aria-describedby="name-error"
         required
+        defaultValue={state.values?.name ?? ""}
         className="w-full rounded-lg border px-4 py-3"
       />
       <div id="name-error" aria-live="polite" aria-atomic="true">
@@ -43,6 +44,7 @@ export const SignupForm = () => {
         placeholder="メールアドレス"
         aria-describedby="email-error"
         required
+        defaultValue={state.values?.email ?? ""}
         className="w-full rounded-lg border px-4 py-3"
       />
       <div id="email-error" aria-live="polite" aria-atomic="true">
@@ -64,6 +66,7 @@ export const SignupForm = () => {
         placeholder="パスワード"
         aria-describedby="password-error"
         required
+        defaultValue={state.values?.password ?? ""}
         className="w-full rounded-lg border px-4 py-3"
       />
       <div id="password-error" aria-live="polite" aria-atomic="true">
@@ -85,6 +88,7 @@ export const SignupForm = () => {
         placeholder="パスワード確認"
         aria-describedby="password_confirmation-error"
         required
+        defaultValue={state.values?.password_confirmation ?? ""}
         className="w-full rounded-lg border px-4 py-3"
       />
       <div id="password-error" aria-live="polite" aria-atomic="true">

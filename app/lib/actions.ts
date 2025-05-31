@@ -12,6 +12,12 @@ export type SignupState = {
     password_confirmation?: string[];
   };
   message?: string | null;
+  values?: {
+    name?: string;
+    email?: string;
+    password?: string;
+    password_confirmation?: string;
+  };
 };
 
 const signupFormSchema = z
@@ -48,21 +54,25 @@ const signupFormSchema = z
   });
 
 export async function createUser(prevState: SignupState | undefined, formData: FormData) {
+  const name = formData.get("name")?.toString() ?? "";
+  const email = formData.get("email")?.toString() ?? "";
+  const password = formData.get("password")?.toString() ?? "";
+  const password_confirmation = formData.get("password_confirmation")?.toString() ?? "";
+
   const validatedFields = signupFormSchema.safeParse({
-    name: formData.get("name"),
-    email: formData.get("email"),
-    password: formData.get("password"),
-    password_confirmation: formData.get("password_confirmation"),
+    name,
+    email,
+    password,
+    password_confirmation,
   });
 
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: "送信に失敗しました",
+      values: { name, email, password, password_confirmation },
     };
   }
-
-  const { name, email, password, password_confirmation } = validatedFields.data;
 
   try {
     const res = await fetch(`${process.env.API_URL}/v1/users`, {
@@ -89,6 +99,7 @@ export async function createUser(prevState: SignupState | undefined, formData: F
     }
     return {
       message: errorMessage,
+      values: { name, email, password, password_confirmation },
     };
   }
 
