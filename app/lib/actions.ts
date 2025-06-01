@@ -1,7 +1,6 @@
 "use server";
 
 import { signIn } from "@/auth";
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
@@ -144,7 +143,8 @@ export async function createUser(prevState: SignupState | undefined, formData: F
     };
   }
 
-  revalidatePath("/");
+  await signIn("credentials", { email: validEmail, password: validPassword, redirect: false });
+
   redirect("/");
 }
 
