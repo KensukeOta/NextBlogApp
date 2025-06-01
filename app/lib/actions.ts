@@ -1,5 +1,6 @@
 "use server";
 
+import { signIn } from "@/auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -17,6 +18,18 @@ export type SignupState = {
     email?: string;
     password?: string;
     password_confirmation?: string;
+  };
+};
+
+export type LoginState = {
+  errors?: {
+    email?: string[];
+    password?: string[];
+  };
+  message?: string | null;
+  values?: {
+    email?: string;
+    password?: string;
   };
 };
 
@@ -52,6 +65,16 @@ const signupFormSchema = z
       });
     }
   });
+
+const loginFormSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, "入力必須項目です")
+    .max(255, { message: "255文字以内で入力してください" })
+    .email("無効なメールアドレスです"),
+  password: z.string().trim().min(1, "入力必須項目です"),
+});
 
 export async function createUser(prevState: SignupState | undefined, formData: FormData) {
   const name = formData.get("name")?.toString() ?? "";
@@ -122,5 +145,39 @@ export async function createUser(prevState: SignupState | undefined, formData: F
   }
 
   revalidatePath("/");
+  redirect("/");
+}
+
+export async function authenticate(prevState: LoginState | undefined, formData: FormData) {
+  const email = formData.get("email")?.toString() ?? "";
+  const password = formData.get("password")?.toString() ?? "";
+
+  const validatedFields = loginFormSchema.safeParse({
+    email,
+    password,
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "送信に失敗しました",
+      values: { email, password },
+    };
+  }
+
+  const { email: validEmail, password: validPassword } = validatedFields.data;
+
+  try {
+    await signIn("credentials", { email: validEmail, password: validPassword, redirect: false });
+  } catch {
+    return {
+      message: "ログインに失敗しました",
+      values: {
+        email: validEmail,
+        password: validPassword,
+      },
+    };
+  }
+
   redirect("/");
 }
