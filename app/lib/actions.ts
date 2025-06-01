@@ -1,7 +1,7 @@
 "use server";
 
-import { signIn } from "@/auth";
 import { redirect } from "next/navigation";
+import { signIn } from "@/auth";
 import { z } from "zod";
 
 export type SignupState = {

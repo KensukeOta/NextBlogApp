@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
 import { DividerWithText } from "@/app/components/atoms/DividerWithText";
 import { OAuthMenu } from "@/app/components/molecules/OAuthMenu";
 import { LoginForm } from "@/app/components/organisms/LoginForm";
@@ -9,7 +11,13 @@ export const metadata: Metadata = {
   title: "ログイン",
 };
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const session = await auth();
+
+  if (session) {
+    redirect("/");
+  }
+
   return (
     <DefaultLayout className="py-4">
       <div className="mx-auto flex h-full w-80 flex-col justify-center gap-4 rounded-2xl border bg-white px-8 py-5">
