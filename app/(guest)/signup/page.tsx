@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "サインアップ",
 };
 
-export default function LoginPage() {
+export default function SignupPage() {
   return (
     <DefaultLayout className="py-4">
       <div className="mx-auto flex h-full w-80 flex-col justify-center gap-4 rounded-2xl border bg-white px-8 py-5">
