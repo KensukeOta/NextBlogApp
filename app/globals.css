@@ -19,3 +19,11 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.markdown-body ol {
+  list-style: decimal;
+}
+
+.markdown-body ul {
+  list-style: disc;
+}
