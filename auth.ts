@@ -93,6 +93,46 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return false;
       }
     },
+
+    async jwt({ token, user, account }) {
+      // signIn後のuser情報をJWTに詰める
+      if (user) {
+        token.id = user.id;
+        token.name = user.name;
+        token.email = user.email;
+        token.image = user.image;
+        token.provider = account?.provider;
+      }
+
+      return token;
+    },
+
+    async session({ session, token }) {
+      // セッションにユーザー情報を追加
+      if (token) {
+        // id: stringまたはnumberのみにセット
+        if (typeof token.id === "string" && token.id.length > 0) {
+          session.user.id = token.id;
+        } else if (typeof token.id === "number") {
+          session.user.id = token.id.toString();
+        } else {
+          session.user.id = ""; // またはnull
+        }
+
+        session.user.name = token.name ?? "";
+        session.user.email = token.email ?? "";
+
+        // image: string型かつ空でない場合のみセット
+        session.user.image =
+          typeof token.image === "string" && token.image.length > 0 ? token.image : null;
+
+        // provider: string型かつ空でない場合のみセット
+        session.user.provider =
+          typeof token.provider === "string" && token.provider.length > 0 ? token.provider : "";
+      }
+
+      return session;
+    },
   },
   pages: {
     signIn: "/login",
