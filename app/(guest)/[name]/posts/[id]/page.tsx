@@ -1,0 +1,62 @@
+import type { Metadata } from "next";
+import type { Post } from "@/app/types/Post";
+import { redirect } from "next/navigation";
+import Image from "next/image";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import "github-markdown-css/github-markdown.css";
+import { fetchPost } from "@/app/lib/data";
+import { DefaultLayout } from "@/app/components/templates/DefaultLayout";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+
+  const post: Post = await fetchPost(id);
+
+  return {
+    title: `${post.title}`,
+  };
+}
+
+export default async function PostShowPage({
+  params,
+}: {
+  params: Promise<{ id: string; name: string }>;
+}) {
+  const { id, name } = await params;
+
+  const post: Post = await fetchPost(id);
+
+  if (post.user.name !== decodeURIComponent(name)) {
+    redirect("/");
+  }
+
+  return (
+    <DefaultLayout className="py-12">
+      <section className="h-full bg-white px-4 py-6">
+        <h1 className="text-3xl font-bold">{post.title}</h1>
+        <p className="mt-2 flex text-base">
+          by
+          <Image
+            src={post.user.image ?? "/noavatar.png"}
+            alt="ユーザー画像"
+            width={24}
+            height={24}
+            className="ml-1 rounded-[50%]"
+          />
+          {post.user.name}
+        </p>
+
+        <div className="mt-12">
+          <div className="markdown-body">
+            <Markdown remarkPlugins={[remarkGfm]}>{post.content}</Markdown>
+          </div>
+        </div>
+      </section>
+    </DefaultLayout>
+  );
+}
