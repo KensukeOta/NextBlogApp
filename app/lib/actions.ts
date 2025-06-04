@@ -325,3 +325,30 @@ export async function updatePost(
   revalidatePath("/");
   redirect("/");
 }
+
+export async function deletePost(postId: string) {
+  try {
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("authjs.session-token")?.value;
+    const cookieHeader = sessionCookie ? `authjs.session-token=${sessionCookie}` : "";
+
+    // DELETEリクエストでAPI Route経由
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proxy/post/${postId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookieHeader,
+      },
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors.error);
+    }
+  } catch {
+    return { message: "記事の削除に失敗しました" };
+  }
+
+  revalidatePath("/");
+  redirect("/");
+}
