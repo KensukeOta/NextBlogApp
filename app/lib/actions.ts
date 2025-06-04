@@ -264,3 +264,64 @@ export async function createPost(prevState: PostState | undefined, formData: For
   revalidatePath("/");
   redirect("/");
 }
+
+export async function updatePost(
+  postId: string,
+  prevState: PostState | undefined,
+  formData: FormData,
+) {
+  const title = formData.get("title")?.toString() ?? "";
+  const content = formData.get("content")?.toString() ?? "";
+
+  const validatedFields = postFormSchema.safeParse({
+    title,
+    content,
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "送信に失敗しました",
+      values: { title, content },
+    };
+  }
+
+  const { title: validTitle, content: validContent } = validatedFields.data;
+
+  try {
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("authjs.session-token")?.value;
+    const cookieHeader = sessionCookie ? `authjs.session-token=${sessionCookie}` : "";
+
+    // PATCHリクエストでAPI Route経由
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proxy/post/${postId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookieHeader,
+      },
+      body: JSON.stringify({
+        post: {
+          title: validTitle,
+          content: validContent,
+        },
+      }),
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors.error);
+    }
+  } catch {
+    return {
+      message: "不明なエラーが発生しました",
+      values: {
+        title: validTitle,
+        content: validContent,
+      },
+    };
+  }
+
+  revalidatePath("/");
+  redirect("/");
+}
