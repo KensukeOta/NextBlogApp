@@ -1,5 +1,6 @@
 import { Post } from "@/app/types/Post";
 import Link from "next/link";
+import { PostEditLinkButton } from "../../atoms/PostEditLinkButton";
 
 export const PostItem = ({ post }: { post: Post }) => {
   return (
@@ -15,6 +16,7 @@ export const PostItem = ({ post }: { post: Post }) => {
 
       <nav className="flex justify-between">
         <p>by {post.user.name}</p>
+        <PostEditLinkButton post={post} />
       </nav>
     </article>
   );
