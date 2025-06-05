@@ -39,7 +39,7 @@ export const PostEditForm = ({ post }: { post: Post }) => {
         type="text"
         name="title"
         id="title"
-        placeholder="名前"
+        placeholder="タイトル"
         aria-describedby="title-error"
         required
         value={title}

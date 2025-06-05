@@ -14,7 +14,7 @@ Next.js15のApp Routerを使用したブログアプリです。
 - フォームバリデーションライブラリ: **Zod3.25.42**
 - 認証ライブラリ: **Auth.js(next-auth5.0.0-beta.28)**
 - マークダウンライブラリ: **react-markdown10.1.0**, **remark-gfm4.0.1**, **github-markdown-css5.8.1**
-- 単体テスト・統合テスト: **Vitest3.1.4**, **@testing-library/react16.3.0**
+- 単体テスト・統合テスト: **Vitest3.2.1**, **@testing-library/react16.3.0**
 - E2Eテスト: **Playwright1.52.0**
 - その他ライブラリ: **Prettier3.5.3**, **ESLint9.27.0**
 - コンポーネント設計: **Atomic Design**
