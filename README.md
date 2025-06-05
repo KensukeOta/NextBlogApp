@@ -1,25 +1,29 @@
 # NextBlogApp
+
 Next.js15のApp Routerを使用したブログアプリです。
 
 ## 使用した技術・ツール
-- 開発環境: __Docker__, __docker compose__
-- バックエンド: __Ruby on Rails8.0.2__
+
+- 開発環境: **Docker**, **docker compose**
+- バックエンド: **Ruby on Rails8.0.2**
 
   https://github.com/KensukeOta/API-for-NextBlogApp
-- フロントエンド: __Next.js15.1.8__
-- CSSフレームワーク: __Tailwind CSS3.4.17__
-- フォームバリデーションライブラリ: __Zod3.25.42__
-- 認証ライブラリ: __Auth.js(next-auth5.0.0-beta.28)__
-- マークダウンライブラリ: __react-markdown10.1.0__, __remark-gfm4.0.1__, __github-markdown-css5.8.1__
-- 単体テスト・統合テスト: __Vitest3.1.4__, __@testing-library/react16.3.0__
-- E2Eテスト: __Playwright1.52.0__
-- その他ライブラリ: __Prettier3.5.3__, __ESLint9.27.0__
-- コンポーネント設計: __Atomic Design__
-- バージョン管理ツール: __Git__ / __GitHub__
-- タスク管理: __GitHub Issues__
-- その他言語: __React19.1.0__, __TypeScript5.8.3__, __HTML/CSS__
+
+- フロントエンド: **Next.js15.1.8**
+- CSSフレームワーク: **Tailwind CSS4.1.8**
+- フォームバリデーションライブラリ: **Zod3.25.42**
+- 認証ライブラリ: **Auth.js(next-auth5.0.0-beta.28)**
+- マークダウンライブラリ: **react-markdown10.1.0**, **remark-gfm4.0.1**, **github-markdown-css5.8.1**
+- 単体テスト・統合テスト: **Vitest3.1.4**, **@testing-library/react16.3.0**
+- E2Eテスト: **Playwright1.52.0**
+- その他ライブラリ: **Prettier3.5.3**, **ESLint9.27.0**
+- コンポーネント設計: **Atomic Design**
+- バージョン管理ツール: **Git** / **GitHub**
+- タスク管理: **GitHub Issues**
+- その他言語: **React19.1.0**, **TypeScript5.8.3**, **HTML/CSS**
 
 ## 機能
+
 - ユーザー登録機能
 - ログイン機能
 - Googleログイン機能

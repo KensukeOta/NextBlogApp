@@ -15,7 +15,11 @@ export const PostDeleteButton = ({ post }: { post: Post }) => {
 
   return (
     <form action={formAction} className="inline-block">
-      <button type="submit" disabled={isPending} className="text-red-500">
+      <button
+        type="submit"
+        disabled={isPending}
+        className="text-red-500 hover:cursor-pointer disabled:cursor-default"
+      >
         削除
       </button>
     </form>
