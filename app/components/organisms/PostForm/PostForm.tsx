@@ -37,12 +37,12 @@ export const PostForm = () => {
         type="text"
         name="title"
         id="title"
-        placeholder="名前"
+        placeholder="タイトル"
         aria-describedby="title-error"
         required
         value={title}
         onChange={handleInputChange(setTitle)}
-        className="w-full border p-2"
+        className="w-full border bg-white p-2"
       />
 
       <div className="mt-2 h-[calc(100%-6.125rem)]">
@@ -75,7 +75,7 @@ export const PostForm = () => {
       <button
         type="submit"
         disabled={isPending}
-        className="mt-2 w-full bg-black p-2 text-white hover:opacity-70"
+        className="mt-2 w-full bg-black p-2 text-white hover:cursor-pointer hover:opacity-70 disabled:cursor-default"
       >
         投稿する
       </button>

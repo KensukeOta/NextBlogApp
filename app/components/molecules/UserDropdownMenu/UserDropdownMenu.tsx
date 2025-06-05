@@ -6,7 +6,7 @@ export const UserDropdownMenu = ({ onCloseMenu }: { onCloseMenu: () => void }) =
     <ul
       role="menu"
       aria-label="ユーザーメニュー"
-      className="absolute right-4 top-12 min-w-64 rounded-lg border bg-white px-2 py-3"
+      className="absolute top-12 right-4 min-w-64 rounded-lg border bg-white px-2 py-3"
     >
       <li>
         <Link
