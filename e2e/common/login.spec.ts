@@ -19,7 +19,7 @@ test("can login and see top page", async ({ page }) => {
 test("can't login with invalid username and password", async ({ page }) => {
   await page.goto("/login");
   await page.getByRole("textbox", { name: "メールアドレス" }).fill("invalid@example.com");
-  await page.getByRole("textbox", { name: "パスワード" }).fill("invalid@example.com");
+  await page.getByRole("textbox", { name: "パスワード" }).fill("invalidpassword");
   await page.getByRole("button", { name: "ログイン" }).click();
   await expect(page).toHaveURL("/login");
   await expect(page.getByText("ログインに失敗しました")).toBeVisible();

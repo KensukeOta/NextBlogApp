@@ -62,12 +62,12 @@ const signupFormSchema = z
       .string()
       .trim()
       .min(8, "8文字以上で入力してください")
-      .max(32, "32文字以内で入力してください"),
+      .max(64, "64文字以内で入力してください"),
     password_confirmation: z
       .string()
       .trim()
       .min(8, "8文字以上で入力してください")
-      .max(32, "32文字以内で入力してください"),
+      .max(64, "64文字以内で入力してください"),
   })
   .superRefine((data, ctx) => {
     if (data.password !== data.password_confirmation) {
