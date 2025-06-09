@@ -1,26 +1,21 @@
 import { test, expect } from "@playwright/test";
+import { login } from "../helpers/login";
+import { postCreate } from "../helpers/post-create";
 
 // 記事削除ダイアログでOKを押すと記事が削除される
 test("If OK is pressed in the Delete dialog, the article is deleted", async ({ page }) => {
   // ログイン処理
-  await page.goto("/login");
-  await page
-    .getByRole("textbox", { name: "メールアドレス" })
-    .fill(process.env.TEST_USER_EMAIL as string);
-  await page
-    .getByRole("textbox", { name: "パスワード" })
-    .fill(process.env.TEST_USER_PASSWORD as string);
-  await page.getByRole("button", { name: "ログイン" }).click();
-  await expect(page).toHaveURL("/");
+  await login(
+    page,
+    process.env.TEST_USER_EMAIL as string,
+    process.env.TEST_USER_PASSWORD as string,
+  );
 
+  // 記事作成処理
   const title = Array.from({ length: 5 }, () => Math.random().toString(36)[2]).join("");
   const content = Array.from({ length: 100 }, () => Math.random().toString(36)[2]).join("");
 
-  await page.goto("/posts/create");
-  await page.getByRole("textbox", { name: "タイトル" }).fill(title);
-  await page.getByRole("textbox", { name: "本文" }).fill(content);
-  await page.getByRole("button", { name: "投稿する" }).click();
-  await expect(page).toHaveURL("/");
+  await postCreate(page, title, content);
 
   // confirmダイアログに対してOKを押す処理を設定
   page.on("dialog", async (dialog) => {
@@ -42,25 +37,17 @@ test("If OK is pressed in the Delete dialog, the article is deleted", async ({ p
 // 記事削除ダイアログでキャンセルを押すと記事は削除されない
 test("If Cancel is pressed in the Delete dialog, the article is not deleted", async ({ page }) => {
   // ログイン処理
-  await page.goto("/login");
-  await page
-    .getByRole("textbox", { name: "メールアドレス" })
-    .fill(process.env.TEST_USER_EMAIL as string);
-  await page
-    .getByRole("textbox", { name: "パスワード" })
-    .fill(process.env.TEST_USER_PASSWORD as string);
-  await page.getByRole("button", { name: "ログイン" }).click();
-  await expect(page).toHaveURL("/");
+  await login(
+    page,
+    process.env.TEST_USER_EMAIL as string,
+    process.env.TEST_USER_PASSWORD as string,
+  );
 
-  // テスト用記事作成
+  // 記事作成処理
   const title = Array.from({ length: 5 }, () => Math.random().toString(36)[2]).join("");
   const content = Array.from({ length: 100 }, () => Math.random().toString(36)[2]).join("");
 
-  await page.goto("/posts/create");
-  await page.getByRole("textbox", { name: "タイトル" }).fill(title);
-  await page.getByRole("textbox", { name: "本文" }).fill(content);
-  await page.getByRole("button", { name: "投稿する" }).click();
-  await expect(page).toHaveURL("/");
+  await postCreate(page, title, content);
 
   // confirmダイアログに対して「キャンセル」を押す
   page.on("dialog", async (dialog) => {

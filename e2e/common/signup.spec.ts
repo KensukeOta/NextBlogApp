@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { login } from "../helpers/login";
 
 // 有効なユーザー名とメールアドレスとパスワードとパスワード確認でサインアップできる
 test("can signup and see top page", async ({ page }) => {
@@ -114,15 +115,13 @@ test("can't signup with password and password_confirmation do not match", async 
 test("authenticated users are redirected to the top page when they go to the signup page", async ({
   page,
 }) => {
-  await page.goto("/login");
-  await page
-    .getByRole("textbox", { name: "メールアドレス" })
-    .fill(process.env.TEST_USER_EMAIL as string);
-  await page
-    .getByRole("textbox", { name: "パスワード" })
-    .fill(process.env.TEST_USER_PASSWORD as string);
-  await page.getByRole("button", { name: "ログイン" }).click();
-  await expect(page).toHaveURL("/");
+  // ログイン処理
+  await login(
+    page,
+    process.env.TEST_USER_EMAIL as string,
+    process.env.TEST_USER_PASSWORD as string,
+  );
+
   await page.goto("/signup");
   await expect(page).toHaveURL("/");
 });

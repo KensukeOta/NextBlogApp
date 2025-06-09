@@ -1,17 +1,14 @@
 import { test, expect } from "@playwright/test";
+import { login } from "../helpers/login";
 
 // 有効なタイトルと本文で記事投稿できる
 test("can post create and see top page", async ({ page }) => {
   // ログイン処理
-  await page.goto("/login");
-  await page
-    .getByRole("textbox", { name: "メールアドレス" })
-    .fill(process.env.TEST_USER_EMAIL as string);
-  await page
-    .getByRole("textbox", { name: "パスワード" })
-    .fill(process.env.TEST_USER_PASSWORD as string);
-  await page.getByRole("button", { name: "ログイン" }).click();
-  await expect(page).toHaveURL("/");
+  await login(
+    page,
+    process.env.TEST_USER_EMAIL as string,
+    process.env.TEST_USER_PASSWORD as string,
+  );
 
   const title = Array.from({ length: 5 }, () => Math.random().toString(36)[2]).join("");
   const content = Array.from({ length: 100 }, () => Math.random().toString(36)[2]).join("");
@@ -28,15 +25,11 @@ test("can post create and see top page", async ({ page }) => {
 // 最低文字数以下で入力した場合、バリデーションメッセージが表示される
 test("can't post create with invalid short value", async ({ page }) => {
   // ログイン処理
-  await page.goto("/login");
-  await page
-    .getByRole("textbox", { name: "メールアドレス" })
-    .fill(process.env.TEST_USER_EMAIL as string);
-  await page
-    .getByRole("textbox", { name: "パスワード" })
-    .fill(process.env.TEST_USER_PASSWORD as string);
-  await page.getByRole("button", { name: "ログイン" }).click();
-  await expect(page).toHaveURL("/");
+  await login(
+    page,
+    process.env.TEST_USER_EMAIL as string,
+    process.env.TEST_USER_PASSWORD as string,
+  );
 
   const shortTitle = Array.from({ length: 2 }, () => Math.random().toString(36)[2]).join("");
   const shortContent = Array.from({ length: 9 }, () => Math.random().toString(36)[2]).join("");
@@ -54,15 +47,11 @@ test("can't post create with invalid short value", async ({ page }) => {
 // 最高文字数以上で入力した場合、バリデーションメッセージが表示される
 test("can't post create with invalid long value", async ({ page }) => {
   // ログイン処理
-  await page.goto("/login");
-  await page
-    .getByRole("textbox", { name: "メールアドレス" })
-    .fill(process.env.TEST_USER_EMAIL as string);
-  await page
-    .getByRole("textbox", { name: "パスワード" })
-    .fill(process.env.TEST_USER_PASSWORD as string);
-  await page.getByRole("button", { name: "ログイン" }).click();
-  await expect(page).toHaveURL("/");
+  await login(
+    page,
+    process.env.TEST_USER_EMAIL as string,
+    process.env.TEST_USER_PASSWORD as string,
+  );
 
   const longTitle = Array.from({ length: 51 }, () => Math.random().toString(36)[2]).join("");
   const longContent = Array.from({ length: 10001 }, () => Math.random().toString(36)[2]).join("");
