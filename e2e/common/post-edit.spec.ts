@@ -28,8 +28,8 @@ test("can post edit and see top page", async ({ page }) => {
   await page
     .getByRole("article")
     .filter({ hasText: `${title}by ${process.env.TEST_USER_NAME}更新削除` })
-    .getByRole("link")
-    .nth(1)
+    .getByRole("link", { name: "更新" })
+    .nth(0)
     .click();
   await expect(page).toHaveTitle("記事更新フォーム - NextBlogApp");
   await page.getByRole("textbox", { name: "タイトル" }).fill(editTitle);
