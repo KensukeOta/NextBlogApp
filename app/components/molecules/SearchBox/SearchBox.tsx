@@ -36,13 +36,13 @@ export const SearchBox = () => {
   };
 
   return (
-    <>
+    <div className={`${pathname === "/" ? "block" : "hidden"} h-full`}>
       <button
         onClick={handleToggleSearchForm}
         type="button"
         title="検索"
         aria-label="検索ボックスを開く"
-        className="h-full p-2 hover:cursor-pointer"
+        className="flex h-full items-center p-1.5 hover:cursor-pointer"
       >
         <i className="bi bi-search text-2xl"></i>
       </button>
@@ -65,6 +65,6 @@ export const SearchBox = () => {
           className="h-9 w-full rounded-lg bg-white px-2 py-1"
         />
       </form>
-    </>
+    </div>
   );
 };

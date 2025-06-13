@@ -10,12 +10,13 @@ export const metadata: Metadata = {
   title: "記事更新フォーム",
 };
 
-export default async function PostEditPage({
-  params,
-}: {
+export default async function PostEditPage(props: {
   params: Promise<{ id: string; name: string }>;
 }) {
-  const { id, name } = await params;
+  const params = await props.params;
+  const id = params.id;
+  const name = params.name;
+
   const post: Post = await fetchPost(id);
 
   const session = await auth();

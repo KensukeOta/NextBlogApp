@@ -8,12 +8,11 @@ import "github-markdown-css/github-markdown.css";
 import { fetchPost } from "@/app/lib/data";
 import { DefaultLayout } from "@/app/components/templates/DefaultLayout";
 
-export async function generateMetadata({
-  params,
-}: {
+export async function generateMetadata(props: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const { id } = await params;
+  const params = await props.params;
+  const id = params.id;
 
   const post: Post = await fetchPost(id);
 
@@ -22,12 +21,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function PostShowPage({
-  params,
-}: {
+export default async function PostShowPage(props: {
   params: Promise<{ id: string; name: string }>;
 }) {
-  const { id, name } = await params;
+  const params = await props.params;
+  const id = params.id;
+  const name = params.name;
 
   const post: Post = await fetchPost(id);
 
