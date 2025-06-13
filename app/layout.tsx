@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import { Header } from "./components/organisms/Header";
 import { Footer } from "./components/organisms/Footer";
 

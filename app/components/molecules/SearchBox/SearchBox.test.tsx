@@ -1,0 +1,74 @@
+import { describe, test, expect, vi, afterEach } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
+// next/navigationを最初にモック
+vi.mock("next/navigation", () => {
+  // ここでローカル変数として関数を生成
+  const replace = vi.fn();
+  let searchParams = new URLSearchParams();
+  return {
+    useRouter: () => ({ replace }),
+    usePathname: () => "/posts",
+    useSearchParams: () => searchParams,
+    // 検証用にアクセスしやすく
+    __mock: { replace, setSearchParams: (params: URLSearchParams) => (searchParams = params) },
+  };
+});
+
+// vi.mockのあとでimport
+import { SearchBox } from "./SearchBox";
+
+afterEach(() => {
+  cleanup();
+  vi.clearAllMocks();
+});
+
+describe("<SearchBox />", () => {
+  // 検索ボタンが表示される
+  test("renders search button", () => {
+    render(<SearchBox />);
+    expect(screen.getByRole("button", { name: "検索ボックスを開く" })).toBeInTheDocument();
+  });
+
+  // 検索フォーム表示
+  test("shows search input when search button is clicked", async () => {
+    render(<SearchBox />);
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "検索ボックスを開く" }));
+    expect(screen.getByRole("search", { name: "検索" })).toBeVisible();
+    expect(screen.getByPlaceholderText("検索")).toHaveFocus();
+  });
+
+  // 入力時にreplaceが呼ばれる
+  test("calls replace with correct query on input", async () => {
+    render(<SearchBox />);
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "検索ボックスを開く" }));
+    const input = screen.getByPlaceholderText("検索");
+    await user.type(input, "React");
+
+    // next/navigationの__mockからreplace取得
+    // eslint-disable-next-line
+    const { __mock } = (await import("next/navigation")) as any;
+    expect(__mock.replace).toHaveBeenCalled();
+    expect(__mock.replace.mock.lastCall?.[0]).toContain("/posts?");
+    expect(__mock.replace.mock.lastCall?.[0]).toContain("query=React");
+  });
+
+  // 入力をクリアしたらqueryが消える
+  test("removes query param when input is cleared", async () => {
+    // eslint-disable-next-line
+    const { __mock } = (await import("next/navigation")) as any;
+    __mock.setSearchParams(new URLSearchParams({ query: "React" }));
+
+    render(<SearchBox />);
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "検索ボックスを開く" }));
+    const input = screen.getByPlaceholderText("検索");
+    await user.clear(input);
+
+    expect(__mock.replace).toHaveBeenCalled();
+    expect(__mock.replace.mock.lastCall?.[0]).not.toContain("query=React");
+  });
+});
