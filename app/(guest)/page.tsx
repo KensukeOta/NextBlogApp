@@ -2,12 +2,19 @@ import type { Post } from "../types/Post";
 import { auth } from "@/auth";
 import { PostItem } from "../components/organisms/Postitem";
 import { DefaultLayout } from "../components/templates/DefaultLayout";
-import { fetchAllPosts } from "../lib/data";
+import { fetchFilteredPosts } from "../lib/data";
 
-export default async function Page() {
+export default async function Page(props: {
+  searchParams?: Promise<{
+    query?: string;
+  }>;
+}) {
   const session = await auth();
 
-  const posts: Post[] = await fetchAllPosts();
+  const searchParams = await props.searchParams;
+  const query = searchParams?.query || "";
+
+  const posts: Post[] = await fetchFilteredPosts(query);
 
   const postItems =
     posts.length > 0 ? (

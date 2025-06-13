@@ -3,6 +3,7 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import { UserMenu } from "../UserMenu";
+import { SearchBox } from "../../molecules/SearchBox";
 
 export const Header = async () => {
   const session = await auth();
@@ -17,6 +18,8 @@ export const Header = async () => {
       </h1>
 
       <nav className="flex h-full items-center">
+        <SearchBox />
+
         {!session ? (
           <>
             <Link href="/signup" className="flex h-full items-center">
