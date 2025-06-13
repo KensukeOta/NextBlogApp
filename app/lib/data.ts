@@ -1,4 +1,28 @@
-export async function fetchFilteredPosts(query: string) {
+const PER_PAGE = 5;
+export async function fetchFilteredPosts(query: string, page: number) {
+  try {
+    const res = await fetch(
+      `${process.env.API_URL}/v1/posts?q=${query}&page=${page}&per=${PER_PAGE}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      },
+    );
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors);
+    }
+    const data = await res.json();
+    return data.posts;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function fetchPostsPages(query: string) {
   try {
     const res = await fetch(`${process.env.API_URL}/v1/posts?q=${query}`, {
       headers: {
@@ -12,7 +36,8 @@ export async function fetchFilteredPosts(query: string) {
       throw new Error(errors);
     }
     const data = await res.json();
-    return data.posts;
+    const totalPages = Math.ceil(data.total_count / PER_PAGE);
+    return totalPages;
   } catch (error) {
     console.log(error);
   }
