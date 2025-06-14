@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 export const SearchBox = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -25,7 +26,7 @@ export const SearchBox = () => {
     e.preventDefault();
   };
 
-  const handleSearch = (term: string) => {
+  const handleSearch = useDebouncedCallback((term: string) => {
     const params = new URLSearchParams(searchParams);
     params.set("page", "1");
     if (term) {
@@ -34,7 +35,7 @@ export const SearchBox = () => {
       params.delete("query");
     }
     replace(`${pathname}?${params.toString()}`);
-  };
+  }, 300);
 
   return (
     <div className={`${pathname === "/" ? "block" : "hidden"} h-full`}>

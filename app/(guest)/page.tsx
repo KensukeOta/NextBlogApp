@@ -1,9 +1,9 @@
-import type { Post } from "../types/Post";
+import { Suspense } from "react";
 import { auth } from "@/auth";
-import { PostItem } from "../components/organisms/Postitem";
+import { fetchPostsPages } from "../lib/data";
 import { DefaultLayout } from "../components/templates/DefaultLayout";
-import { fetchFilteredPosts, fetchPostsPages } from "../lib/data";
 import Pagination from "../components/molecules/Pagination/Pagination";
+import { Posts } from "../components/organisms/Posts/Posts";
 
 export default async function Page(props: {
   searchParams?: Promise<{
@@ -18,20 +18,13 @@ export default async function Page(props: {
   const currentPage = Number(searchParams?.page) || 1;
   const totalPages = (await fetchPostsPages(query)) as number;
 
-  const posts: Post[] = await fetchFilteredPosts(query, currentPage);
-
-  const postItems =
-    posts.length > 0 ? (
-      posts.map((post) => <PostItem key={post.id} post={post} />)
-    ) : (
-      <p className="text-center font-bold">記事が投稿されていません</p>
-    );
-
   return (
     <DefaultLayout className="py-6">
       <p>Hello, {session?.user ? session.user.name : "stranger"}</p>
 
-      <section className="mt-2">{postItems}</section>
+      <Suspense key={query} fallback={<p>Loading...</p>}>
+        <Posts query={query} currentPage={currentPage} />
+      </Suspense>
 
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={totalPages} />
