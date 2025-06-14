@@ -2,7 +2,7 @@ const PER_PAGE = 5;
 export async function fetchFilteredPosts(query: string, page: number) {
   try {
     const res = await fetch(
-      `${process.env.API_URL}/v1/posts?q=${query}&page=${page}&per=${PER_PAGE}`,
+      `${process.env.API_URL}/v1/posts?q=${encodeURIComponent(query)}&page=${page}&per=${PER_PAGE}`,
       {
         headers: {
           Accept: "application/json",
@@ -24,7 +24,7 @@ export async function fetchFilteredPosts(query: string, page: number) {
 
 export async function fetchPostsPages(query: string) {
   try {
-    const res = await fetch(`${process.env.API_URL}/v1/posts?q=${query}`, {
+    const res = await fetch(`${process.env.API_URL}/v1/posts?q=${encodeURIComponent(query)}`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
