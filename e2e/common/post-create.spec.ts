@@ -67,7 +67,7 @@ test("can't post create with invalid long value", async ({ page }) => {
 });
 
 // 未ログインユーザが記事投稿ページに移動すると、ログインページにリダイレクトされる
-test("umauthenticated users are redirected to the login page when they go to the post create page", async ({
+test("unauthenticated users are redirected to the login page when they go to the post create page", async ({
   page,
 }) => {
   await page.goto("/posts/create");

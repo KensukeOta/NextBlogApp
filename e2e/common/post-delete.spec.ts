@@ -26,9 +26,8 @@ test("If OK is pressed in the Delete dialog, the article is deleted", async ({ p
 
   await page
     .getByRole("article")
-    .filter({ hasText: `${title}by ${process.env.TEST_USER_NAME}更新削除` })
+    .filter({ hasText: `${title}` })
     .getByRole("button", { name: "削除" })
-    .nth(0)
     .click();
 
   await expect(page.getByRole("link", { name: title })).toHaveCount(0);
@@ -59,9 +58,8 @@ test("If Cancel is pressed in the Delete dialog, the article is not deleted", as
   // 削除ボタンをクリック
   await page
     .getByRole("article")
-    .filter({ hasText: `${title}by ${process.env.TEST_USER_NAME}更新削除` })
+    .filter({ hasText: `${title}` })
     .getByRole("button", { name: "削除" })
-    .nth(0)
     .click();
 
   // 記事がまだ存在することを確認
