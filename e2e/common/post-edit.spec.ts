@@ -19,12 +19,11 @@ test("can post edit and see top page", async ({ page }) => {
 
   const editTitle = Array.from({ length: 5 }, () => Math.random().toString(36)[2]).join("");
   const editContent = Array.from({ length: 100 }, () => Math.random().toString(36)[2]).join("");
-
+  await page.goto("http://localhost:3000/");
   await page
     .getByRole("article")
-    .filter({ hasText: `${title}by ${process.env.TEST_USER_NAME}更新削除` })
+    .filter({ hasText: `${title}` })
     .getByRole("link", { name: "更新" })
-    .nth(0)
     .click();
   await expect(page).toHaveTitle("記事更新フォーム - NextBlogApp");
   await page.getByRole("textbox", { name: "タイトル" }).fill(editTitle);
@@ -35,7 +34,7 @@ test("can post edit and see top page", async ({ page }) => {
 });
 
 // 未ログインユーザが記事更新ページに移動すると、トップページにリダイレクトされる
-test("umauthenticated users are redirected to the top page when they go to the post edit page", async ({
+test("unauthenticated users are redirected to the top page when they go to the post edit page", async ({
   page,
 }) => {
   await page.goto(`/${process.env.TEST_USER_NAME}/posts/123/edit`);

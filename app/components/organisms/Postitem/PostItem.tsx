@@ -1,5 +1,6 @@
-import { Post } from "@/app/types/Post";
+import type { Post } from "@/app/types/Post";
 import Link from "next/link";
+import Image from "next/image";
 import { auth } from "@/auth";
 import { PostEditLinkButton } from "../../atoms/PostEditLinkButton";
 import { PostDeleteButton } from "../../atoms/PostDeleteButton";
@@ -19,11 +20,23 @@ export const PostItem = async ({ post }: { post: Post }) => {
       </h2>
 
       <nav className="flex justify-between">
-        <p>by {post.user.name}</p>
-        {session?.user && session.user.id === post.user_id.toString() ? (
+        <p>
+          by
+          <Link href={`/${post.user.name}`} className="hover:underline">
+            <Image
+              src={post.user.image ?? "/noavatar.png"}
+              alt="ユーザー画像"
+              width={24}
+              height={24}
+              className="ml-1 inline-block rounded-[50%]"
+            />
+            {post.user.name}
+          </Link>
+        </p>
+        {session?.user && session.user.id === String(post.user_id) ? (
           <PostEditLinkButton post={post} />
         ) : null}
-        {session?.user && session.user.id === post.user_id.toString() ? (
+        {session?.user && session.user.id === String(post.user_id) ? (
           <PostDeleteButton post={post} />
         ) : null}
       </nav>

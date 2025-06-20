@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { LogoutButton } from "../../atoms/LogoutButton";
+import { useSession } from "next-auth/react";
 
 export const UserDropdownMenu = ({ onCloseMenu }: { onCloseMenu: () => void }) => {
+  const { data: session } = useSession();
+
   return (
     <ul
       role="menu"
@@ -10,12 +13,12 @@ export const UserDropdownMenu = ({ onCloseMenu }: { onCloseMenu: () => void }) =
     >
       <li>
         <Link
-          href="/about"
+          href={`/${session?.user.name}`}
           role="menuitem"
           onClick={onCloseMenu}
           className="flex w-full rounded-sm px-2 py-1 leading-7 hover:bg-slate-200"
         >
-          About
+          マイページ
         </Link>
         <Link
           href="/posts/create"
