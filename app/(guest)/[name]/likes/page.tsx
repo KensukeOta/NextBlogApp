@@ -22,10 +22,10 @@ export default async function UserPage(props: { params: Promise<{ name: string }
   const user: User = await fetchUser(name);
 
   const postItems =
-    user.posts.length > 0 ? (
-      user.posts.map((post) => <PostItem key={post.id} post={post} />)
+    user.liked_posts.length > 0 ? (
+      user.liked_posts.map((post) => <PostItem key={post.id} post={post} />)
     ) : (
-      <p className="text-center font-bold">記事が投稿されていません</p>
+      <p className="text-center font-bold">いいねした記事がありません</p>
     );
 
   return (

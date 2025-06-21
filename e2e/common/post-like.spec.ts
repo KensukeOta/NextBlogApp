@@ -10,12 +10,12 @@ test("can see user profile page", async ({ page }) => {
     process.env.TEST_USER_PASSWORD as string,
   );
 
-  await page.goto(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
+  await page.goto(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}/likes`);
   await expect(page).toHaveTitle(
     `${decodeURIComponent(process.env.TEST_USER_NAME as string)} - NextBlogApp`,
   );
   await expect(
     page.getByRole("heading", { name: decodeURIComponent(process.env.TEST_USER_NAME as string) }),
   ).toBeVisible();
-  await expect(page.getByRole("heading", { name: "投稿管理" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "いいねした記事" })).toBeVisible();
 });

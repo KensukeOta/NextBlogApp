@@ -7,4 +7,5 @@ export interface User {
   image: string;
   provider: string;
   posts: Post[];
+  liked_posts: Post[];
 }

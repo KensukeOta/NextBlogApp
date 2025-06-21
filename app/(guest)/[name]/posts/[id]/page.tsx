@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import type { Post } from "@/app/types/Post";
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import { SessionProvider } from "next-auth/react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import "github-markdown-css/github-markdown.css";
 import { fetchPost } from "@/app/lib/data";
 import { DefaultLayout } from "@/app/components/templates/DefaultLayout";
+import { LikeArea } from "@/app/components/molecules/LikeArea";
 
 export async function generateMetadata(props: {
   params: Promise<{ id: string }>;
@@ -49,6 +51,9 @@ export default async function PostShowPage(props: {
           />
           {post.user.name}
         </p>
+        <SessionProvider>
+          <LikeArea post={post} />
+        </SessionProvider>
 
         <div className="mt-12">
           <div className="markdown-body">
