@@ -352,3 +352,60 @@ export async function deletePost(postId: string) {
   revalidatePath("/");
   redirect("/");
 }
+
+export async function createLike(postId: string) {
+  try {
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("authjs.session-token")?.value;
+    const cookieHeader = sessionCookie ? `authjs.session-token=${sessionCookie}` : "";
+
+    // DELETEリクエストでAPI Route経由
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proxy/like`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookieHeader,
+      },
+      body: JSON.stringify({
+        like: {
+          post_id: postId,
+        },
+      }),
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors.error);
+    }
+  } catch {
+    return { message: "いいねの処理に失敗しました" };
+  }
+
+  revalidatePath("/");
+}
+
+export async function deleteLike(likeId: string) {
+  try {
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("authjs.session-token")?.value;
+    const cookieHeader = sessionCookie ? `authjs.session-token=${sessionCookie}` : "";
+
+    // DELETEリクエストでAPI Route経由
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proxy/like/${likeId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookieHeader,
+      },
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors.error);
+    }
+  } catch {
+    return { message: "いいねの取り消しに失敗しました" };
+  }
+
+  revalidatePath("/");
+}
