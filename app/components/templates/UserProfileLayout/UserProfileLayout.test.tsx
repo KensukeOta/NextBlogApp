@@ -18,7 +18,9 @@ const mockUser: User = {
   email: "kensuke@example.com",
   image: "/avatar.png",
   provider: "github",
+  bio: "hello",
   posts: [],
+  liked_posts: [],
 };
 
 afterEach(() => {
@@ -61,5 +63,14 @@ describe("UserProfileLayout", () => {
 
     const rootDiv = screen.getByTestId("UserProfileLayoutRoot");
     expect(rootDiv).toHaveClass("custom-class");
+  });
+
+  // 一覧に戻るリンクが表示され、hrefが"/"であること
+  test('renders "一覧に戻る" link with correct href', () => {
+    render(<UserProfileLayout user={mockUser}>test</UserProfileLayout>);
+    // Link(Next.js)はa要素としてレンダリングされる
+    const link = screen.getByRole("link", { name: "一覧に戻る" });
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute("href", "/");
   });
 });

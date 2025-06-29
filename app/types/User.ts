@@ -6,6 +6,7 @@ export interface User {
   email: string;
   image: string;
   provider: string;
+  bio: string;
   posts: Post[];
   liked_posts: Post[];
 }

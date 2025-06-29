@@ -28,6 +28,7 @@ const mockUser: User = {
   email: "kensuke@example.com",
   image: "/dummy.png",
   provider: "github",
+  bio: "hello",
   posts: [],
   liked_posts: [],
 };
