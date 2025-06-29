@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable jsx-a11y/alt-text */
+import type { User } from "@/app/types/User";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { UserProfile } from "./UserProfile";
-import type { User } from "@/app/types/User";
+import userEvent from "@testing-library/user-event";
 
 // next/imageのモック
 vi.mock("next/image", () => ({
@@ -15,6 +16,18 @@ vi.mock("next/image", () => ({
     return <img {...props} />;
   },
 }));
+// Backdropのモック
+vi.mock("../../atoms/Backdrop", () => ({
+  Backdrop: () => <div data-testid="Backdrop" />,
+}));
+// UserProfileEditModalのモック
+vi.mock("../UserProfileEditModal", () => ({
+  UserProfileEditModal: vi
+    .fn()
+    .mockImplementation(({ user }: { user: User }) => (
+      <div data-testid="UserProfileEditModal">{user.name}</div>
+    )),
+}));
 
 const mockUser: User = {
   id: "1",
@@ -22,7 +35,9 @@ const mockUser: User = {
   email: "kensuke@example.com",
   image: "/avatar.png",
   provider: "github",
+  bio: "hello",
   posts: [],
+  liked_posts: [],
 };
 
 afterEach(() => {
@@ -51,5 +66,43 @@ describe("UserProfile", () => {
     render(<UserProfile user={userNoImage} />);
     const img = screen.getByRole("img");
     expect(img).toHaveAttribute("src", "/noavatar.png");
+  });
+
+  // bioが表示されること
+  test("renders user bio", () => {
+    render(<UserProfile user={mockUser} />);
+    expect(screen.getByText(mockUser.bio)).toBeInTheDocument();
+  });
+
+  // 投稿数・いいね数が表示されること
+  test("renders post count and like count", () => {
+    render(<UserProfile user={mockUser} />);
+    // 投稿数
+    const postCountDiv = screen.getByLabelText("post-count");
+    expect(postCountDiv).toHaveTextContent(String(mockUser.posts.length));
+    expect(screen.getByText("投稿")).toBeInTheDocument();
+    // いいね数
+    const likeCountDiv = screen.getByLabelText("like-count");
+    expect(likeCountDiv).toHaveTextContent(String(mockUser.liked_posts.length));
+    expect(screen.getByText("いいね")).toBeInTheDocument();
+  });
+
+  // 「プロフィールを編集」ボタンが表示されること
+  test('renders "プロフィールを編集" button', () => {
+    render(<UserProfile user={mockUser} />);
+    const button = screen.getByRole("button", { name: "プロフィールを編集" });
+    expect(button).toBeInTheDocument();
+  });
+
+  // モーダルUIのテスト
+  test('shows modal and backdrop when "プロフィールを編集" button is clicked', async () => {
+    render(<UserProfile user={mockUser} />);
+    const button = screen.getByRole("button", { name: "プロフィールを編集" });
+
+    await userEvent.click(button);
+
+    expect(screen.getByTestId("Backdrop")).toBeInTheDocument();
+    expect(screen.getByTestId("UserProfileEditModal")).toBeInTheDocument();
+    expect(screen.getByTestId("UserProfileEditModal")).toHaveTextContent("kensuke");
   });
 });

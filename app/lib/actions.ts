@@ -22,6 +22,18 @@ export type SignupState = {
   };
 };
 
+export type UserState = {
+  errors?: {
+    name?: string[];
+    bio?: string[];
+  };
+  message?: string | null;
+  values?: {
+    name?: string;
+    bio?: string;
+  };
+};
+
 export type LoginState = {
   errors?: {
     email?: string[];
@@ -78,6 +90,15 @@ const signupFormSchema = z
       });
     }
   });
+
+const userFormSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(3, "3文字以上で入力してください")
+    .max(32, "32文字以内で入力してください"),
+  bio: z.string().trim().max(200, { message: "200文字以内で入力してください" }),
+});
 
 const loginFormSchema = z.object({
   email: z
@@ -173,6 +194,73 @@ export async function createUser(prevState: SignupState | undefined, formData: F
   await signIn("credentials", { email: validEmail, password: validPassword, redirect: false });
 
   redirect("/");
+}
+
+export async function updateUser(
+  userId: string,
+  prevState: UserState | undefined,
+  formData: FormData,
+) {
+  const name = formData.get("name")?.toString() ?? "";
+  const bio = formData.get("bio")?.toString() ?? "";
+
+  const validatedFields = userFormSchema.safeParse({
+    name,
+    bio,
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "送信に失敗しました",
+      values: { name, bio },
+    };
+  }
+
+  const { name: validName, bio: validBio } = validatedFields.data;
+
+  try {
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("authjs.session-token")?.value;
+    const cookieHeader = sessionCookie ? `authjs.session-token=${sessionCookie}` : "";
+
+    // PATCHリクエストでAPI Route経由
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proxy/user/${userId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookieHeader,
+      },
+      body: JSON.stringify({
+        user: {
+          name: validName,
+          bio: validBio,
+        },
+      }),
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors.error);
+    }
+  } catch (error) {
+    let errorMessage = "不明なエラーが発生しました";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    } else if (typeof error === "string") {
+      errorMessage = error;
+    }
+    return {
+      message: errorMessage,
+      values: {
+        name: validName,
+        bio: validBio,
+      },
+    };
+  }
+
+  revalidatePath("/");
+  redirect(`/${encodeURIComponent(validName)}`);
 }
 
 export async function authenticate(prevState: LoginState | undefined, formData: FormData) {
