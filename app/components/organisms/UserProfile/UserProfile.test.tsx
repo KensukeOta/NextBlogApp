@@ -2,8 +2,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable jsx-a11y/alt-text */
 import type { User } from "@/app/types/User";
+import { useSession } from "next-auth/react";
 import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { UserProfile } from "./UserProfile";
 import userEvent from "@testing-library/user-event";
 
@@ -28,6 +29,10 @@ vi.mock("../UserProfileEditModal", () => ({
       <div data-testid="UserProfileEditModal">{user.name}</div>
     )),
 }));
+// useSessionのモック
+vi.mock("next-auth/react", () => ({
+  useSession: vi.fn(),
+}));
 
 const mockUser: User = {
   id: "1",
@@ -39,6 +44,12 @@ const mockUser: User = {
   posts: [],
   liked_posts: [],
 };
+
+// 例: ユーザー自身としてログイン中（編集ボタンを出したい場合）
+beforeEach(() => {
+  // @ts-expect-error: テスト用にuseSessionの戻り値型を無視して「自分自身」としてモック
+  useSession.mockReturnValue({ data: { user: { id: mockUser.id } } });
+});
 
 afterEach(() => {
   cleanup();
@@ -104,5 +115,21 @@ describe("UserProfile", () => {
     expect(screen.getByTestId("Backdrop")).toBeInTheDocument();
     expect(screen.getByTestId("UserProfileEditModal")).toBeInTheDocument();
     expect(screen.getByTestId("UserProfileEditModal")).toHaveTextContent("kensuke");
+  });
+
+  // ログインユーザーが異なる場合は「プロフィールを編集」ボタンが表示されない
+  test('does not show "プロフィールを編集" button when session user.id does not match', () => {
+    // @ts-expect-error: テスト用にuseSessionの戻り値型を無視してID不一致を模倣
+    useSession.mockReturnValue({ data: { user: { id: "other-user-id" } } });
+    render(<UserProfile user={mockUser} />);
+    expect(screen.queryByRole("button", { name: "プロフィールを編集" })).not.toBeInTheDocument();
+  });
+
+  // 未ログイン時もボタンが表示されない
+  test('does not show "プロフィールを編集" button when not logged in', () => {
+    // @ts-expect-error: テスト用にuseSessionの戻り値型を無視して未ログイン状態を模倣
+    useSession.mockReturnValue({ data: null });
+    render(<UserProfile user={mockUser} />);
+    expect(screen.queryByRole("button", { name: "プロフィールを編集" })).not.toBeInTheDocument();
   });
 });

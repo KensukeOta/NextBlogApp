@@ -1,5 +1,6 @@
 import type { User } from "@/app/types/User";
 import Link from "next/link";
+import { SessionProvider } from "next-auth/react";
 import { UserProfile } from "../../organisms/UserProfile";
 import { UserTabList } from "../../molecules/UserTabList";
 
@@ -24,7 +25,9 @@ export const UserProfileLayout = ({
         </Link>
         <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div className="space-y-6 lg:col-span-1">
-            <UserProfile user={user} />
+            <SessionProvider>
+              <UserProfile user={user} />
+            </SessionProvider>
           </div>
 
           <div className="lg:col-span-2">

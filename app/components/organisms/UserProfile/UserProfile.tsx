@@ -3,10 +3,13 @@
 import type { User } from "@/app/types/User";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { useSession } from "next-auth/react";
 import { Backdrop } from "../../atoms/Backdrop";
 import { UserProfileEditModal } from "../UserProfileEditModal";
 
 export const UserProfile = ({ user }: { user: User }) => {
+  const { data: session } = useSession();
+
   const [isVisible, setIsVisible] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -64,14 +67,16 @@ export const UserProfile = ({ user }: { user: User }) => {
         </div>
         <div className="h-[1px] bg-gray-200"></div>
         <div className="space-y-2">
-          <button
-            type="button"
-            onClick={handleVisibleModal}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-blue-200 px-4 py-2 text-sm font-medium whitespace-nowrap text-blue-700 hover:cursor-pointer hover:bg-[#f5f8fa] hover:text-black"
-          >
-            <i className="bi bi-pencil-square"></i>
-            プロフィールを編集
-          </button>
+          {session?.user.id === user.id && (
+            <button
+              type="button"
+              onClick={handleVisibleModal}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-blue-200 px-4 py-2 text-sm font-medium whitespace-nowrap text-blue-700 hover:cursor-pointer hover:bg-[#f5f8fa] hover:text-black"
+            >
+              <i className="bi bi-pencil-square"></i>
+              プロフィールを編集
+            </button>
+          )}
         </div>
       </div>
       {isVisible && (
