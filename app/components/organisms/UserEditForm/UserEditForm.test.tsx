@@ -133,4 +133,37 @@ describe("UserEditForm", () => {
     expect(screen.getByLabelText("表示名")).toHaveAttribute("aria-describedby", "name-error");
     expect(screen.getByLabelText("自己紹介")).toHaveAttribute("aria-describedby", "bio-error");
   });
+
+  // タブリストが正しく表示される
+  test("renders TabList with both tabs", () => {
+    render(<UserEditForm user={mockUser} onCloseModal={() => {}} />);
+    expect(screen.getByRole("tab", { name: "基本情報" })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "SNS" })).toBeInTheDocument();
+  });
+
+  // SNSタブを押すとSNSフォームが表示される
+  test("shows SNS form when SNS tab is clicked", async () => {
+    render(<UserEditForm user={mockUser} onCloseModal={() => {}} />);
+    // 「SNS」タブクリック
+    const snsTab = screen.getByRole("tab", { name: "SNS" });
+    await userEvent.click(snsTab);
+    expect(screen.getByText("SNSフォームはまだ未実装です。")).toBeInTheDocument();
+    // 基本情報用のinputは消える
+    expect(screen.queryByLabelText("表示名")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("自己紹介")).not.toBeInTheDocument();
+  });
+
+  // SNSから基本情報タブに戻るとフォームが戻る
+  test("returns to basic form when clicking basic tab again", async () => {
+    render(<UserEditForm user={mockUser} onCloseModal={() => {}} />);
+    // SNSタブに切り替え
+    const snsTab = screen.getByRole("tab", { name: "SNS" });
+    await userEvent.click(snsTab);
+    // 基本情報タブに戻す
+    const basicTab = screen.getByRole("tab", { name: "基本情報" });
+    await userEvent.click(basicTab);
+    // 再度inputが表示される
+    expect(screen.getByLabelText("表示名")).toBeInTheDocument();
+    expect(screen.getByLabelText("自己紹介")).toBeInTheDocument();
+  });
 });
