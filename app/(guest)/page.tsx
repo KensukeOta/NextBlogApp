@@ -23,11 +23,11 @@ export default async function Page(props: {
     <DefaultLayout className="py-6">
       <p>Hello, {session?.user ? session.user.name : "stranger"}</p>
 
-      <Suspense key={query} fallback={<p>Loading...</p>}>
-        <SessionProvider>
+      <SessionProvider>
+        <Suspense key={query} fallback={<p>Loading...</p>}>
           <Posts query={query} currentPage={currentPage} />
-        </SessionProvider>
-      </Suspense>
+        </Suspense>
+      </SessionProvider>
 
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={totalPages} />
