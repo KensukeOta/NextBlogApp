@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { fetchPostsPages } from "../lib/data";
 import { DefaultLayout } from "../components/templates/DefaultLayout";
@@ -23,7 +24,9 @@ export default async function Page(props: {
       <p>Hello, {session?.user ? session.user.name : "stranger"}</p>
 
       <Suspense key={query} fallback={<p>Loading...</p>}>
-        <Posts query={query} currentPage={currentPage} />
+        <SessionProvider>
+          <Posts query={query} currentPage={currentPage} />
+        </SessionProvider>
       </Suspense>
 
       <div className="mt-5 flex w-full justify-center">

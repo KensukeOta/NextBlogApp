@@ -1,7 +1,6 @@
 import type { Post } from "@/app/types/Post";
 import Link from "next/link";
 import Image from "next/image";
-import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { PostEditLinkButton } from "../../atoms/PostEditLinkButton";
 import { PostDeleteButton } from "../../atoms/PostDeleteButton";
@@ -35,9 +34,7 @@ export const PostItem = async ({ post }: { post: Post }) => {
         </Link>
       </p>
       <nav className="flex justify-between">
-        <SessionProvider>
-          <LikeArea post={post} />
-        </SessionProvider>
+        <LikeArea post={post} />
         {session?.user && session.user.id === String(post.user_id) ? (
           <PostEditLinkButton post={post} />
         ) : null}
