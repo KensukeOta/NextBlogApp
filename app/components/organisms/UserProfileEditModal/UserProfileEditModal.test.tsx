@@ -9,6 +9,13 @@ vi.mock("../UserEditForm", () => ({
   UserEditForm: (props: { user: User }) => <div data-testid="UserEditForm">{props.user.name}</div>,
 }));
 
+// UserDeleteButtonをモック
+vi.mock("../../atoms/UserDeleteButton", () => ({
+  UserDeleteButton: (props: { user: User }) => (
+    <div data-testid="UserDeleteButton">{props.user.name} 削除</div>
+  ),
+}));
+
 const mockUser: User = {
   id: "1",
   name: "kensuke",
