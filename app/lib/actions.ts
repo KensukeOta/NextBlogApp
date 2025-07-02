@@ -263,6 +263,30 @@ export async function updateUser(
   redirect(`/${encodeURIComponent(validName)}`);
 }
 
+export async function deleteUser(userId: string) {
+  try {
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("authjs.session-token")?.value;
+    const cookieHeader = sessionCookie ? `authjs.session-token=${sessionCookie}` : "";
+
+    // DELETEリクエストでAPI Route経由
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proxy/user/${userId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookieHeader,
+      },
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors.error);
+    }
+  } catch {
+    return { message: "ユーザーの削除に失敗しました" };
+  }
+}
+
 export async function authenticate(prevState: LoginState | undefined, formData: FormData) {
   const email = formData.get("email")?.toString() ?? "";
   const password = formData.get("password")?.toString() ?? "";
