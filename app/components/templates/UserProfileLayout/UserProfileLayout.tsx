@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SessionProvider } from "next-auth/react";
 import { UserProfile } from "../../organisms/UserProfile";
 import { UserTabList } from "../../molecules/UserTabList";
+import { UserSNSProfile } from "../../molecules/UserSNSProfile";
 
 export const UserProfileLayout = ({
   children,
@@ -28,6 +29,8 @@ export const UserProfileLayout = ({
             <SessionProvider>
               <UserProfile user={user} />
             </SessionProvider>
+
+            <UserSNSProfile user={user} />
           </div>
 
           <div className="lg:col-span-2">

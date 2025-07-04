@@ -16,6 +16,17 @@ vi.mock("react", async () => {
 // updateUserのダミーモック
 vi.mock("@/app/lib/actions", () => ({
   updateUser: vi.fn(),
+  createUserSNSInfo: vi.fn(),
+}));
+// SNSフォームの見た目テスト用にmock
+vi.mock("../UserSNSForm", () => ({
+  UserSNSForm: () => (
+    <div>
+      <label aria-label="X (Twitter)">X (Twitter)</label>
+      <label aria-label="Instagram">Instagram</label>
+      <label aria-label="YouTube">YouTube</label>
+    </div>
+  ),
 }));
 
 // テストで使うモックデータ
@@ -147,7 +158,9 @@ describe("UserEditForm", () => {
     // 「SNS」タブクリック
     const snsTab = screen.getByRole("tab", { name: "SNS" });
     await userEvent.click(snsTab);
-    expect(screen.getByText("SNSフォームはまだ未実装です。")).toBeInTheDocument();
+    expect(screen.getByLabelText(/X \(Twitter\)/)).toBeInTheDocument();
+    expect(screen.getByLabelText("Instagram")).toBeInTheDocument();
+    expect(screen.getByLabelText("YouTube")).toBeInTheDocument();
     // 基本情報用のinputは消える
     expect(screen.queryByLabelText("表示名")).not.toBeInTheDocument();
     expect(screen.queryByLabelText("自己紹介")).not.toBeInTheDocument();
