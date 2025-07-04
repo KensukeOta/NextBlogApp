@@ -1,7 +1,6 @@
 import type { User } from "@/app/types/User";
 import { forwardRef } from "react";
 import { UserEditForm } from "../UserEditForm";
-import { UserDeleteButton } from "../../atoms/UserDeleteButton";
 
 type UserProfileEditModalProps = {
   user: User;
@@ -26,10 +25,6 @@ export const UserProfileEditModal = forwardRef<HTMLDivElement, UserProfileEditMo
         </div>
 
         <UserEditForm user={user} onCloseModal={onCloseModal} />
-
-        <div className="flex justify-end">
-          <UserDeleteButton user={user} />
-        </div>
 
         <button
           type="button"
