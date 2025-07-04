@@ -45,7 +45,11 @@ afterEach(() => {
 describe("UserSNSForm", () => {
   // 各SNSの入力欄とラベル・初期値が正しく表示されることをテスト
   test("renders each SNS input with correct label and initial value", () => {
-    (React.useActionState as unknown as Mock).mockReturnValue([initialState, mockFormAction, false]);
+    (React.useActionState as unknown as Mock).mockReturnValue([
+      initialState,
+      mockFormAction,
+      false,
+    ]);
     render(<UserSNSForm user={baseUser} onCloseModal={() => {}} />);
     expect(screen.getByLabelText(/X \(Twitter\)/)).toHaveValue("https://x.com/testuser");
     expect(screen.getByLabelText("Instagram")).toHaveValue("https://instagram.com/testuser");
@@ -97,11 +101,7 @@ describe("UserSNSForm", () => {
 
   // isPendingがtrueのとき変更を保存ボタンがdisabledになる
   test("disables submit button when isPending is true", () => {
-    (React.useActionState as unknown as Mock).mockReturnValue([
-      initialState,
-      mockFormAction,
-      true,
-    ]);
+    (React.useActionState as unknown as Mock).mockReturnValue([initialState, mockFormAction, true]);
     render(<UserSNSForm user={baseUser} onCloseModal={() => {}} />);
     expect(screen.getByRole("button", { name: "変更を保存" })).toBeDisabled();
   });
@@ -109,7 +109,11 @@ describe("UserSNSForm", () => {
   // キャンセルボタン押下でonCloseModalが呼ばれる
   test("calls onCloseModal when cancel button is clicked", async () => {
     const handleClose = vi.fn();
-    (React.useActionState as unknown as Mock).mockReturnValue([initialState, mockFormAction, false]);
+    (React.useActionState as unknown as Mock).mockReturnValue([
+      initialState,
+      mockFormAction,
+      false,
+    ]);
     render(<UserSNSForm user={baseUser} onCloseModal={handleClose} />);
     await userEvent.click(screen.getByRole("button", { name: "キャンセル" }));
     expect(handleClose).toHaveBeenCalled();
@@ -118,7 +122,11 @@ describe("UserSNSForm", () => {
   // SNSが未登録でも空欄で表示される
   test("shows empty value if user has no social profiles", () => {
     const userNoSNS: User = { ...baseUser, user_social_profiles: [] };
-    (React.useActionState as unknown as Mock).mockReturnValue([initialState, mockFormAction, false]);
+    (React.useActionState as unknown as Mock).mockReturnValue([
+      initialState,
+      mockFormAction,
+      false,
+    ]);
     render(<UserSNSForm user={userNoSNS} onCloseModal={() => {}} />);
     expect(screen.getByLabelText(/X \(Twitter\)/)).toHaveValue("");
     expect(screen.getByLabelText("Instagram")).toHaveValue("");
@@ -127,7 +135,11 @@ describe("UserSNSForm", () => {
 
   // 入力できること
   test("allows typing in SNS input fields", async () => {
-    (React.useActionState as unknown as Mock).mockReturnValue([initialState, mockFormAction, false]);
+    (React.useActionState as unknown as Mock).mockReturnValue([
+      initialState,
+      mockFormAction,
+      false,
+    ]);
     render(<UserSNSForm user={baseUser} onCloseModal={() => {}} />);
     const twitterInput = screen.getByLabelText(/X \(Twitter\)/);
     await userEvent.clear(twitterInput);
@@ -137,7 +149,11 @@ describe("UserSNSForm", () => {
 
   // aria属性チェック
   test("each SNS input has correct aria-describedby attribute", () => {
-    (React.useActionState as unknown as Mock).mockReturnValue([initialState, mockFormAction, false]);
+    (React.useActionState as unknown as Mock).mockReturnValue([
+      initialState,
+      mockFormAction,
+      false,
+    ]);
     render(<UserSNSForm user={baseUser} onCloseModal={() => {}} />);
     expect(screen.getByLabelText(/X \(Twitter\)/)).toHaveAttribute(
       "aria-describedby",
