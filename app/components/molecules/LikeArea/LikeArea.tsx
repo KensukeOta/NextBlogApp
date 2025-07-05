@@ -28,11 +28,12 @@ export const LikeArea = ({ post }: { post: Post }) => {
       <button
         type="submit"
         disabled={isPending}
+        aria-label={liked ? "いいねを取り消す" : "いいねする"}
         className={`rounded-[50%] hover:cursor-pointer disabled:cursor-default ${liked ? "text-red-500 hover:bg-gray-200" : "hover:bg-pink-100 hover:text-red-500"}`}
       >
         <i className={`${liked ? "bi bi-heart-fill" : "bi bi-heart"}`}></i>
       </button>
-      <span>{post.likes.length}</span>
+      <span data-testid="like-count">{post.likes.length}</span>
     </form>
   );
 };
