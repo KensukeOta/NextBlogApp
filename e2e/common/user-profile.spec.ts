@@ -1,5 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { login } from "../helpers/login";
+import { updateUserProfile } from "../helpers/user-profile-update";
+import { updateUserSNS } from "../helpers/user-sns-update";
 
 // ユーザーのプロフィールページに行くことができる
 test("can see user profile page", async ({ page }) => {
@@ -14,8 +16,8 @@ test("can see user profile page", async ({ page }) => {
 });
 
 test.describe("UserProfileForm", () => {
-  // 初期値に表示名にログインユーザー名が入力されていて、自己紹介が空の状態でサブミットできる
-  test("can be submitted with the login user name entered as the display name by default and an empty bio", async ({
+  // 初期値に表示名にログインユーザー名が入力されていて、その状態でサブミットできる
+  test("can be submitted with the login user name entered as the display name by default", async ({
     page,
   }) => {
     // ログイン処理
@@ -32,9 +34,9 @@ test.describe("UserProfileForm", () => {
     await expect(page.getByRole("textbox", { name: "表示名" })).toHaveValue(
       process.env.TEST_USER_NAME as string,
     );
-    await expect(page.getByRole("textbox", { name: "自己紹介" })).toHaveValue("");
     await page.getByRole("button", { name: "変更を保存" }).click();
     await expect(page).toHaveURL(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
+    await expect(page.getByRole("heading", { name: "プロフィール編集" })).not.toBeVisible();
   });
 
   // 有効な名前と自己紹介でユーザーの基本情報を更新できる
@@ -53,6 +55,7 @@ test.describe("UserProfileForm", () => {
     await page.getByRole("textbox", { name: "自己紹介" }).fill("Hello World");
     await page.getByRole("button", { name: "変更を保存" }).click();
     await expect(page).toHaveURL(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
+    await expect(page.getByRole("heading", { name: "プロフィール編集" })).not.toBeVisible();
   });
 
   // 最低文字数以下で入力した場合、バリデーションメッセージが表示される
@@ -66,12 +69,10 @@ test.describe("UserProfileForm", () => {
 
     const shortName = Array.from({ length: 2 }, () => Math.random().toString(36)[2]).join("");
 
-    await page.goto(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
-    await page.getByRole("button", { name: /プロフィールを編集/ }).click();
-    await page.getByRole("tab", { name: "基本情報" }).click();
-    await page.getByRole("textbox", { name: "表示名" }).fill(shortName);
-    await page.getByRole("textbox", { name: "自己紹介" }).fill("");
-    await page.getByRole("button", { name: "変更を保存" }).click();
+    // ユーザー基本情報更新処理
+    await updateUserProfile(page, shortName, "");
+
+    await expect(page.getByRole("heading", { name: "プロフィール編集" })).toBeVisible();
     await expect(page.getByText("送信に失敗しました")).toBeVisible();
     await expect(page.getByText("3文字以上で入力してください")).toBeVisible();
   });
@@ -88,12 +89,10 @@ test.describe("UserProfileForm", () => {
     const longName = Array.from({ length: 33 }, () => Math.random().toString(36)[2]).join("");
     const longBio = Array.from({ length: 201 }, () => Math.random().toString(36)[2]).join("");
 
-    await page.goto(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
-    await page.getByRole("button", { name: /プロフィールを編集/ }).click();
-    await page.getByRole("tab", { name: "基本情報" }).click();
-    await page.getByRole("textbox", { name: "表示名" }).fill(longName);
-    await page.getByRole("textbox", { name: "自己紹介" }).fill(longBio);
-    await page.getByRole("button", { name: "変更を保存" }).click();
+    // ユーザー基本情報更新処理
+    await updateUserProfile(page, longName, longBio);
+
+    await expect(page.getByRole("heading", { name: "プロフィール編集" })).toBeVisible();
     await expect(page.getByText("送信に失敗しました")).toBeVisible();
     await expect(page.getByText("32文字以内で入力してください")).toBeVisible();
     await expect(page.getByText("200文字以内で入力してください").nth(0)).toBeVisible();
@@ -118,6 +117,7 @@ test.describe("UserSNSForm", () => {
     await page.getByRole("textbox", { name: /YouTube/ }).fill("https://youtube.com/c/hoge");
     await page.getByRole("button", { name: "変更を保存" }).click();
     await expect(page).toHaveURL(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
+    await expect(page.getByRole("heading", { name: "プロフィール編集" })).not.toBeVisible();
     await expect(page.getByRole("link", { name: /X \(Twitter\)/ })).toBeVisible();
     await expect(page.getByRole("link", { name: /Instagram/ })).toBeVisible();
     await expect(page.getByRole("link", { name: /YouTube/ })).toBeVisible();
@@ -132,14 +132,10 @@ test.describe("UserSNSForm", () => {
       process.env.TEST_USER_PASSWORD as string,
     );
 
-    await page.goto(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
-    await page.getByRole("button", { name: /プロフィールを編集/ }).click();
-    await page.getByRole("tab", { name: "SNS" }).click();
-    await page.getByRole("textbox", { name: /X \(Twitter\)/ }).fill("");
-    await page.getByRole("textbox", { name: /Instagram/ }).fill("");
-    await page.getByRole("textbox", { name: /YouTube/ }).fill("");
-    await page.getByRole("button", { name: "変更を保存" }).click();
-    await expect(page).toHaveURL(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
+    // ユーザーSNS情報更新処理
+    await updateUserSNS(page, "", "", "");
+
+    await expect(page.getByRole("heading", { name: "プロフィール編集" })).not.toBeVisible();
   });
 
   // 無効なURL形式で入力した場合、バリデーションメッセージが表示される
@@ -151,13 +147,10 @@ test.describe("UserSNSForm", () => {
       process.env.TEST_USER_PASSWORD as string,
     );
 
-    await page.goto(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
-    await page.getByRole("button", { name: /プロフィールを編集/ }).click();
-    await page.getByRole("tab", { name: "SNS" }).click();
-    await page.getByRole("textbox", { name: /X \(Twitter\)/ }).fill("invalidURL");
-    await page.getByRole("textbox", { name: /Instagram/ }).fill("invalidURL");
-    await page.getByRole("textbox", { name: /YouTube/ }).fill("invalidURL");
-    await page.getByRole("button", { name: "変更を保存" }).click();
+    // ユーザーSNS情報更新処理
+    await updateUserSNS(page, "invalidURL", "invalidURL", "invalidURL");
+
+    await expect(page.getByRole("heading", { name: "プロフィール編集" })).toBeVisible();
     await expect(page.getByText("送信に失敗しました")).toBeVisible();
     await expect(
       page.locator("#twitter-error").getByText("有効なURLを入力してください"),
@@ -184,14 +177,11 @@ test.describe("UserSNSForm", () => {
     const randomStr = Array.from({ length }, () => Math.random().toString(36)[2]).join("");
     const longURL = prefix + randomStr;
 
-    await page.goto(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
-    await page.getByRole("button", { name: /プロフィールを編集/ }).click();
-    await page.getByRole("tab", { name: "SNS" }).click();
-    await page.getByRole("textbox", { name: /X \(Twitter\)/ }).fill(longURL);
-    await page.getByRole("textbox", { name: /Instagram/ }).fill(longURL);
-    await page.getByRole("textbox", { name: /YouTube/ }).fill(longURL);
-    await page.getByRole("button", { name: "変更を保存" }).click();
+    // ユーザーSNS情報更新処理
+    await updateUserSNS(page, longURL, longURL, longURL);
+
     expect(longURL.length).toBe(256);
+    await expect(page.getByRole("heading", { name: "プロフィール編集" })).toBeVisible();
     await expect(page.getByText("送信に失敗しました")).toBeVisible();
     await expect(
       page.locator("#twitter-error").getByText("255文字以内で入力してください"),
