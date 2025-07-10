@@ -20,7 +20,21 @@ export const PostItem = async ({ post }: { post: Post }) => {
         </Link>
       </h2>
 
-      <p>
+      <ul className="mt-1 flex flex-wrap items-center gap-1">
+        <i className="bi bi-tag"></i>
+        {post.tags.map((tag) => (
+          <li key={tag.id}>
+            <Link
+              href={`/tags/${tag.name}`}
+              className="rounded-sm bg-gray-200 px-1.5 text-sm hover:bg-gray-300"
+            >
+              {tag.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+
+      <p className="mt-1">
         by
         <Link href={`/${post.user.name}`} className="hover:underline">
           <Image
@@ -33,7 +47,8 @@ export const PostItem = async ({ post }: { post: Post }) => {
           {post.user.name}
         </Link>
       </p>
-      <nav className="flex justify-between">
+
+      <nav className="mt-1 flex justify-between">
         <LikeArea post={post} />
         {session?.user && session.user.id === String(post.user_id) ? (
           <PostEditLinkButton post={post} />

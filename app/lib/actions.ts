@@ -501,6 +501,17 @@ export async function authenticate(prevState: LoginState | undefined, formData: 
 export async function createPost(prevState: PostState | undefined, formData: FormData) {
   const title = formData.get("title")?.toString() ?? "";
   const content = formData.get("content")?.toString() ?? "";
+  // ここでタグをJSONとしてparse
+  let tags: string[] = [];
+  try {
+    const tagsField = formData.get("tags");
+    if (tagsField) {
+      tags = JSON.parse(tagsField.toString());
+    }
+  } catch {
+    // フォールバック
+    tags = [];
+  }
 
   const validatedFields = postFormSchema.safeParse({
     title,
@@ -532,6 +543,7 @@ export async function createPost(prevState: PostState | undefined, formData: For
         post: {
           title: validTitle,
           content: validContent,
+          tags,
         },
       }),
     });
@@ -546,6 +558,7 @@ export async function createPost(prevState: PostState | undefined, formData: For
       values: {
         title: validTitle,
         content: validContent,
+        tags,
       },
     };
   }
@@ -561,6 +574,17 @@ export async function updatePost(
 ) {
   const title = formData.get("title")?.toString() ?? "";
   const content = formData.get("content")?.toString() ?? "";
+  // ここでタグをJSONとしてparse
+  let tags: string[] = [];
+  try {
+    const tagsField = formData.get("tags");
+    if (tagsField) {
+      tags = JSON.parse(tagsField.toString());
+    }
+  } catch {
+    // フォールバック
+    tags = [];
+  }
 
   const validatedFields = postFormSchema.safeParse({
     title,
@@ -593,6 +617,7 @@ export async function updatePost(
         post: {
           title: validTitle,
           content: validContent,
+          tags,
         },
       }),
     });
@@ -607,6 +632,7 @@ export async function updatePost(
       values: {
         title: validTitle,
         content: validContent,
+        tags,
       },
     };
   }

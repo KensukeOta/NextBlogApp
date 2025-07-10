@@ -22,6 +22,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^10.1.0",
+    "react-tag-input": "^6.10.6",
     "remark-gfm": "^4.0.1",
     "use-debounce": "^10.0.5",
     "zod": "^3.25.42"

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { Post } from "@/app/types/Post";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import { SessionProvider } from "next-auth/react";
@@ -40,16 +41,33 @@ export default async function PostShowPage(props: {
     <DefaultLayout className="py-12">
       <section className="h-full bg-white px-4 py-6">
         <h1 className="text-3xl font-bold">{post.title}</h1>
+
+        <ul className="mt-4 flex flex-wrap items-center gap-1">
+          <i className="bi bi-tag"></i>
+          {post.tags.map((tag) => (
+            <li key={tag.id}>
+              <Link
+                href={`/tags/${tag.name}`}
+                className="rounded-sm bg-gray-200 px-1.5 text-sm hover:bg-gray-300"
+              >
+                {tag.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+
         <p className="mt-2 flex text-base">
           by
-          <Image
-            src={post.user.image ?? "/noavatar.png"}
-            alt="ユーザー画像"
-            width={24}
-            height={24}
-            className="ml-1 rounded-[50%]"
-          />
-          {post.user.name}
+          <Link href={`/${post.user.name}`} className="hover:underline">
+            <Image
+              src={post.user.image ?? "/noavatar.png"}
+              alt="ユーザー画像"
+              width={24}
+              height={24}
+              className="ml-1 inline-block rounded-[50%]"
+            />
+            {post.user.name}
+          </Link>
         </p>
         <SessionProvider>
           <LikeArea post={post} />

@@ -13,8 +13,8 @@ export const UserProfileForm = ({
   onCloseModal: () => void;
 }) => {
   const initialState: UserState = { message: null, errors: {}, values: {} };
-  const updatePosteWithId = updateUser.bind(null, user.id);
-  const [state, formAction, isPending] = useActionState(updatePosteWithId, initialState);
+  const updateUserWithId = updateUser.bind(null, user.id);
+  const [state, formAction, isPending] = useActionState(updateUserWithId, initialState);
   return (
     <>
       <form
