@@ -19,7 +19,7 @@ export const TabList = <T extends string = string>({
   return (
     <div
       role="tablist"
-      className={`text-muted-foreground grid h-10 w-full grid-cols-${tabs.length} items-center justify-center rounded-md bg-blue-50 p-1 ${className}`}
+      className={`text-muted-foreground grid h-10 w-full grid-cols-3 items-center justify-center rounded-md bg-blue-50 p-1 ${className}`}
     >
       {tabs.map((tab) => (
         <button

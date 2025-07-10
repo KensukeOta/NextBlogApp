@@ -195,6 +195,30 @@ test.describe("UserSNSForm", () => {
   });
 });
 
+test.describe("UserInfoForm", () => {
+  // 有効なタグでユーザー情報を更新できる
+  test("can edit user info and see top page", async ({ page }) => {
+    // ログイン処理
+    await login(
+      page,
+      process.env.TEST_USER_EMAIL as string,
+      process.env.TEST_USER_PASSWORD as string,
+    );
+
+    const tagName = Array.from({ length: 5 }, () => Math.random().toString(36)[2]).join("");
+
+    await page.goto(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
+    await page.getByRole("button", { name: /プロフィールを編集/ }).click();
+    await page.getByRole("tab", { name: "ユーザー情報" }).click();
+    await page.getByRole("textbox", { name: "タグ" }).fill(tagName);
+    await page.getByRole("textbox", { name: "タグ" }).press("Enter");
+    await page.getByRole("button", { name: "変更を保存" }).click();
+    await expect(page).toHaveURL(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
+    await expect(page.getByRole("heading", { name: "プロフィール編集" })).not.toBeVisible();
+    await expect(page.getByRole("link", { name: tagName })).toBeVisible();
+  });
+});
+
 // プロフィール編集モーダルでキャンセルボタンを押すとモーダルが消える
 test("pressing the cancel button in the edit profile modal causes the modal to disappear.", async ({
   page,
