@@ -243,6 +243,17 @@ export async function updateUser(
 ) {
   const name = formData.get("name")?.toString() ?? "";
   const bio = formData.get("bio")?.toString() ?? "";
+  // ここでタグをJSONとしてparse
+  let tags: string[] = [];
+  try {
+    const tagsField = formData.get("tags");
+    if (tagsField) {
+      tags = JSON.parse(tagsField.toString());
+    }
+  } catch {
+    // フォールバック
+    tags = [];
+  }
 
   const validatedFields = userFormSchema.safeParse({
     name,
@@ -275,6 +286,7 @@ export async function updateUser(
         user: {
           name: validName,
           bio: validBio,
+          tags,
         },
       }),
     });
@@ -295,6 +307,7 @@ export async function updateUser(
       values: {
         name: validName,
         bio: validBio,
+        tags,
       },
     };
   }

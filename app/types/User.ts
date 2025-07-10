@@ -1,5 +1,6 @@
 import type { Post } from "./Post";
 import type { UserSocialProfile } from "./UserSocialProfile";
+import type { Tag } from "./Tag";
 
 export interface User {
   id: string;
@@ -11,4 +12,5 @@ export interface User {
   posts: Post[];
   liked_posts: Post[];
   user_social_profiles: UserSocialProfile[];
+  tags: Tag[];
 }

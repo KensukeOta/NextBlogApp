@@ -18,13 +18,12 @@ export const PostEditForm = ({ post }: { post: Post }) => {
     text: tag.name, // name を text に変換
     className: "",
   }));
-  
-  
+
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
-  
+
   const [tags, setTags] = useState<Array<ReactTagInput>>(formattedTags);
-  
+
   const tagsArray = tags.map((tag) => tag.text);
 
   const handleDelete = (index: number) => {

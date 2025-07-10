@@ -22,7 +22,8 @@ export const UserProfile = ({ user }: { user: User }) => {
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+    // backdrop（背景）をクリックしたときだけ閉じる
+    if (event.target instanceof HTMLElement && event.target.classList.contains("backdrop-class")) {
       setIsVisible(false);
     }
   };
