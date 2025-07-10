@@ -4,11 +4,13 @@ import type { User } from "@/app/types/User";
 import { useState } from "react";
 import { TabList } from "../../molecules/TabList";
 import { UserSNSForm } from "../UserSNSForm";
+import { UserInfoForm } from "../UserInfoForm";
 import { UserProfileForm } from "../UserProfileForm";
 
 export const UserEditForm = ({ user, onCloseModal }: { user: User; onCloseModal: () => void }) => {
   const tabItems = [
     { label: "基本情報", value: "basic" },
+    { label: "ユーザー情報", value: "user-info" },
     { label: "SNS", value: "sns" },
   ] as const;
   type TabValue = (typeof tabItems)[number]["value"];
@@ -21,6 +23,9 @@ export const UserEditForm = ({ user, onCloseModal }: { user: User; onCloseModal:
       <div className="mt-6">
         {/* 基本情報フォーム */}
         {activeTab === "basic" && <UserProfileForm user={user} onCloseModal={onCloseModal} />}
+
+        {/* SNSフォーム */}
+        {activeTab === "user-info" && <UserInfoForm user={user} onCloseModal={onCloseModal} />}
 
         {/* SNSフォーム */}
         {activeTab === "sns" && <UserSNSForm user={user} onCloseModal={onCloseModal} />}

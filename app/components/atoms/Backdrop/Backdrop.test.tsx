@@ -15,6 +15,6 @@ describe("Backdrop", () => {
     const backdrop = screen.getByRole("presentation");
 
     expect(backdrop).toBeInTheDocument();
-    expect(backdrop).toHaveClass("fixed", "inset-0", "z-1", "bg-black/32");
+    expect(backdrop).toHaveClass("fixed", "inset-0", "z-1", "bg-black/32", "backdrop-class");
   });
 });

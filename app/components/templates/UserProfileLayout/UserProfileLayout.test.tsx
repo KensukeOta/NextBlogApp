@@ -16,6 +16,10 @@ vi.mock("../../molecules/UserSNSProfile", () => ({
   UserSNSProfile: ({ name }: { name: string }) => <div data-testid="UserSNSProfile">{name}</div>,
 }));
 
+vi.mock("../../organisms/UserInfoProfile", () => ({
+  UserInfoProfile: ({ name }: { name: string }) => <div data-testid="UserInfoProfile">{name}</div>,
+}));
+
 const mockUser: User = {
   id: "1",
   name: "kensuke",

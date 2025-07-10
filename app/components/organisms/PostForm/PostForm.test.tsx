@@ -22,6 +22,8 @@ describe("<PostForm />", () => {
     expect(screen.getByPlaceholderText("タイトル")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("本文")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "投稿する" })).toBeInTheDocument();
+    // タグ入力のinputフィールドも存在する
+    expect(screen.getByPlaceholderText(/タグ/)).toBeInTheDocument();
   });
 
   // 入力値反映テスト
@@ -38,6 +40,31 @@ describe("<PostForm />", () => {
 
     await user.type(contentInput, "テスト本文");
     expect(contentInput.value).toBe("テスト本文");
+  });
+
+  // タグを追加できる（react-tag-inputのテスト）
+  test("adds tags and updates hidden tags input", async () => {
+    const { PostForm } = await import("./PostForm");
+    render(<PostForm />);
+
+    const user = userEvent.setup();
+    // タグ入力フィールド（プレースホルダーで検索）
+    const tagInput = screen.getByPlaceholderText(
+      /文字を入力し、エンターキーを押すとタグが作れます/,
+    ) as HTMLInputElement;
+
+    // 1つ目のタグ
+    await user.type(tagInput, "tag1{enter}");
+    expect(screen.getByText("tag1")).toBeInTheDocument();
+
+    // 2つ目
+    await user.type(tagInput, "タグ２{enter}");
+    expect(screen.getByText("タグ２")).toBeInTheDocument();
+
+    // hidden inputを name属性で取得し、valueを検証
+    const hiddenTagsInput = screen.getByDisplayValue(JSON.stringify(["tag1", "タグ２"]));
+    expect(hiddenTagsInput).toHaveAttribute("type", "hidden");
+    expect(hiddenTagsInput).toHaveAttribute("name", "tags");
   });
 
   // バリデーションエラー表示
