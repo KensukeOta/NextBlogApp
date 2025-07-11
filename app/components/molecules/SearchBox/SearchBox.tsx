@@ -59,7 +59,7 @@ export const SearchBox = () => {
         <input
           type="text"
           ref={inputRef}
-          placeholder="検索"
+          placeholder="タイトル・ユーザー名・タグ名で検索"
           onChange={(e) => {
             handleSearch(e.target.value);
           }}

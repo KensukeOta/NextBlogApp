@@ -42,7 +42,7 @@ describe("<SearchBox />", () => {
     await user.click(screen.getByRole("button", { name: "検索ボックスを開く" }));
 
     expect(screen.getByRole("search", { name: "検索" })).toBeVisible();
-    expect(screen.getByPlaceholderText("検索")).toHaveFocus();
+    expect(screen.getByPlaceholderText("タイトル・ユーザー名・タグ名で検索")).toHaveFocus();
   });
 
   test("calls replace with correct query on input", async () => {
@@ -50,7 +50,7 @@ describe("<SearchBox />", () => {
     const user = userEvent.setup();
     await user.click(screen.getByRole("button", { name: "検索ボックスを開く" }));
 
-    const input = screen.getByPlaceholderText("検索");
+    const input = screen.getByPlaceholderText("タイトル・ユーザー名・タグ名で検索");
     await user.type(input, "React");
 
     const { __mock } = (await import("next/navigation")) as unknown as {
@@ -76,7 +76,7 @@ describe("<SearchBox />", () => {
     const user = userEvent.setup();
     await user.click(screen.getByRole("button", { name: "検索ボックスを開く" }));
 
-    const input = screen.getByPlaceholderText("検索");
+    const input = screen.getByPlaceholderText("タイトル・ユーザー名・タグ名で検索");
     await user.clear(input);
 
     await waitFor(() => {
