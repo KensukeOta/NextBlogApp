@@ -27,7 +27,7 @@ const mockUser: User = {
   liked_posts: [],
   tags: [
     { id: "hoge", name: "React" },
-    { id: "hoge", name: "NextJS" },
+    { id: "fuga", name: "NextJS" },
   ],
 };
 
