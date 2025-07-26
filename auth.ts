@@ -86,6 +86,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           user.email = registeredUser.email;
           user.image = registeredUser.image;
           user.id = registeredUser.id;
+          user.accessToken = registeredUser.accessToken;
           return true;
         }
       } catch (error) {
@@ -102,6 +103,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.email = user.email;
         token.image = user.image;
         token.provider = account?.provider;
+        token.accessToken = user.accessToken;
       }
 
       return token;
@@ -129,6 +131,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         // provider: string型かつ空でない場合のみセット
         session.user.provider =
           typeof token.provider === "string" && token.provider.length > 0 ? token.provider : "";
+
+        session.user.accessToken =
+          typeof token.accessToken === "string" && token.accessToken.length > 0
+            ? token.accessToken
+            : "";
       }
 
       return session;

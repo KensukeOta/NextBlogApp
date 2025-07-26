@@ -4,8 +4,7 @@ import type { User } from "../types/User";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
-import { signIn } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { z } from "zod";
 
 export type SignupState = {
@@ -271,16 +270,13 @@ export async function updateUser(
   const { name: validName, bio: validBio } = validatedFields.data;
 
   try {
-    const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("authjs.session-token")?.value;
-    const cookieHeader = sessionCookie ? `authjs.session-token=${sessionCookie}` : "";
-
-    // PATCHリクエストでAPI Route経由
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proxy/user/${userId}`, {
+    const session = await auth();
+    const res = await fetch(`${process.env.API_URL}/v1/users/${userId}`, {
       method: "PATCH",
       headers: {
+        Authorization: `Bearer ${session?.user.accessToken}`,
+        Accept: "application/json",
         "Content-Type": "application/json",
-        Cookie: cookieHeader,
       },
       body: JSON.stringify({
         user: {
@@ -318,16 +314,13 @@ export async function updateUser(
 
 export async function deleteUser(userId: string) {
   try {
-    const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("authjs.session-token")?.value;
-    const cookieHeader = sessionCookie ? `authjs.session-token=${sessionCookie}` : "";
-
-    // DELETEリクエストでAPI Route経由
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proxy/user/${userId}`, {
+    const session = await auth();
+    const res = await fetch(`${process.env.API_URL}/v1/users/${userId}`, {
       method: "DELETE",
       headers: {
+        Authorization: `Bearer ${session?.user.accessToken}`,
+        Accept: "application/json",
         "Content-Type": "application/json",
-        Cookie: cookieHeader,
       },
     });
     if (!res.ok) {
@@ -371,10 +364,6 @@ export async function createUserSNSInfo(
   } = validatedFields.data;
 
   try {
-    const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("authjs.session-token")?.value;
-    const cookieHeader = sessionCookie ? `authjs.session-token=${sessionCookie}` : "";
-
     const entries = [
       { provider: "twitter", url: validTwitter },
       { provider: "instagram", url: validInstagram },
@@ -390,16 +379,15 @@ export async function createUserSNSInfo(
       if (!entry.url) {
         // 入力が空の場合、既存レコードがあれば削除
         if (id) {
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/api/proxy/user_social_profile/${id}`,
-            {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-                Cookie: cookieHeader,
-              },
+          const session = await auth();
+          const res = await fetch(`${process.env.API_URL}/v1/user_social_profiles/${id}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${session?.user.accessToken}`,
+              Accept: "application/json",
+              "Content-Type": "application/json",
             },
-          );
+          });
           if (!res.ok) {
             const errors = await res.json();
             console.log(errors);
@@ -412,43 +400,41 @@ export async function createUserSNSInfo(
 
       // 入力がある場合、既存→PATCH、新規→POST
       if (id) {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/proxy/user_social_profile/${id}`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              Cookie: cookieHeader,
-            },
-            body: JSON.stringify({
-              user_social_profile: {
-                url: entry.url,
-              },
-            }),
+        const session = await auth();
+        const res = await fetch(`${process.env.API_URL}/v1/user_social_profiles/${id}`, {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${session?.user.accessToken}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
           },
-        );
+          body: JSON.stringify({
+            user_social_profile: {
+              url: entry.url,
+            },
+          }),
+        });
         if (!res.ok) {
           const errors = await res.json();
           console.log(errors);
           throw new Error(errors.error);
         }
       } else {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/proxy/user_social_profile`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Cookie: cookieHeader,
-            },
-            body: JSON.stringify({
-              user_social_profile: {
-                provider: entry.provider,
-                url: entry.url,
-              },
-            }),
+        const session = await auth();
+        const res = await fetch(`${process.env.API_URL}/v1/user_social_profiles`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${session?.user.accessToken}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
           },
-        );
+          body: JSON.stringify({
+            user_social_profile: {
+              provider: entry.provider,
+              url: entry.url,
+            },
+          }),
+        });
         if (!res.ok) {
           const errors = await res.json();
           console.log(errors);
@@ -542,15 +528,13 @@ export async function createPost(prevState: PostState | undefined, formData: For
   const { title: validTitle, content: validContent } = validatedFields.data;
 
   try {
-    const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("authjs.session-token")?.value;
-    // サーバーアクションからAPI Routeへfetch時にCookieをヘッダーで明示
-    const cookieHeader = sessionCookie ? `authjs.session-token=${sessionCookie}` : "";
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proxy/post`, {
+    const session = await auth();
+    const res = await fetch(`${process.env.API_URL}/v1/posts`, {
       method: "POST",
       headers: {
+        Authorization: `Bearer ${session?.user.accessToken}`,
+        Accept: "application/json",
         "Content-Type": "application/json",
-        Cookie: cookieHeader,
       },
       body: JSON.stringify({
         post: {
@@ -615,16 +599,13 @@ export async function updatePost(
   const { title: validTitle, content: validContent } = validatedFields.data;
 
   try {
-    const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("authjs.session-token")?.value;
-    const cookieHeader = sessionCookie ? `authjs.session-token=${sessionCookie}` : "";
-
-    // PATCHリクエストでAPI Route経由
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proxy/post/${postId}`, {
+    const session = await auth();
+    const res = await fetch(`${process.env.API_URL}/v1/posts/${postId}`, {
       method: "PATCH",
       headers: {
+        Authorization: `Bearer ${session?.user.accessToken}`,
+        Accept: "application/json",
         "Content-Type": "application/json",
-        Cookie: cookieHeader,
       },
       body: JSON.stringify({
         post: {
@@ -656,16 +637,13 @@ export async function updatePost(
 
 export async function deletePost(postId: string) {
   try {
-    const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("authjs.session-token")?.value;
-    const cookieHeader = sessionCookie ? `authjs.session-token=${sessionCookie}` : "";
-
-    // DELETEリクエストでAPI Route経由
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proxy/post/${postId}`, {
+    const session = await auth();
+    const res = await fetch(`${process.env.API_URL}/v1/posts/${postId}`, {
       method: "DELETE",
       headers: {
+        Authorization: `Bearer ${session?.user.accessToken}`,
+        Accept: "application/json",
         "Content-Type": "application/json",
-        Cookie: cookieHeader,
       },
     });
     if (!res.ok) {
@@ -683,16 +661,13 @@ export async function deletePost(postId: string) {
 
 export async function createLike(postId: string) {
   try {
-    const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("authjs.session-token")?.value;
-    const cookieHeader = sessionCookie ? `authjs.session-token=${sessionCookie}` : "";
-
-    // DELETEリクエストでAPI Route経由
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proxy/like`, {
+    const session = await auth();
+    const res = await fetch(`${process.env.API_URL}/v1/likes`, {
       method: "POST",
       headers: {
+        Authorization: `Bearer ${session?.user.accessToken}`,
+        Accept: "application/json",
         "Content-Type": "application/json",
-        Cookie: cookieHeader,
       },
       body: JSON.stringify({
         like: {
@@ -714,16 +689,13 @@ export async function createLike(postId: string) {
 
 export async function deleteLike(likeId: string) {
   try {
-    const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("authjs.session-token")?.value;
-    const cookieHeader = sessionCookie ? `authjs.session-token=${sessionCookie}` : "";
-
-    // DELETEリクエストでAPI Route経由
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proxy/like/${likeId}`, {
+    const session = await auth();
+    const res = await fetch(`${process.env.API_URL}/v1/likes/${likeId}`, {
       method: "DELETE",
       headers: {
+        Authorization: `Bearer ${session?.user.accessToken}`,
+        Accept: "application/json",
         "Content-Type": "application/json",
-        Cookie: cookieHeader,
       },
     });
     if (!res.ok) {
