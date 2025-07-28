@@ -1,7 +1,7 @@
 "use client";
 
 import type { User } from "@/app/types/User";
-import { createUserSNSInfo, UserSNSState } from "@/app/lib/actions";
+import { createUserSNSInfo, UserSNSState } from "@/app/lib/actions/userSNSInfo";
 import { useActionState } from "react";
 
 export const UserSNSForm = ({ user, onCloseModal }: { user: User; onCloseModal: () => void }) => {

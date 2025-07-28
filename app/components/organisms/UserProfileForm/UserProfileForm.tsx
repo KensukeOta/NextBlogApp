@@ -2,7 +2,7 @@
 
 import type { User } from "@/app/types/User";
 import { useActionState } from "react";
-import { updateUser, UserState } from "@/app/lib/actions";
+import { updateUser, UserState } from "@/app/lib/actions/users";
 import { UserDeleteButton } from "../../atoms/UserDeleteButton";
 
 export const UserProfileForm = ({

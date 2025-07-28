@@ -4,7 +4,7 @@ import type { User } from "@/app/types/User";
 import type { ReactTagInput } from "@/app/types/ReactTagInput";
 import { useActionState, useState } from "react";
 import { WithContext as ReactTags } from "react-tag-input";
-import { updateUser, UserState } from "@/app/lib/actions";
+import { updateUser, UserState } from "@/app/lib/actions/users";
 
 export const UserInfoForm = ({ user, onCloseModal }: { user: User; onCloseModal: () => void }) => {
   const initialState: UserState = { message: null, errors: {}, values: {} };

@@ -2,7 +2,7 @@
 
 import type { Post } from "@/app/types/Post";
 import { useActionState } from "react";
-import { deletePost } from "@/app/lib/actions";
+import { deletePost } from "@/app/lib/actions/posts";
 
 export const PostDeleteButton = ({ post }: { post: Post }) => {
   const [, formAction, isPending] = useActionState(async () => {

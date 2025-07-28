@@ -3,7 +3,7 @@
 import type { User } from "@/app/types/User";
 import { useActionState } from "react";
 import { signOut } from "next-auth/react";
-import { deleteUser } from "@/app/lib/actions";
+import { deleteUser } from "@/app/lib/actions/users";
 
 export const UserDeleteButton = ({ user }: { user: User }) => {
   const [, formAction, isPending] = useActionState(async () => {

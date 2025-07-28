@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { createUser, SignupState } from "@/app/lib/actions";
+import { createUser, SignupState } from "@/app/lib/actions/users";
 
 export const SignupForm = () => {
   const initialState: SignupState = { message: null, errors: {}, values: {} };

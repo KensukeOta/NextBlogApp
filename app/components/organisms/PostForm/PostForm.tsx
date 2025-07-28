@@ -6,7 +6,7 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import "github-markdown-css/github-markdown.css";
 import { WithContext as ReactTags } from "react-tag-input";
-import { createPost, PostState } from "@/app/lib/actions";
+import { createPost, PostState } from "@/app/lib/actions/posts";
 
 export const PostForm = () => {
   const initialState: PostState = { message: null, errors: {}, values: {} };

@@ -3,7 +3,7 @@
 import type { Post } from "@/app/types/Post";
 import { useSession } from "next-auth/react";
 import { useActionState } from "react";
-import { createLike, deleteLike } from "@/app/lib/actions";
+import { createLike, deleteLike } from "@/app/lib/actions/likes";
 
 export const LikeArea = ({ post }: { post: Post }) => {
   const { data: session } = useSession();
