@@ -2,7 +2,9 @@ import { test, expect } from "@playwright/test";
 import { login } from "../helpers/login";
 
 // 有効なユーザー名とメールアドレスとパスワードとパスワード確認でサインアップできる
-test("can signup and see top page", async ({ page }) => {
+test("should allow sign up with a valid username, email, password, and password confirmatione", async ({
+  page,
+}) => {
   const uniqueSuffix = Date.now() + "-" + Math.floor(Math.random() * 1000);
   const name = `TestUser${uniqueSuffix}`;
   const email = `testuser+${uniqueSuffix}@example.com`;
@@ -19,7 +21,9 @@ test("can signup and see top page", async ({ page }) => {
 });
 
 // 最低文字数以下で入力した場合、バリデーションメッセージが表示される
-test("can't signup with invalid short value", async ({ page }) => {
+test("should display a validation message when input is below the minimum character limit", async ({
+  page,
+}) => {
   const uniqueSuffix = Date.now() + "-" + Math.floor(Math.random() * 1000);
   const email = `testuser+${uniqueSuffix}@example.com`;
   const shortName = Math.random().toString(36).slice(-2);
@@ -39,7 +43,9 @@ test("can't signup with invalid short value", async ({ page }) => {
 });
 
 // 最高文字数以上で入力した場合、バリデーションメッセージが表示される
-test("can't signup with invalid long value", async ({ page }) => {
+test("should display a validation message when input is below the maximum character limit", async ({
+  page,
+}) => {
   const uniqueSuffix = Date.now() + "-" + Math.floor(Math.random() * 1000);
   const email = `testuser+${uniqueSuffix}@example.com`;
   const longName = Array.from({ length: 33 }, () => Math.random().toString(36)[2]).join("");
@@ -59,7 +65,9 @@ test("can't signup with invalid long value", async ({ page }) => {
 });
 
 // パスワードとパスワード確認が一致しないとバリデーションメッセージが表示される
-test("can't signup with password and password_confirmation do not match", async ({ page }) => {
+test("should display a validation message when the password and password confirmation do not match", async ({
+  page,
+}) => {
   const uniqueSuffix = Date.now() + "-" + Math.floor(Math.random() * 1000);
   const name = `TestUser${uniqueSuffix}`;
   const email = `testuser+${uniqueSuffix}@example.com`;
@@ -111,8 +119,8 @@ test("can't signup with password and password_confirmation do not match", async 
 //   await expect(page.getByText("この名前は既に使用されています")).toBeVisible();
 // });
 
-// 認証されたユーザがサインアップページに移動すると、トップページにリダイレクトされる
-test("authenticated users are redirected to the top page when they go to the signup page", async ({
+// ログイン時にサインアップページに遷移しようとしたらトップページへリダイレクトされる
+test("hould redirect to the home page when accessing the signup page while already logged in", async ({
   page,
 }) => {
   // ログイン処理

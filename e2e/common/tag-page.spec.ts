@@ -2,7 +2,7 @@ import test, { expect } from "@playwright/test";
 import { login } from "../helpers/login";
 
 // タグページにタグに関連する記事が表示されている
-test("can see tag page", async ({ page }) => {
+test("should display posts related to the tag on the tag page", async ({ page }) => {
   // ログイン処理
   await login(
     page,

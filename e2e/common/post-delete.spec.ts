@@ -3,7 +3,9 @@ import { login } from "../helpers/login";
 import { postCreate } from "../helpers/post-create";
 
 // 記事削除ダイアログでOKを押すと記事が削除される
-test("If OK is pressed in the Delete dialog, the article is deleted", async ({ page }) => {
+test("should delete the post when OK is clicked in the delete confirmation dialog", async ({
+  page,
+}) => {
   // ログイン処理
   await login(
     page,
@@ -34,7 +36,9 @@ test("If OK is pressed in the Delete dialog, the article is deleted", async ({ p
 });
 
 // 記事削除ダイアログでキャンセルを押すと記事は削除されない
-test("If Cancel is pressed in the Delete dialog, the article is not deleted", async ({ page }) => {
+test("should not delete the post when Cancel is clicked in the delete confirmation dialog", async ({
+  page,
+}) => {
   // ログイン処理
   await login(
     page,

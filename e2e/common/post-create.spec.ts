@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { login } from "../helpers/login";
 // 有効なタイトルと本文で記事投稿できる
-test("can post create and see top page", async ({ page }) => {
+test("should be able to create a post with a valid title and content", async ({ page }) => {
   // ログイン処理
   await login(
     page,
@@ -22,7 +22,7 @@ test("can post create and see top page", async ({ page }) => {
 });
 
 // 有効なタイトルと本文とタグで記事投稿できる
-test("can post and tag create and see top page", async ({ page }) => {
+test("should be able to create a post with a valid title, content, and tags", async ({ page }) => {
   // ログイン処理
   await login(
     page,
@@ -46,7 +46,9 @@ test("can post and tag create and see top page", async ({ page }) => {
 });
 
 // 最低文字数以下で入力した場合、バリデーションメッセージが表示される
-test("can't post create with invalid short value", async ({ page }) => {
+test("should display a validation message when input is below the minimum character limit", async ({
+  page,
+}) => {
   // ログイン処理
   await login(
     page,
@@ -68,7 +70,9 @@ test("can't post create with invalid short value", async ({ page }) => {
 });
 
 // 最高文字数以上で入力した場合、バリデーションメッセージが表示される
-test("can't post create with invalid long value", async ({ page }) => {
+test("should display a validation message when input is below the maximum character limit", async ({
+  page,
+}) => {
   // ログイン処理
   await login(
     page,
@@ -89,8 +93,8 @@ test("can't post create with invalid long value", async ({ page }) => {
   await expect(page.getByText("10000文字以内で入力してください")).toBeVisible();
 });
 
-// 未ログインユーザが記事投稿ページに移動すると、ログインページにリダイレクトされる
-test("unauthenticated users are redirected to the login page when they go to the post create page", async ({
+// 未ログイン時に記事投稿ページに遷移しようとしたらログインページへリダイレクトされる
+test("should redirect to the login page when trying to access the post creation page while not logged in", async ({
   page,
 }) => {
   await page.goto("/posts/create");

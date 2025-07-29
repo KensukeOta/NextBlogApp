@@ -4,7 +4,7 @@ import { updateUserProfile } from "../helpers/user-profile-update";
 import { updateUserSNS } from "../helpers/user-sns-update";
 
 // ユーザーのプロフィールページに行くことができる
-test("can see user profile page", async ({ page }) => {
+test("should be able to visit the user's profile page", async ({ page }) => {
   await page.goto(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
   await expect(page).toHaveTitle(
     `${decodeURIComponent(process.env.TEST_USER_NAME as string)} - NextBlogApp`,
@@ -17,7 +17,7 @@ test("can see user profile page", async ({ page }) => {
 
 test.describe("UserProfileForm", () => {
   // 初期値に表示名にログインユーザー名が入力されていて、その状態でサブミットできる
-  test("can be submitted with the login user name entered as the display name by default", async ({
+  test("should have the logged-in user's name as the initial value for the display name and allow submitting without changes", async ({
     page,
   }) => {
     // ログイン処理
@@ -40,7 +40,9 @@ test.describe("UserProfileForm", () => {
   });
 
   // 有効な名前と自己紹介でユーザーの基本情報を更新できる
-  test("can edit user basic info and see top page", async ({ page }) => {
+  test("should be able to update the user's basic information with a valid name and bio", async ({
+    page,
+  }) => {
     // ログイン処理
     await login(
       page,
@@ -59,7 +61,9 @@ test.describe("UserProfileForm", () => {
   });
 
   // 最低文字数以下で入力した場合、バリデーションメッセージが表示される
-  test("can't edit user basic info with invalid short value", async ({ page }) => {
+  test("should display a validation message when input is below the minimum character limit", async ({
+    page,
+  }) => {
     // ログイン処理
     await login(
       page,
@@ -78,7 +82,9 @@ test.describe("UserProfileForm", () => {
   });
 
   // 最高文字数以上で入力した場合、バリデーションメッセージが表示される
-  test("can't edit user basic info with invalid long value", async ({ page }) => {
+  test("should display a validation message when input is below the maximum character limit", async ({
+    page,
+  }) => {
     // ログイン処理
     await login(
       page,
@@ -101,7 +107,7 @@ test.describe("UserProfileForm", () => {
 
 test.describe("UserSNSForm", () => {
   // 有効なURLでユーザーのSNS情報を更新できる
-  test("can edit user sns info and see top page", async ({ page }) => {
+  test("should be able to update the user's SNS information with a valid URL", async ({ page }) => {
     // ログイン処理
     await login(
       page,
@@ -124,7 +130,7 @@ test.describe("UserSNSForm", () => {
   });
 
   // SNSの入力値が空でも送信できる
-  test("can be sent even if the input value is empty", async ({ page }) => {
+  test("should allow submitting the form even when the SNS field is empty", async ({ page }) => {
     // ログイン処理
     await login(
       page,
@@ -139,7 +145,9 @@ test.describe("UserSNSForm", () => {
   });
 
   // 無効なURL形式で入力した場合、バリデーションメッセージが表示される
-  test("can't edit user sns info with invalid URL", async ({ page }) => {
+  test("should display a validation message when an invalid URL format is entered", async ({
+    page,
+  }) => {
     // ログイン処理
     await login(
       page,
@@ -164,7 +172,9 @@ test.describe("UserSNSForm", () => {
   });
 
   // 最高文字数以上で入力した場合、バリデーションメッセージが表示される
-  test("can't edit user sns info with invalid long value", async ({ page }) => {
+  test("should display a validation message when input is below the maximum character limit", async ({
+    page,
+  }) => {
     // ログイン処理
     await login(
       page,
@@ -197,7 +207,7 @@ test.describe("UserSNSForm", () => {
 
 test.describe("UserInfoForm", () => {
   // 有効なタグでユーザー情報を更新できる
-  test("can edit user info and see top page", async ({ page }) => {
+  test("should be able to update the user's information with valid tags", async ({ page }) => {
     // ログイン処理
     await login(
       page,
@@ -220,9 +230,7 @@ test.describe("UserInfoForm", () => {
 });
 
 // プロフィール編集モーダルでキャンセルボタンを押すとモーダルが消える
-test("pressing the cancel button in the edit profile modal causes the modal to disappear.", async ({
-  page,
-}) => {
+test("should close the profile edit modal when the Cancel button is clicked", async ({ page }) => {
   // ログイン処理
   await login(
     page,
@@ -238,7 +246,7 @@ test("pressing the cancel button in the edit profile modal causes the modal to d
 });
 
 // 未ログインの場合、プロフィールを編集するボタンが表示されない
-test("profile edit button not visible if not logged in", async ({ page }) => {
+test("should not display the edit profile button when not logged in", async ({ page }) => {
   await page.goto(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
   await expect(page.getByRole("button", { name: /プロフィールを編集/ })).not.toBeVisible();
 });

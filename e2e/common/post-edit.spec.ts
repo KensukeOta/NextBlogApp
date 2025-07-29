@@ -3,7 +3,7 @@ import { login } from "../helpers/login";
 import { postCreate } from "../helpers/post-create";
 
 // 有効なタイトルと本文で記事の更新ができる
-test("can post edit and see top page", async ({ page }) => {
+test("should be able to update a post with a valid title and content", async ({ page }) => {
   // ログイン処理
   await login(
     page,
@@ -20,7 +20,6 @@ test("can post edit and see top page", async ({ page }) => {
   const editTitle = Array.from({ length: 5 }, () => Math.random().toString(36)[2]).join("");
   const editContent = Array.from({ length: 100 }, () => Math.random().toString(36)[2]).join("");
 
-  await page.goto("/");
   await page
     .getByRole("article")
     .filter({ hasText: `${title}` })
@@ -35,7 +34,7 @@ test("can post edit and see top page", async ({ page }) => {
 });
 
 // 有効なタイトルと本文とタグで記事の更新ができる
-test("can post and tag edit and see top page", async ({ page }) => {
+test("should be able to update a post with a valid title, content, and tags", async ({ page }) => {
   // ログイン処理
   await login(
     page,
@@ -53,7 +52,6 @@ test("can post and tag edit and see top page", async ({ page }) => {
   const editContent = Array.from({ length: 100 }, () => Math.random().toString(36)[2]).join("");
   const tagName = Array.from({ length: 5 }, () => Math.random().toString(36)[2]).join("");
 
-  await page.goto("/");
   await page
     .getByRole("article")
     .filter({ hasText: `${title}` })
@@ -69,8 +67,8 @@ test("can post and tag edit and see top page", async ({ page }) => {
   await expect(page.getByRole("link", { name: tagName })).toBeVisible();
 });
 
-// 未ログインユーザが記事更新ページに移動すると、トップページにリダイレクトされる
-test("unauthenticated users are redirected to the top page when they go to the post edit page", async ({
+// 未ログイン時に記事更新ページに遷移しようとしたらトップページへリダイレクトされる
+test("should redirect to the home page when trying to access the post edit page while not logged in", async ({
   page,
 }) => {
   await page.goto(`/${process.env.TEST_USER_NAME}/posts/123/edit`);

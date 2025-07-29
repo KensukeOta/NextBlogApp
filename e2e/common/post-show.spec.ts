@@ -3,7 +3,7 @@ import { login } from "../helpers/login";
 import { postCreate } from "../helpers/post-create";
 
 // 記事詳細ページで記事のコンテンツを見ることができる
-test("can show post page", async ({ page }) => {
+test("should be able to view the post content on the post detail page", async ({ page }) => {
   // ログイン処理
   await login(
     page,

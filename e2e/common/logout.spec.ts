@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { login } from "../helpers/login";
 
 // ログアウトができる
-test("can logout and see login page", async ({ page }) => {
+test("should be able to log out", async ({ page }) => {
   await login(
     page,
     process.env.TEST_USER_EMAIL as string,

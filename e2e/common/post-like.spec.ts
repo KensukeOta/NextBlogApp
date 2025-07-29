@@ -3,7 +3,7 @@ import { login } from "../helpers/login";
 import { postCreate } from "../helpers/post-create";
 
 // ユーザーのプロフィールページに行くことができる
-test("can see user profile page", async ({ page }) => {
+test("should be able to visit the user's profile page", async ({ page }) => {
   // ログイン処理
   await login(
     page,
@@ -22,7 +22,7 @@ test("can see user profile page", async ({ page }) => {
 });
 
 // いいねボタンをクリックしたら数字がインクリメントする
-test("increments like count when like button is clicked", async ({ page }) => {
+test("should increment the like count when the like button is clicked", async ({ page }) => {
   await login(
     page,
     process.env.TEST_USER_EMAIL as string,
