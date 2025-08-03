@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { fetchAllMessages } from "@/app/lib/data";
 import { MessageForm } from "@/app/components/organisms/MessageForm";
+import { MessageList } from "@/app/components/organisms/MessageList";
 import { DefaultLayout } from "@/app/components/templates/DefaultLayout";
 
 export default async function MessagePage(props: { params: Promise<{ id: string }> }) {
@@ -54,35 +55,7 @@ export default async function MessagePage(props: { params: Promise<{ id: string 
           </div>
 
           <div className="text-card-foreground flex h-full flex-1 flex-col rounded-lg border border-blue-100 bg-white">
-            <div className="flex-1 space-y-4 overflow-y-auto p-4">
-              {data.messages.map((message) => {
-                const isMyMessage = message.from_user_id === session?.user.id;
-                return (
-                  <div
-                    key={message.id}
-                    className={`flex gap-3 ${isMyMessage ? "justify-end" : "justify-start"} mt-4`}
-                  >
-                    {!isMyMessage && (
-                      <span className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full">
-                        <Image
-                          src={data.partner.image ?? "/noavatar.png"}
-                          height={32}
-                          width={32}
-                          alt="ユーザー画像"
-                        />
-                      </span>
-                    )}
-                    <div className="order-1 max-w-xs lg:max-w-md">
-                      <div
-                        className={`rounded-2xl px-4 py-2 ${isMyMessage ? "rounded-br-md bg-blue-600 text-white" : "rounded-bl-md bg-gray-100 text-gray-800"}`}
-                      >
-                        <p className="text-sm break-words whitespace-pre-wrap">{message.content}</p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            <MessageList data={data} currentUserId={session.user.id} />
             <div className="border-t border-blue-100 p-4">
               <MessageForm userId={data.partner.id} />
             </div>
