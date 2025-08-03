@@ -1,8 +1,9 @@
 "use client";
 
-import { Messages } from "@/app/types/Messages";
+import type { Messages } from "@/app/types/Messages";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import { readMessages } from "@/app/lib/actions/messages";
 
 export const MessageList = ({ data, currentUserId }: { data: Messages; currentUserId: string }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -12,7 +13,15 @@ export const MessageList = ({ data, currentUserId }: { data: Messages; currentUs
       // スクロール位置を一番下へ
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
-  }, [data.messages]); // メッセージが更新されるたびに実行
+
+    const unreadMessageIds = data.messages
+      .filter((msg) => msg.to_user_id === currentUserId && !msg.read)
+      .map((msg) => msg.id);
+
+    if (unreadMessageIds.length > 0) {
+      readMessages(unreadMessageIds); // サーバーアクション経由で既読化
+    }
+  }, [data.messages, currentUserId]); // メッセージが更新されるたびに実行
 
   return (
     <div ref={containerRef} className="flex-1 space-y-4 overflow-y-auto p-4">

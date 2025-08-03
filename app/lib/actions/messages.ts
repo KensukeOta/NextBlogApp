@@ -75,3 +75,21 @@ export async function createMessage(
 
   revalidatePath(`/messages/${userId}`);
 }
+
+export async function readMessages(messageIds: string[]) {
+  const session = await auth();
+
+  // 並列で既読リクエスト送信
+  await Promise.all(
+    messageIds.map((id) =>
+      fetch(`${process.env.API_URL}/v1/messages/${id}/read`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${session?.user.accessToken}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }),
+    ),
+  );
+}
