@@ -1,6 +1,7 @@
 "use client";
 
 import type { User } from "@/app/types/User";
+import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -68,6 +69,16 @@ export const UserProfile = ({ user }: { user: User }) => {
         </div>
         <div className="h-[1px] bg-gray-200"></div>
         <div className="space-y-2">
+          {session && (
+            <Link
+              href={`${session.user.id === user.id ? "/messages" : `/messages/${encodeURIComponent(user.id)}`}`}
+              className="ring-offset-background focus-visible:ring-ring inline-flex h-10 w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium whitespace-nowrap text-white transition-colors hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+            >
+              <i className="bi bi-envelope"></i>
+              メッセージを送る
+            </Link>
+          )}
+
           {session?.user.id === user.id && (
             <button
               type="button"

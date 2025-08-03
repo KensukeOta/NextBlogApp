@@ -51,7 +51,7 @@ const dummyPost = {
 };
 
 // updatePostをモック
-vi.mock("@/app/lib/actions", () => ({
+vi.mock("@/app/lib/actions/posts", () => ({
   updatePost: vi.fn(),
 }));
 

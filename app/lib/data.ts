@@ -1,3 +1,5 @@
+import { auth } from "@/auth";
+
 const PER_PAGE = 5;
 export async function fetchFilteredPosts(query: string, page: number) {
   try {
@@ -98,6 +100,53 @@ export async function fetchUser(name: string) {
     }
     const data = await res.json();
     return data.user;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function fetchAllConversations() {
+  try {
+    const session = await auth();
+    const res = await fetch(`${process.env.API_URL}/v1/messages`, {
+      headers: {
+        Authorization: `Bearer ${session?.user.accessToken}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors);
+    }
+    const data = await res.json();
+    return data.conversations;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function fetchAllMessages(id: string) {
+  try {
+    const session = await auth();
+    const res = await fetch(
+      `${process.env.API_URL}/v1/messages?with_user_id=${encodeURIComponent(id)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.user.accessToken}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      },
+    );
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors);
+    }
+    const data = await res.json();
+    return data;
   } catch (error) {
     console.log(error);
   }

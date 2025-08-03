@@ -5,7 +5,7 @@ import { afterEach, describe, expect, Mock, test, vi } from "vitest";
 import { LikeArea } from "./LikeArea";
 import { useSession } from "next-auth/react";
 import { useActionState } from "react";
-import { createLike, deleteLike } from "@/app/lib/actions";
+import { createLike, deleteLike } from "@/app/lib/actions/likes";
 
 vi.mock("next-auth/react", () => ({
   useSession: vi.fn(),
@@ -17,7 +17,7 @@ vi.mock("react", async () => {
     useActionState: vi.fn(),
   };
 });
-vi.mock("@/app/lib/actions", () => ({
+vi.mock("@/app/lib/actions/likes", () => ({
   createLike: vi.fn(),
   deleteLike: vi.fn(),
 }));

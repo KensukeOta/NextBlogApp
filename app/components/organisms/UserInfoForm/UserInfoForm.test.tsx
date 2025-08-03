@@ -76,7 +76,7 @@ afterAll(() => {
 });
 
 // updateUserをモック
-vi.mock("@/app/lib/actions", () => ({
+vi.mock("@/app/lib/actions/users", () => ({
   updateUser: vi.fn(),
 }));
 

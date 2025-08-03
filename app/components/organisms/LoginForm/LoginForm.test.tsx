@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { LoginForm } from "./LoginForm";
 
 // authenticateをモック
-vi.mock("@/app/lib/actions", () => ({
+vi.mock("@/app/lib/actions/users", () => ({
   authenticate: vi.fn(),
 }));
 
