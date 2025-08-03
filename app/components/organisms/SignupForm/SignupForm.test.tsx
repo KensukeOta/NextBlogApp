@@ -3,7 +3,7 @@ import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SignupForm } from "./SignupForm"; // ← require ではなく import で！
 
-vi.mock("@/app/lib/actions", () => ({
+vi.mock("@/app/lib/actions/users", () => ({
   createUser: vi.fn(),
 }));
 

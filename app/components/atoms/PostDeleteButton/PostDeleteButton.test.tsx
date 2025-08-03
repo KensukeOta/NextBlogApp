@@ -27,7 +27,7 @@ function makeDummyPost(id: string): Post {
 }
 
 // deletePostをモック
-vi.mock("@/app/lib/actions", () => ({
+vi.mock("@/app/lib/actions/posts", () => ({
   deletePost: vi.fn(),
 }));
 
@@ -54,7 +54,7 @@ describe("<PostDeleteButton />", () => {
     const user = userEvent.setup();
     // confirmをtrueにモック
     vi.spyOn(window, "confirm").mockReturnValueOnce(true);
-    const { deletePost } = await import("@/app/lib/actions");
+    const { deletePost } = await import("@/app/lib/actions/posts");
 
     render(<PostDeleteButton post={makeDummyPost("123")} />);
 
@@ -72,7 +72,7 @@ describe("<PostDeleteButton />", () => {
   test("does not call deletePost when confirm returns false", async () => {
     const user = userEvent.setup();
     vi.spyOn(window, "confirm").mockReturnValueOnce(false);
-    const { deletePost } = await import("@/app/lib/actions");
+    const { deletePost } = await import("@/app/lib/actions/posts");
 
     render(<PostDeleteButton post={makeDummyPost("999")} />);
 
@@ -91,7 +91,7 @@ describe("<PostDeleteButton />", () => {
 
     // deletePostをPromiseで遅延
     let resolveDelete: () => void;
-    const { deletePost } = await import("@/app/lib/actions");
+    const { deletePost } = await import("@/app/lib/actions/posts");
     (deletePost as Mock).mockImplementation(
       () =>
         new Promise<void>((resolve) => {

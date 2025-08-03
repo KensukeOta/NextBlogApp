@@ -14,7 +14,7 @@ vi.mock("react", async () => {
   };
 });
 // updateUserのダミーモック
-vi.mock("@/app/lib/actions", () => ({
+vi.mock("@/app/lib/actions/users", () => ({
   updateUser: vi.fn(),
   createUserSNSInfo: vi.fn(),
 }));

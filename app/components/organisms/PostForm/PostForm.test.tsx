@@ -3,7 +3,7 @@ import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 // createPostアクションをモック
-vi.mock("@/app/lib/actions", () => ({
+vi.mock("@/app/lib/actions/posts", () => ({
   createPost: vi.fn(),
 }));
 

@@ -9,7 +9,7 @@ import { UserDeleteButton } from "./UserDeleteButton";
 vi.mock("next-auth/react", () => ({
   signOut: vi.fn(),
 }));
-vi.mock("@/app/lib/actions", () => ({
+vi.mock("@/app/lib/actions/users", () => ({
   deleteUser: vi.fn(),
 }));
 vi.mock("react", async () => {
@@ -60,7 +60,9 @@ describe("UserDeleteButton", () => {
 
   // confirmダイアログでキャンセルした場合はAPIが呼ばれない
   test("does not call deleteUser or signOut when confirm is cancelled", async () => {
-    const deleteUser = (await import("@/app/lib/actions")).deleteUser as ReturnType<typeof vi.fn>;
+    const deleteUser = (await import("@/app/lib/actions/users")).deleteUser as ReturnType<
+      typeof vi.fn
+    >;
     const signOut = (await import("next-auth/react")).signOut as ReturnType<typeof vi.fn>;
     vi.mocked(React.useActionState).mockReturnValue([undefined, vi.fn(), false]);
     mockConfirm(false);
@@ -74,7 +76,9 @@ describe("UserDeleteButton", () => {
 
   // confirmでOKしたらdeleteUserが呼ばれる
   test("calls deleteUser and signOut when confirm is accepted and deleteUser returns success", async () => {
-    const deleteUser = (await import("@/app/lib/actions")).deleteUser as ReturnType<typeof vi.fn>;
+    const deleteUser = (await import("@/app/lib/actions/users")).deleteUser as ReturnType<
+      typeof vi.fn
+    >;
     const signOut = (await import("next-auth/react")).signOut as ReturnType<typeof vi.fn>;
     // 削除成功
     deleteUser.mockResolvedValueOnce({});
@@ -96,7 +100,9 @@ describe("UserDeleteButton", () => {
 
   // 削除失敗時はsignOutが呼ばれない
   test("does not call signOut if deleteUser returns error message", async () => {
-    const deleteUser = (await import("@/app/lib/actions")).deleteUser as ReturnType<typeof vi.fn>;
+    const deleteUser = (await import("@/app/lib/actions/users")).deleteUser as ReturnType<
+      typeof vi.fn
+    >;
     const signOut = (await import("next-auth/react")).signOut as ReturnType<typeof vi.fn>;
     // 削除失敗
     deleteUser.mockResolvedValueOnce({ message: "削除失敗" });

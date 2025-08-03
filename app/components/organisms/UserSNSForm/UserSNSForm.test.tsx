@@ -7,7 +7,7 @@ import { afterEach, describe, test, expect, vi } from "vitest";
 import { UserSNSForm } from "./UserSNSForm";
 
 // actionsのグローバルモック
-vi.mock("@/app/lib/actions", () => ({
+vi.mock("@/app/lib/actions/userSNSInfo", () => ({
   createUserSNSInfo: vi.fn(),
 }));
 
