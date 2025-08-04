@@ -61,7 +61,7 @@ export const SearchBox = () => {
           ref={inputRef}
           placeholder="タイトル・ユーザー名・タグ名で検索"
           onChange={(e) => {
-            handleSearch(e.target.value);
+            handleSearch(e.target.value.trim());
           }}
           defaultValue={searchParams.get("query")?.toString()}
           className="h-9 w-full rounded-lg bg-white px-2 py-1"
