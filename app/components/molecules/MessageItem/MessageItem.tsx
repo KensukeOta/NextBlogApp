@@ -14,6 +14,19 @@ export const MessageItem = ({
   currentUserId: string;
 }) => {
   const isMyMessage = message.from_user_id === currentUserId;
+
+  const formatToJSTTime = (datetimeString: string) => {
+    const date = new Date(datetimeString);
+    // JSTへ変換
+    const options: Intl.DateTimeFormatOptions = {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+      timeZone: "Asia/Tokyo",
+    };
+    return date.toLocaleTimeString("ja-JP", options);
+  };
+
   return (
     <div
       key={message.id}
@@ -34,6 +47,10 @@ export const MessageItem = ({
           className={`rounded-2xl px-4 py-2 ${isMyMessage ? "rounded-br-md bg-blue-600 text-white" : "rounded-bl-md bg-gray-100 text-gray-800"}`}
         >
           <p className="text-sm break-words whitespace-pre-wrap">{message.content}</p>
+        </div>
+        <div className={`mt-1 ${isMyMessage ? "text-right" : "text-left"} text-xs text-gray-500`}>
+          {formatToJSTTime(message.created_at)}
+          {isMyMessage && message.read && <span className="ml-1">既読</span>}
         </div>
       </div>
     </div>

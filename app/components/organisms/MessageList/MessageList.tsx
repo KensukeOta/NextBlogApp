@@ -8,6 +8,13 @@ import { MessageItem } from "../../molecules/MessageItem";
 export const MessageList = ({ data, currentUserId }: { data: Messages; currentUserId: string }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const formatJSTDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const m = date.toLocaleDateString("ja-JP", { month: "long", timeZone: "Asia/Tokyo" });
+    const d = date.toLocaleDateString("ja-JP", { day: "numeric", timeZone: "Asia/Tokyo" });
+    return `${m}${d}`; // "8月3日"
+  };
+
   useEffect(() => {
     if (containerRef.current) {
       // スクロール位置を一番下へ
@@ -23,11 +30,29 @@ export const MessageList = ({ data, currentUserId }: { data: Messages; currentUs
     }
   }, [data.messages, currentUserId]); // メッセージが更新されるたびに実行
 
+  let prevDate = "";
+
   return (
     <div ref={containerRef} className="flex-1 space-y-4 overflow-y-auto p-4">
-      {data.messages.map((message) => (
-        <MessageItem key={message.id} data={data} message={message} currentUserId={currentUserId} />
-      ))}
+      {data.messages.map((message) => {
+        // JST「月日」だけを抽出
+        const thisDate = formatJSTDate(message.created_at);
+        const showDateSeparator = thisDate !== prevDate;
+        prevDate = thisDate;
+
+        return (
+          <div key={message.id}>
+            {showDateSeparator && (
+              <div className="my-4 flex items-center justify-center">
+                <div className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600">
+                  {thisDate}
+                </div>
+              </div>
+            )}
+            <MessageItem data={data} message={message} currentUserId={currentUserId} />
+          </div>
+        );
+      })}
     </div>
   );
 };

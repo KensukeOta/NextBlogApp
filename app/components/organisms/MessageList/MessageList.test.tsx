@@ -100,4 +100,65 @@ describe("<MessageList />", () => {
     // （環境によってはここは厳密な確認が難しいこともありますが、書き方例として）
     expect(scrollDiv.scrollTop).toBe(500); // 実際の値というよりsetterが動くことが大事
   });
+
+  // 日付区切りがJSTの「月日」形式で正しく表示される
+  test("render the date separator correctly in JST “month and day” format", async () => {
+    // メッセージ2件の日付が異なる日付帯になるケース
+    const { MessageList } = await import("./MessageList");
+    const messages: Messages = {
+      partner: { id: "partner1", name: "テスト相手", image: "" },
+      messages: [
+        {
+          id: "m1",
+          from_user_id: "partner1",
+          to_user_id: "me",
+          content: "朝のメッセージ",
+          read: true,
+          created_at: "2024-08-03T15:00:00Z", // JST 8/4 0:00
+        },
+        {
+          id: "m2",
+          from_user_id: "partner1",
+          to_user_id: "me",
+          content: "夜のメッセージ",
+          read: true,
+          created_at: "2024-08-04T13:00:00Z", // JST 8/4 22:00
+        },
+      ],
+    };
+    render(<MessageList data={messages} currentUserId="me" />);
+    // 8月4日 が2件の最初に1つだけ表示される
+    expect(screen.getAllByText("8月4日")).toHaveLength(1);
+
+    // 表示クラスや文言も確認
+    expect(screen.getByText("8月4日").closest("div")?.className).toContain("rounded-full");
+  });
+
+  // 同日なら日付区切りが1回のみ
+  test("render the date separator only for the first message of the same date, even if there are multiple messages on that date", async () => {
+    const { MessageList } = await import("./MessageList");
+    const messages: Messages = {
+      partner: { id: "partner1", name: "テスト相手", image: "" },
+      messages: [
+        {
+          id: "m1",
+          from_user_id: "partner1",
+          to_user_id: "me",
+          content: "1件目",
+          read: true,
+          created_at: "2024-08-03T15:00:00Z", // JST 8/4 0:00
+        },
+        {
+          id: "m2",
+          from_user_id: "partner1",
+          to_user_id: "me",
+          content: "2件目",
+          read: true,
+          created_at: "2024-08-03T16:00:00Z", // JST 8/4 1:00
+        },
+      ],
+    };
+    render(<MessageList data={messages} currentUserId="me" />);
+    expect(screen.getAllByText("8月4日")).toHaveLength(1);
+  });
 });

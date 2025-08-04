@@ -109,4 +109,17 @@ describe("<MessageItem />", () => {
       ),
     ).toBeInTheDocument();
   });
+
+  // 送信時間が日本時間で表示されることをテスト
+  test("render the message's sent time in JST (Japan Standard Time)", async () => {
+    const { MessageItem } = await import("./MessageItem");
+    // created_at: "2024-08-04T01:00:00Z" → JST: 10:00
+    render(<MessageItem data={baseData} message={myMessage} currentUserId="me" />);
+    // JST 10:00 になる
+    expect(screen.getByText("10:00")).toBeInTheDocument();
+
+    // partnerMessage: created_at: "2024-08-04T02:00:00Z" → JST: 11:00
+    render(<MessageItem data={baseData} message={partnerMessage} currentUserId="me" />);
+    expect(screen.getByText("11:00")).toBeInTheDocument();
+  });
 });
