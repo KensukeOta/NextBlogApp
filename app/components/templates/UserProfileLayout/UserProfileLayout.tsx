@@ -2,7 +2,6 @@ import type { User } from "@/app/types/User";
 import Link from "next/link";
 import { SessionProvider } from "next-auth/react";
 import { UserProfile } from "../../organisms/UserProfile";
-import { UserTabList } from "../../molecules/UserTabList";
 import { UserSNSProfile } from "../../molecules/UserSNSProfile";
 import { UserInfoProfile } from "../../organisms/UserInfoProfile";
 
@@ -36,12 +35,7 @@ export const UserProfileLayout = ({
             <UserSNSProfile user={user} />
           </div>
 
-          <div className="lg:col-span-2">
-            <UserTabList name={user.name} />
-            <div className="mt-2">
-              <div className="space-y-4">{children}</div>
-            </div>
-          </div>
+          <div className="lg:col-span-2">{children}</div>
         </div>
       </div>
     </div>

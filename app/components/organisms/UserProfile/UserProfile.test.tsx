@@ -28,9 +28,15 @@ vi.mock("../../atoms/Backdrop", () => ({
   Backdrop: () => <div data-testid="Backdrop" className="backdrop-class" />,
 }));
 
+// FollowButtonのモック
+vi.mock("../../atoms/FollowButton", () => ({
+  FollowButton: ({ isFollowing }: { isFollowing: boolean }) => (
+    <button data-testid="FollowButton">{isFollowing ? "フォロー中" : "フォローする"}</button>
+  ),
+}));
+
 // UserProfileEditModal のモック
 vi.mock("../UserProfileEditModal", () => {
-  // factory内で直接forwardRefを生成
   const UserProfileEditModal = React.forwardRef<
     HTMLDivElement,
     { user: User; onCloseModal: () => void }
@@ -59,6 +65,47 @@ const mockUser: User = {
   bio: "hello",
   posts: [{ id: "p1" }] as unknown as User["posts"],
   liked_posts: [{ id: "l1" }] as unknown as User["liked_posts"],
+  following: [
+    {
+      id: "2",
+      name: "other",
+      image: "/other.png",
+      email: "",
+      provider: "github",
+      bio: "",
+      posts: [],
+      liked_posts: [],
+      following: [],
+      followers: [],
+      followers_count: 0,
+      following_count: 0,
+      created_at: "",
+      updated_at: "",
+    },
+  ],
+  followers: [
+    {
+      id: "follower1",
+      name: "userA",
+      image: "/userA.png",
+      email: "",
+      provider: "github",
+      bio: "",
+      posts: [],
+      liked_posts: [],
+      following: [],
+      followers: [],
+      followers_count: 0,
+      following_count: 0,
+      created_at: "",
+      updated_at: "",
+      follow_id: "fid-1",
+    },
+  ],
+  followers_count: 1,
+  following_count: 1,
+  created_at: "",
+  updated_at: "",
 };
 
 beforeEach(() => {
@@ -100,15 +147,39 @@ describe("<UserProfile />", () => {
     expect(screen.getByText(mockUser.bio)).toBeInTheDocument();
   });
 
-  // 投稿数・いいね数が表示されることをテスト
-  test("renders post count and like count", () => {
+  // 投稿数・いいね数・フォロー数・フォロワー数が表示され、リンク先が正しいことをテスト
+  test("renders counts with correct links", () => {
     render(<UserProfile user={mockUser} />);
+    // 投稿
     const postCountDiv = screen.getByLabelText("post-count");
     expect(postCountDiv).toHaveTextContent(String(mockUser.posts.length));
     expect(screen.getByText("投稿")).toBeInTheDocument();
+    const postLink = screen.getByText("投稿").closest("a");
+    expect(postLink).toHaveAttribute("href", `/${encodeURIComponent(mockUser.name)}`);
+
+    // いいね
     const likeCountDiv = screen.getByLabelText("like-count");
     expect(likeCountDiv).toHaveTextContent(String(mockUser.liked_posts.length));
     expect(screen.getByText("いいね")).toBeInTheDocument();
+    const likeLink = screen.getByText("いいね").closest("a");
+    expect(likeLink).toHaveAttribute("href", `/${encodeURIComponent(mockUser.name)}/likes`);
+
+    // フォロー
+    const followingDiv = screen.getByLabelText("following-count");
+    expect(followingDiv).toHaveTextContent(String(mockUser.following.length));
+    expect(screen.getByText("フォロー")).toBeInTheDocument();
+    const followingLink = screen.getByText("フォロー").closest("a");
+    expect(followingLink).toHaveAttribute(
+      "href",
+      `/${encodeURIComponent(mockUser.name)}/following_users`,
+    );
+
+    // フォロワー
+    const followerDiv = screen.getByLabelText("follower-count");
+    expect(followerDiv).toHaveTextContent(String(mockUser.followers.length));
+    expect(screen.getByText("フォロワー")).toBeInTheDocument();
+    const followerLink = screen.getByText("フォロワー").closest("a");
+    expect(followerLink).toHaveAttribute("href", `/${encodeURIComponent(mockUser.name)}/followers`);
   });
 
   // ----- メッセージ送信ボタン -----
@@ -158,9 +229,40 @@ describe("<UserProfile />", () => {
     expect(screen.queryByRole("button", { name: "プロフィールを編集" })).not.toBeInTheDocument();
   });
 
+  // ----- フォローボタン -----
+  // 他ユーザーの場合はFollowButtonが表示され、isFollowing=trueで出る
+  test("shows FollowButton as 'フォロー中' if current user is in followers", () => {
+    useSessionMock.mockReturnValue({ data: { user: { id: "follower1" } } });
+    render(<UserProfile user={mockUser} />);
+    const followBtn = screen.getByTestId("FollowButton");
+    expect(followBtn).toHaveTextContent("フォロー中");
+  });
+
+  // 他ユーザーで未フォローの場合
+  test("shows FollowButton as 'フォローする' if current user is not following", () => {
+    useSessionMock.mockReturnValue({ data: { user: { id: "not-follower" } } });
+    render(<UserProfile user={mockUser} />);
+    const followBtn = screen.getByTestId("FollowButton");
+    expect(followBtn).toHaveTextContent("フォローする");
+  });
+
+  // 自分自身のプロフィールではFollowButtonは表示されない
+  test("does not show FollowButton for self", () => {
+    useSessionMock.mockReturnValue({ data: { user: { id: mockUser.id } } });
+    render(<UserProfile user={mockUser} />);
+    expect(screen.queryByTestId("FollowButton")).not.toBeInTheDocument();
+  });
+
+  // 未ログイン時もFollowButtonは表示されない
+  test("does not show FollowButton when not logged in", () => {
+    useSessionMock.mockReturnValue({ data: null });
+    render(<UserProfile user={mockUser} />);
+    expect(screen.queryByTestId("FollowButton")).not.toBeInTheDocument();
+  });
+
   // ----- モーダルUI -----
-  // 「プロフィールを編集」ボタンをクリックするとモーダルとBackdropが表示されることをテスト
-  test('shows modal and backdrop when "プロフィールを編集" button is clicked', async () => {
+  // 「プロフィールを編集」ボタンがクリックされたとき、モーダルとバックドロップが表示される
+  test("shows modal and backdrop when 'プロフィールを編集' button is clicked", async () => {
     render(<UserProfile user={mockUser} />);
     const button = screen.getByRole("button", { name: "プロフィールを編集" });
     await userEvent.click(button);
@@ -169,7 +271,7 @@ describe("<UserProfile />", () => {
     expect(screen.getByTestId("UserProfileEditModal")).toHaveTextContent("kensuke");
   });
 
-  // モーダル表示時にBackdrop（背景）をクリックするとモーダルが閉じることをテスト
+  // 外側（バックドロップ）をクリックするとモーダルが閉じる
   test("closes modal when clicking outside (backdrop)", async () => {
     render(<UserProfile user={mockUser} />);
     const button = screen.getByRole("button", { name: "プロフィールを編集" });
