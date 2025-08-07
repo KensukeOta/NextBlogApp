@@ -28,6 +28,14 @@ export const UserDropdownMenu = ({ onCloseMenu }: { onCloseMenu: () => void }) =
         >
           投稿する
         </Link>
+        <Link
+          href="/timeline"
+          role="menuitem"
+          onClick={onCloseMenu}
+          className="flex w-full rounded-sm px-2 py-1 leading-7 hover:bg-slate-200"
+        >
+          タイムライン
+        </Link>
       </li>
       <li>
         <LogoutButton />
