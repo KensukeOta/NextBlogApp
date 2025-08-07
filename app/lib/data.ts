@@ -151,3 +151,25 @@ export async function fetchAllMessages(id: string) {
     console.log(error);
   }
 }
+
+export async function fetchTimeline() {
+  try {
+    const session = await auth();
+    const res = await fetch(`${process.env.API_URL}/v1/timeline`, {
+      headers: {
+        Authorization: `Bearer ${session?.user.accessToken}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) {
+      const errors = await res.json();
+      console.log(errors);
+      throw new Error(errors);
+    }
+    const data = await res.json();
+    return data.posts;
+  } catch (error) {
+    console.log(error);
+  }
+}
