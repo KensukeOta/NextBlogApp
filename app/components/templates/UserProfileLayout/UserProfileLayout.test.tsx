@@ -8,10 +8,6 @@ vi.mock("../../organisms/UserProfile", () => ({
   UserProfile: ({ user }: { user: User }) => <div data-testid="UserProfile">{user.name}</div>,
 }));
 
-vi.mock("../../molecules/UserTabList", () => ({
-  UserTabList: ({ name }: { name: string }) => <nav data-testid="UserTabList">{name}</nav>,
-}));
-
 vi.mock("../../molecules/UserSNSProfile", () => ({
   UserSNSProfile: ({ name }: { name: string }) => <div data-testid="UserSNSProfile">{name}</div>,
 }));
@@ -41,13 +37,6 @@ describe("UserProfileLayout", () => {
     render(<UserProfileLayout user={mockUser}>test</UserProfileLayout>);
 
     expect(screen.getByTestId("UserProfile")).toHaveTextContent("kensuke");
-  });
-
-  // タブリスト(UserTabList)が表示されること
-  test("renders UserTabList with correct user name", () => {
-    render(<UserProfileLayout user={mockUser}>test</UserProfileLayout>);
-
-    expect(screen.getByTestId("UserTabList")).toHaveTextContent("kensuke");
   });
 
   // childrenがレイアウト内に描画されること

@@ -6,10 +6,16 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { Backdrop } from "../../atoms/Backdrop";
+import { FollowButton } from "../../atoms/FollowButton";
 import { UserProfileEditModal } from "../UserProfileEditModal";
 
 export const UserProfile = ({ user }: { user: User }) => {
   const { data: session } = useSession();
+
+  // 自分がログインしていて、相手のfollowersに自分がいればフォロー中
+  const myFollow = user.followers.find((f) => f.id === session?.user.id);
+  const isFollowing = !!myFollow;
+  const followId = myFollow?.follow_id;
 
   const [isVisible, setIsVisible] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -53,19 +59,34 @@ export const UserProfile = ({ user }: { user: User }) => {
       <div className="mt-6 space-y-4">
         <p className="break-words whitespace-pre-line">{user.bio}</p>
         <div className="h-[1px] bg-gray-200"></div>
-        <div className="grid grid-cols-2 gap-4 text-center">
-          <div>
+        <div className="grid grid-cols-4 gap-4 text-center">
+          <Link href={`/${encodeURIComponent(user.name)}`} className="hover:underline">
             <div className="text-xl font-bold text-blue-600" aria-label="post-count">
               {user.posts.length}
             </div>
             <div className="text-xs text-gray-500">投稿</div>
-          </div>
-          <div>
+          </Link>
+          <Link href={`/${encodeURIComponent(user.name)}/likes`} className="hover:underline">
             <div className="text-xl font-bold text-blue-600" aria-label="like-count">
               {user.liked_posts.length}
             </div>
             <div className="text-xs text-gray-500">いいね</div>
-          </div>
+          </Link>
+          <Link
+            href={`/${encodeURIComponent(user.name)}/following_users`}
+            className="hover:underline"
+          >
+            <div className="text-xl font-bold text-blue-600" aria-label="following-count">
+              {user.following.length}
+            </div>
+            <div className="text-xs text-gray-500">フォロー</div>
+          </Link>
+          <Link href={`/${encodeURIComponent(user.name)}/followers`} className="hover:underline">
+            <div className="text-xl font-bold text-blue-600" aria-label="follower-count">
+              {user.followers.length}
+            </div>
+            <div className="text-xs text-gray-500">フォロワー</div>
+          </Link>
         </div>
         <div className="h-[1px] bg-gray-200"></div>
         <div className="space-y-2">
@@ -88,6 +109,10 @@ export const UserProfile = ({ user }: { user: User }) => {
               <i className="bi bi-pencil-square"></i>
               プロフィールを編集
             </button>
+          )}
+
+          {session && session.user.id !== user.id && (
+            <FollowButton user={user} isFollowing={isFollowing} followId={followId} />
           )}
         </div>
       </div>
