@@ -17,6 +17,7 @@ test("should allow sign up with a valid username, email, password, and password 
   await page.getByRole("textbox", { name: "パスワード確認" }).fill("password123");
   await page.getByRole("button", { name: "登録" }).click();
   await expect(page).toHaveURL("/");
+  await expect(page.getByText(/ユーザー登録が完了しました/)).toBeVisible();
   await expect(page.getByText(`Hello, ${name}`)).toBeVisible();
 });
 
@@ -37,6 +38,7 @@ test("should display a validation message when input is below the minimum charac
   await page.getByRole("textbox", { name: "パスワード確認" }).fill(shortPassword);
   await page.getByRole("button", { name: "登録" }).click();
   await expect(page).toHaveURL("/signup");
+  await expect(page.getByText(/ユーザー登録が完了しました/)).not.toBeVisible();
   await expect(page.getByText("送信に失敗しました")).toBeVisible();
   await expect(page.getByText("3文字以上で入力してください")).toBeVisible();
   await expect(page.getByText("8文字以上で入力してください")).toHaveCount(2);
@@ -59,6 +61,7 @@ test("should display a validation message when input is below the maximum charac
   await page.getByRole("textbox", { name: "パスワード確認" }).fill(longPassword);
   await page.getByRole("button", { name: "登録" }).click();
   await expect(page).toHaveURL("/signup");
+  await expect(page.getByText(/ユーザー登録が完了しました/)).not.toBeVisible();
   await expect(page.getByText("送信に失敗しました")).toBeVisible();
   await expect(page.getByText("32文字以内で入力してください")).toBeVisible();
   await expect(page.getByText("64文字以内で入力してください")).toHaveCount(2);
@@ -80,6 +83,7 @@ test("should display a validation message when the password and password confirm
   await page.getByRole("textbox", { name: "パスワード確認" }).fill("different123");
   await page.getByRole("button", { name: "登録" }).click();
   await expect(page).toHaveURL("/signup");
+  await expect(page.getByText(/ユーザー登録が完了しました/)).not.toBeVisible();
   await expect(page.getByText("送信に失敗しました")).toBeVisible();
   await expect(page.getByText("パスワードが一致しません")).toBeVisible();
 });

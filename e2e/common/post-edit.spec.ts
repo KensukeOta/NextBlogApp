@@ -30,6 +30,7 @@ test("should be able to update a post with a valid title and content", async ({ 
   await page.getByRole("textbox", { name: "本文" }).fill(editContent);
   await page.getByRole("button", { name: "更新する" }).click();
   await expect(page).toHaveURL("/");
+  await expect(page.getByText(/記事を更新しました/)).toBeVisible();
   await expect(page.getByRole("link", { name: editTitle })).toBeVisible();
 });
 
@@ -63,6 +64,7 @@ test("should be able to update a post with a valid title, content, and tags", as
   await page.getByRole("textbox", { name: "本文" }).fill(editContent);
   await page.getByRole("button", { name: "更新する" }).click();
   await expect(page).toHaveURL("/");
+  await expect(page.getByText(/記事を更新しました/)).toBeVisible();
   await expect(page.getByRole("link", { name: editTitle })).toBeVisible();
   await expect(page.getByRole("link", { name: tagName })).toBeVisible();
 });
@@ -95,6 +97,7 @@ test("should display a validation message when input is below the minimum charac
   await page.getByRole("textbox", { name: "タイトル" }).fill(shortEditTitle);
   await page.getByRole("textbox", { name: "本文" }).fill(shortEditContent);
   await page.getByRole("button", { name: "更新する" }).click();
+  await expect(page.getByText(/記事を更新しました/)).not.toBeVisible();
   await expect(page.getByText("送信に失敗しました")).toBeVisible();
   await expect(page.getByText("3文字以上で入力してください")).toBeVisible();
   await expect(page.getByText("10文字以上で入力してください")).toBeVisible();
@@ -130,6 +133,7 @@ test("should display a validation message when input is below the maximum charac
   await page.getByRole("textbox", { name: "タイトル" }).fill(longEditTitle);
   await page.getByRole("textbox", { name: "本文" }).fill(longEditContent);
   await page.getByRole("button", { name: "更新する" }).click();
+  await expect(page.getByText(/記事を更新しました/)).not.toBeVisible();
   await expect(page.getByText("送信に失敗しました")).toBeVisible();
   await expect(page.getByText("50文字以内で入力してください")).toBeVisible();
   await expect(page.getByText("10000文字以内で入力してください")).toBeVisible();

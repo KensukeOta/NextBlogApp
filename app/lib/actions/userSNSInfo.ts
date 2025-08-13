@@ -2,6 +2,7 @@
 
 import type { User } from "@/app/types/User";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
@@ -105,8 +106,33 @@ export async function createUserSNSInfo(
             console.log(errors);
             throw new Error(errors.error);
           }
+
+          const cookieStore = await cookies();
+          cookieStore.set(
+            "flash",
+            JSON.stringify({ id: crypto.randomUUID(), message: "プロフィールを更新しました" }),
+            {
+              path: "/", // どこでも拾えるように
+              httpOnly: false, // クライアントで消すので false
+              maxAge: 20,
+              secure: process.env.NODE_ENV === "production",
+              sameSite: "lax",
+            },
+          );
         }
         // 既存もなければ何もしない
+        const cookieStore = await cookies();
+        cookieStore.set(
+          "flash",
+          JSON.stringify({ id: crypto.randomUUID(), message: "プロフィールを更新しました" }),
+          {
+            path: "/", // どこでも拾えるように
+            httpOnly: false, // クライアントで消すので false
+            maxAge: 20,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+          },
+        );
         continue;
       }
 
@@ -131,6 +157,19 @@ export async function createUserSNSInfo(
           console.log(errors);
           throw new Error(errors.error);
         }
+
+        const cookieStore = await cookies();
+        cookieStore.set(
+          "flash",
+          JSON.stringify({ id: crypto.randomUUID(), message: "プロフィールを更新しました" }),
+          {
+            path: "/", // どこでも拾えるように
+            httpOnly: false, // クライアントで消すので false
+            maxAge: 20,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+          },
+        );
       } else {
         const session = await auth();
         const res = await fetch(`${process.env.API_URL}/v1/user_social_profiles`, {
@@ -152,6 +191,19 @@ export async function createUserSNSInfo(
           console.log(errors);
           throw new Error(errors.error);
         }
+
+        const cookieStore = await cookies();
+        cookieStore.set(
+          "flash",
+          JSON.stringify({ id: crypto.randomUUID(), message: "プロフィールを更新しました" }),
+          {
+            path: "/", // どこでも拾えるように
+            httpOnly: false, // クライアントで消すので false
+            maxAge: 20,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+          },
+        );
       }
     }
 

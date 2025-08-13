@@ -1,5 +1,6 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 
@@ -24,6 +25,19 @@ export async function createLike(postId: string) {
       console.log(errors);
       throw new Error(errors.error);
     }
+
+    const cookieStore = await cookies();
+    cookieStore.set(
+      "flash",
+      JSON.stringify({ id: crypto.randomUUID(), message: "いいねしました 👍" }),
+      {
+        path: "/", // どこでも拾えるように
+        httpOnly: false, // クライアントで消すので false
+        maxAge: 20,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+      },
+    );
   } catch {
     return { message: "いいねの処理に失敗しました" };
   }
@@ -47,6 +61,19 @@ export async function deleteLike(likeId: string) {
       console.log(errors);
       throw new Error(errors.error);
     }
+
+    const cookieStore = await cookies();
+    cookieStore.set(
+      "flash",
+      JSON.stringify({ id: crypto.randomUUID(), message: "いいねを取り消しました" }),
+      {
+        path: "/", // どこでも拾えるように
+        httpOnly: false, // クライアントで消すので false
+        maxAge: 20,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+      },
+    );
   } catch {
     return { message: "いいねの取り消しに失敗しました" };
   }

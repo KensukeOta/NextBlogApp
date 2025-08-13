@@ -33,6 +33,7 @@ test("should delete the post when OK is clicked in the delete confirmation dialo
     .click();
 
   await expect(page.getByRole("link", { name: title })).toHaveCount(0);
+  await expect(page.getByText(/記事を削除しました/)).toBeVisible();
 });
 
 // 記事削除ダイアログでキャンセルを押すと記事は削除されない
@@ -68,4 +69,5 @@ test("should not delete the post when Cancel is clicked in the delete confirmati
 
   // 記事がまだ存在することを確認
   await expect(page.getByRole("link", { name: title })).toBeVisible();
+  await expect(page.getByText(/記事を削除しました/)).not.toBeVisible();
 });

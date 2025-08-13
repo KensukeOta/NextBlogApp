@@ -36,6 +36,7 @@ test.describe("UserProfileForm", () => {
     );
     await page.getByRole("button", { name: "変更を保存" }).click();
     await expect(page).toHaveURL(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
+    await expect(page.getByText(/プロフィールを更新しました/)).toBeVisible();
     await expect(page.getByRole("heading", { name: "プロフィール編集" })).not.toBeVisible();
   });
 
@@ -57,6 +58,7 @@ test.describe("UserProfileForm", () => {
     await page.getByRole("textbox", { name: "自己紹介" }).fill("Hello World");
     await page.getByRole("button", { name: "変更を保存" }).click();
     await expect(page).toHaveURL(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
+    await expect(page.getByText(/プロフィールを更新しました/)).toBeVisible();
     await expect(page.getByRole("heading", { name: "プロフィール編集" })).not.toBeVisible();
   });
 
@@ -76,6 +78,7 @@ test.describe("UserProfileForm", () => {
     // ユーザー基本情報更新処理
     await updateUserProfile(page, shortName, "");
 
+    await expect(page.getByText(/プロフィールを更新しました/)).not.toBeVisible();
     await expect(page.getByRole("heading", { name: "プロフィール編集" })).toBeVisible();
     await expect(page.getByText("送信に失敗しました")).toBeVisible();
     await expect(page.getByText("3文字以上で入力してください")).toBeVisible();
@@ -98,6 +101,7 @@ test.describe("UserProfileForm", () => {
     // ユーザー基本情報更新処理
     await updateUserProfile(page, longName, longBio);
 
+    await expect(page.getByText(/プロフィールを更新しました/)).not.toBeVisible();
     await expect(page.getByRole("heading", { name: "プロフィール編集" })).toBeVisible();
     await expect(page.getByText("送信に失敗しました")).toBeVisible();
     await expect(page.getByText("32文字以内で入力してください")).toBeVisible();
@@ -123,6 +127,7 @@ test.describe("UserSNSForm", () => {
     await page.getByRole("textbox", { name: /YouTube/ }).fill("https://youtube.com/c/hoge");
     await page.getByRole("button", { name: "変更を保存" }).click();
     await expect(page).toHaveURL(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
+    await expect(page.getByText(/プロフィールを更新しました/)).toBeVisible();
     await expect(page.getByRole("heading", { name: "プロフィール編集" })).not.toBeVisible();
     await expect(page.getByRole("link", { name: /X \(Twitter\)/ })).toBeVisible();
     await expect(page.getByRole("link", { name: /Instagram/ })).toBeVisible();
@@ -141,6 +146,7 @@ test.describe("UserSNSForm", () => {
     // ユーザーSNS情報更新処理
     await updateUserSNS(page, "", "", "");
 
+    await expect(page.getByText(/プロフィールを更新しました/)).toBeVisible();
     await expect(page.getByRole("heading", { name: "プロフィール編集" })).not.toBeVisible();
   });
 
@@ -158,6 +164,7 @@ test.describe("UserSNSForm", () => {
     // ユーザーSNS情報更新処理
     await updateUserSNS(page, "invalidURL", "invalidURL", "invalidURL");
 
+    await expect(page.getByText(/プロフィールを更新しました/)).not.toBeVisible();
     await expect(page.getByRole("heading", { name: "プロフィール編集" })).toBeVisible();
     await expect(page.getByText("送信に失敗しました")).toBeVisible();
     await expect(
@@ -191,6 +198,7 @@ test.describe("UserSNSForm", () => {
     await updateUserSNS(page, longURL, longURL, longURL);
 
     expect(longURL.length).toBe(256);
+    await expect(page.getByText(/プロフィールを更新しました/)).not.toBeVisible();
     await expect(page.getByRole("heading", { name: "プロフィール編集" })).toBeVisible();
     await expect(page.getByText("送信に失敗しました")).toBeVisible();
     await expect(
@@ -224,6 +232,7 @@ test.describe("UserInfoForm", () => {
     await page.getByRole("textbox", { name: "タグ" }).press("Enter");
     await page.getByRole("button", { name: "変更を保存" }).click();
     await expect(page).toHaveURL(`/${encodeURIComponent(process.env.TEST_USER_NAME as string)}`);
+    await expect(page.getByText(/プロフィールを更新しました/)).toBeVisible();
     await expect(page.getByRole("heading", { name: "プロフィール編集" })).not.toBeVisible();
     await expect(page.getByRole("link", { name: tagName })).toBeVisible();
   });

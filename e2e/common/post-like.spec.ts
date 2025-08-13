@@ -52,6 +52,7 @@ test("should increment the like count when the like button is clicked", async ({
 
   // いいね数が1増えていることを検証
   await expect(likeCountLocator).toHaveText(String(beforeCount + 1));
+  await expect(page.getByText(/いいねしました/)).toBeVisible();
 
   // いいねボタンをクリック（いいね取り消し）
   const unlikeButton = page
@@ -62,4 +63,5 @@ test("should increment the like count when the like button is clicked", async ({
 
   // いいね数が元に戻ることを検証
   await expect(likeCountLocator).toHaveText(String(beforeCount));
+  await expect(page.getByText(/いいねを取り消しました/)).toBeVisible();
 });

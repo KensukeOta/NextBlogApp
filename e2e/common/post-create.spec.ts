@@ -18,6 +18,7 @@ test("should be able to create a post with a valid title and content", async ({ 
   await page.getByRole("textbox", { name: "本文" }).fill(content);
   await page.getByRole("button", { name: "投稿する" }).click();
   await expect(page).toHaveURL("/");
+  await expect(page.getByText(/記事を投稿しました/)).toBeVisible();
   await expect(page.getByRole("link", { name: title })).toBeVisible();
 });
 
@@ -41,6 +42,7 @@ test("should be able to create a post with a valid title, content, and tags", as
   await page.getByRole("textbox", { name: "本文" }).fill(content);
   await page.getByRole("button", { name: "投稿する" }).click();
   await expect(page).toHaveURL("/");
+  await expect(page.getByText(/記事を投稿しました/)).toBeVisible();
   await expect(page.getByRole("link", { name: title })).toBeVisible();
   await expect(page.getByRole("link", { name: tagName })).toBeVisible();
 });
@@ -64,6 +66,7 @@ test("should display a validation message when input is below the minimum charac
   await page.getByRole("textbox", { name: "本文" }).fill(shortContent);
   await page.getByRole("button", { name: "投稿する" }).click();
   await expect(page).toHaveURL("/posts/create");
+  await expect(page.getByText(/記事を投稿しました/)).not.toBeVisible();
   await expect(page.getByText("送信に失敗しました")).toBeVisible();
   await expect(page.getByText("3文字以上で入力してください")).toBeVisible();
   await expect(page.getByText("10文字以上で入力してください")).toBeVisible();
@@ -88,6 +91,7 @@ test("should display a validation message when input is below the maximum charac
   await page.getByRole("textbox", { name: "本文" }).fill(longContent);
   await page.getByRole("button", { name: "投稿する" }).click();
   await expect(page).toHaveURL("/posts/create");
+  await expect(page.getByText(/記事を投稿しました/)).not.toBeVisible();
   await expect(page.getByText("送信に失敗しました")).toBeVisible();
   await expect(page.getByText("50文字以内で入力してください")).toBeVisible();
   await expect(page.getByText("10000文字以内で入力してください")).toBeVisible();

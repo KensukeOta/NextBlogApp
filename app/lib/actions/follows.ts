@@ -1,5 +1,6 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 
@@ -34,6 +35,19 @@ export async function createFollow(
       console.log(errors);
       throw new Error(errors.error);
     }
+
+    const cookieStore = await cookies();
+    cookieStore.set(
+      "flash",
+      JSON.stringify({ id: crypto.randomUUID(), message: "フォローしました" }),
+      {
+        path: "/", // どこでも拾えるように
+        httpOnly: false, // クライアントで消すので false
+        maxAge: 20,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+      },
+    );
   } catch {
     return { message: "フォローの処理に失敗しました" };
   }
@@ -63,6 +77,19 @@ export async function deleteFollow(
       console.log(errors);
       throw new Error(errors.error);
     }
+
+    const cookieStore = await cookies();
+    cookieStore.set(
+      "flash",
+      JSON.stringify({ id: crypto.randomUUID(), message: "フォローを取り消しました" }),
+      {
+        path: "/", // どこでも拾えるように
+        httpOnly: false, // クライアントで消すので false
+        maxAge: 20,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+      },
+    );
   } catch {
     return { message: "フォロー解除に失敗しました" };
   }

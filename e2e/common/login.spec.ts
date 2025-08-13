@@ -13,6 +13,7 @@ test("should successfully log in", async ({ page }) => {
     .fill(process.env.TEST_USER_PASSWORD as string);
   await page.getByRole("button", { name: "ログイン" }).click();
   await expect(page).toHaveURL("/");
+  await expect(page.getByText(/ログインに成功しました/)).toBeVisible();
   await expect(page.getByText("Hello, kensuke")).toBeVisible();
 });
 
@@ -25,6 +26,7 @@ test("should display an error message when trying to log in with an invalid emai
   await page.getByRole("textbox", { name: "パスワード" }).fill("invalidpassword");
   await page.getByRole("button", { name: "ログイン" }).click();
   await expect(page).toHaveURL("/login");
+  await expect(page.getByText(/ログインに成功しました/)).not.toBeVisible();
   await expect(page.getByText("ログインに失敗しました")).toBeVisible();
 });
 
