@@ -11,4 +11,5 @@ test("should be able to log out", async ({ page }) => {
   await page.getByRole("button", { name: "ユーザーメニューを開く" }).click();
   await page.getByRole("button", { name: "ログアウト" }).click();
   await expect(page).toHaveURL("/login");
+  await expect(page.getByText("ログアウトしました")).toBeVisible();
 });

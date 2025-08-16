@@ -8,7 +8,15 @@ export const LogoutButton = () => {
 
   const handleLogout = async () => {
     setIsLoading(true);
+
+    const flash = {
+      type: "success",
+      message: "ログアウトしました",
+    };
+    document.cookie = `flash=${encodeURIComponent(JSON.stringify(flash))}; path=/`;
+
     await signOut({ redirectTo: "/login" });
+
     setIsLoading(false);
   };
 
