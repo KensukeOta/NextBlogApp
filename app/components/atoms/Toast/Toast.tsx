@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 type Flash = {
-  id?: string | number;
+  id?: string;
   type?: "success" | "error" | "info" | "warning";
   message: string;
 };
@@ -20,7 +20,7 @@ export const Toast = ({
   const [mounted, setMounted] = useState(false);
   const [flash, setFlash] = useState<Flash | null>(null);
   const [visible, setVisible] = useState(true);
-  const [lastId, setLastId] = useState<Flash["id"] | null>(null);
+  const lastIdRef = useRef<string | null>(null);
   const timerRef = useRef<number | null>(null);
 
   // クライアントマウント完了フラグ（SSRとの不一致を防ぐ）
@@ -41,7 +41,7 @@ export const Toast = ({
 
     if (!parsed?.message) return;
 
-    if (parsed.id && parsed.id === lastId) {
+    if (parsed.id && parsed.id === lastIdRef.current) {
       // 同一idならスキップ
       return;
     }
@@ -53,7 +53,7 @@ export const Toast = ({
 
     // 内容をセットして開く
     setFlash(parsed);
-    setLastId(parsed.id ?? null);
+    lastIdRef.current = parsed.id ?? null;
     // 次のtickでopenにするとアニメが安定する
     requestAnimationFrame(() => {
       setState("open");
@@ -75,7 +75,7 @@ export const Toast = ({
     return () => {
       if (timerRef.current) window.clearTimeout(timerRef.current);
     };
-  }, [mounted, duration, initialFlash, lastId]);
+  }, [mounted, duration, initialFlash]);
 
   // アニメーション終了後にDOMから削除
   const handleAnimationEnd: React.AnimationEventHandler<HTMLDivElement> = () => {

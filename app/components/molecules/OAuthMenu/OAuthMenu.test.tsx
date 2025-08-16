@@ -3,6 +3,12 @@ import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { OAuthMenu } from "./OAuthMenu";
 
+vi.mock("next/headers", () => ({
+  cookies: vi.fn(() => ({
+    set: vi.fn(),
+  })),
+}));
+
 // signInをモック
 vi.mock("@/auth", () => ({
   signIn: vi.fn(),
