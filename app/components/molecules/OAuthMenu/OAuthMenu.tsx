@@ -1,5 +1,5 @@
-import { cookies } from "next/headers";
 import { signIn } from "@/auth";
+import { setFlash } from "@/app/lib/utils/flash";
 
 export const OAuthMenu = () => {
   return (
@@ -7,22 +7,7 @@ export const OAuthMenu = () => {
       action={async () => {
         "use server";
 
-        const cookieStore = await cookies();
-        cookieStore.set(
-          "flash",
-          JSON.stringify({
-            id: crypto.randomUUID(),
-            type: "success",
-            message: "ログインに成功しました",
-          }),
-          {
-            path: "/",
-            httpOnly: false, // ← Toast(クライアント)で読んで消すので false
-            sameSite: "lax",
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 20, // リダイレクト前に万一消されてもOKなよう短寿命に
-          },
-        );
+        await setFlash({ message: "ログインに成功しました" });
 
         await signIn("google", { redirectTo: "/" });
       }}

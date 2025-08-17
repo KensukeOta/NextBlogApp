@@ -1,10 +1,10 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { auth, signIn } from "@/auth";
 import { z } from "zod";
+import { setFlash } from "../utils/flash";
 
 export type SignupState = {
   errors?: {
@@ -167,18 +167,8 @@ export async function createUser(prevState: SignupState | undefined, formData: F
   }
 
   await signIn("credentials", { email: validEmail, password: validPassword, redirect: false });
-  const cookieStore = await cookies();
-  cookieStore.set(
-    "flash",
-    JSON.stringify({ id: crypto.randomUUID(), message: "ユーザー登録が完了しました" }),
-    {
-      path: "/", // どこでも拾えるように
-      httpOnly: false, // クライアントで消すので false
-      maxAge: 20,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-    },
-  );
+
+  await setFlash({ message: "ユーザー登録が完了しました" });
 
   redirect("/");
 }
@@ -240,18 +230,7 @@ export async function updateUser(
       throw new Error(errors.error);
     }
 
-    const cookieStore = await cookies();
-    cookieStore.set(
-      "flash",
-      JSON.stringify({ id: crypto.randomUUID(), message: "プロフィールを更新しました" }),
-      {
-        path: "/", // どこでも拾えるように
-        httpOnly: false, // クライアントで消すので false
-        maxAge: 20,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-      },
-    );
+    await setFlash({ message: "プロフィールを更新しました" });
   } catch (error) {
     let errorMessage = "不明なエラーが発生しました";
     if (error instanceof Error) {
@@ -315,18 +294,7 @@ export async function authenticate(prevState: LoginState | undefined, formData: 
 
   try {
     await signIn("credentials", { email: validEmail, password: validPassword, redirect: false });
-    const cookieStore = await cookies();
-    cookieStore.set(
-      "flash",
-      JSON.stringify({ id: crypto.randomUUID(), message: "ログインに成功しました" }),
-      {
-        path: "/", // どこでも拾えるように
-        httpOnly: false, // クライアントで消すので false
-        maxAge: 20,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-      },
-    );
+    await setFlash({ message: "ログインに成功しました" });
   } catch {
     return {
       message: "ログインに失敗しました",

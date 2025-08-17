@@ -2,11 +2,11 @@
 
 import type { User } from "@/app/types/User";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { z } from "zod";
+import { setFlash } from "../utils/flash";
 
 export type UserSNSState = {
   errors?: {
@@ -107,32 +107,10 @@ export async function createUserSNSInfo(
             throw new Error(errors.error);
           }
 
-          const cookieStore = await cookies();
-          cookieStore.set(
-            "flash",
-            JSON.stringify({ id: crypto.randomUUID(), message: "プロフィールを更新しました" }),
-            {
-              path: "/", // どこでも拾えるように
-              httpOnly: false, // クライアントで消すので false
-              maxAge: 20,
-              secure: process.env.NODE_ENV === "production",
-              sameSite: "lax",
-            },
-          );
+          await setFlash({ message: "プロフィールを更新しました" });
         }
         // 既存もなければ何もしない
-        const cookieStore = await cookies();
-        cookieStore.set(
-          "flash",
-          JSON.stringify({ id: crypto.randomUUID(), message: "プロフィールを更新しました" }),
-          {
-            path: "/", // どこでも拾えるように
-            httpOnly: false, // クライアントで消すので false
-            maxAge: 20,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-          },
-        );
+        await setFlash({ message: "プロフィールを更新しました" });
         continue;
       }
 
@@ -158,18 +136,7 @@ export async function createUserSNSInfo(
           throw new Error(errors.error);
         }
 
-        const cookieStore = await cookies();
-        cookieStore.set(
-          "flash",
-          JSON.stringify({ id: crypto.randomUUID(), message: "プロフィールを更新しました" }),
-          {
-            path: "/", // どこでも拾えるように
-            httpOnly: false, // クライアントで消すので false
-            maxAge: 20,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-          },
-        );
+        await setFlash({ message: "プロフィールを更新しました" });
       } else {
         const session = await auth();
         const res = await fetch(`${process.env.API_URL}/v1/user_social_profiles`, {
@@ -192,18 +159,7 @@ export async function createUserSNSInfo(
           throw new Error(errors.error);
         }
 
-        const cookieStore = await cookies();
-        cookieStore.set(
-          "flash",
-          JSON.stringify({ id: crypto.randomUUID(), message: "プロフィールを更新しました" }),
-          {
-            path: "/", // どこでも拾えるように
-            httpOnly: false, // クライアントで消すので false
-            maxAge: 20,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-          },
-        );
+        await setFlash({ message: "プロフィールを更新しました" });
       }
     }
 

@@ -41,8 +41,8 @@ describe("<OAuthMenu />", () => {
 
     await user.click(button);
 
-    // サーバーアクションのため、実際の挙動はNext.js側で実装されますが、
-    // モック関数として呼ばれるかは検証できる
+    // 実際のサーバーアクションの挙動は Next.js が処理するので、
+    // signIn がモックとして呼ばれるかどうかだけ確認
     expect(signIn).toHaveBeenCalledWith("google", { redirectTo: "/" });
   });
 });

@@ -1,8 +1,8 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
+import { setFlash } from "../utils/flash";
 
 export async function createLike(postId: string) {
   try {
@@ -26,18 +26,7 @@ export async function createLike(postId: string) {
       throw new Error(errors.error);
     }
 
-    const cookieStore = await cookies();
-    cookieStore.set(
-      "flash",
-      JSON.stringify({ id: crypto.randomUUID(), message: "いいねしました 👍" }),
-      {
-        path: "/", // どこでも拾えるように
-        httpOnly: false, // クライアントで消すので false
-        maxAge: 20,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-      },
-    );
+    await setFlash({ message: "いいねしました 👍" });
   } catch {
     return { message: "いいねの処理に失敗しました" };
   }
@@ -62,18 +51,7 @@ export async function deleteLike(likeId: string) {
       throw new Error(errors.error);
     }
 
-    const cookieStore = await cookies();
-    cookieStore.set(
-      "flash",
-      JSON.stringify({ id: crypto.randomUUID(), message: "いいねを取り消しました" }),
-      {
-        path: "/", // どこでも拾えるように
-        httpOnly: false, // クライアントで消すので false
-        maxAge: 20,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-      },
-    );
+    await setFlash({ message: "いいねを取り消しました" });
   } catch {
     return { message: "いいねの取り消しに失敗しました" };
   }

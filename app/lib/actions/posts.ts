@@ -1,10 +1,10 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { z } from "zod";
+import { setFlash } from "../utils/flash";
 
 export type PostState = {
   errors?: {
@@ -84,18 +84,7 @@ export async function createPost(prevState: PostState | undefined, formData: For
       throw new Error(errors.error);
     }
 
-    const cookieStore = await cookies();
-    cookieStore.set(
-      "flash",
-      JSON.stringify({ id: crypto.randomUUID(), message: "記事を投稿しました" }),
-      {
-        path: "/", // どこでも拾えるように
-        httpOnly: false, // クライアントで消すので false
-        maxAge: 20,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-      },
-    );
+    await setFlash({ message: "記事を投稿しました" });
   } catch {
     return {
       message: "不明なエラーが発生しました",
@@ -168,18 +157,7 @@ export async function updatePost(
       throw new Error(errors.error);
     }
 
-    const cookieStore = await cookies();
-    cookieStore.set(
-      "flash",
-      JSON.stringify({ id: crypto.randomUUID(), message: "記事を更新しました" }),
-      {
-        path: "/", // どこでも拾えるように
-        httpOnly: false, // クライアントで消すので false
-        maxAge: 20,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-      },
-    );
+    await setFlash({ message: "記事を更新しました" });
   } catch {
     return {
       message: "不明なエラーが発生しました",
@@ -212,18 +190,7 @@ export async function deletePost(postId: string) {
       throw new Error(errors.error);
     }
 
-    const cookieStore = await cookies();
-    cookieStore.set(
-      "flash",
-      JSON.stringify({ id: crypto.randomUUID(), message: "記事を削除しました" }),
-      {
-        path: "/", // どこでも拾えるように
-        httpOnly: false, // クライアントで消すので false
-        maxAge: 20,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-      },
-    );
+    await setFlash({ message: "記事を削除しました" });
   } catch {
     return { message: "記事の削除に失敗しました" };
   }

@@ -1,8 +1,8 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
+import { setFlash } from "../utils/flash";
 
 export type FollowState = {
   message?: string | null;
@@ -36,18 +36,7 @@ export async function createFollow(
       throw new Error(errors.error);
     }
 
-    const cookieStore = await cookies();
-    cookieStore.set(
-      "flash",
-      JSON.stringify({ id: crypto.randomUUID(), message: "フォローしました" }),
-      {
-        path: "/", // どこでも拾えるように
-        httpOnly: false, // クライアントで消すので false
-        maxAge: 20,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-      },
-    );
+    await setFlash({ message: "フォローしました" });
   } catch {
     return { message: "フォローの処理に失敗しました" };
   }
@@ -78,18 +67,7 @@ export async function deleteFollow(
       throw new Error(errors.error);
     }
 
-    const cookieStore = await cookies();
-    cookieStore.set(
-      "flash",
-      JSON.stringify({ id: crypto.randomUUID(), message: "フォローを取り消しました" }),
-      {
-        path: "/", // どこでも拾えるように
-        httpOnly: false, // クライアントで消すので false
-        maxAge: 20,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-      },
-    );
+    await setFlash({ message: "フォローを取り消しました" });
   } catch {
     return { message: "フォロー解除に失敗しました" };
   }

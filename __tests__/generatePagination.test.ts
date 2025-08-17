@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { generatePagination } from "@/app/lib/utils";
+import { generatePagination } from "@/app/lib/utils/generatePagination";
 
 describe("generatePagination", () => {
   // ページ数が7以下なら全て表示
