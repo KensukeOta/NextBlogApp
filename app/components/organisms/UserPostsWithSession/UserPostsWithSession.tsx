@@ -12,7 +12,7 @@ export const UserPostsWithSession = ({
   return (
     <SessionProvider>
       {posts.length > 0 ? (
-        posts.map((post) => <PostItem key={post.id} post={post} />)
+        posts.map((post) => <PostItem key={post.id} post={post} className="border-blue-100" />)
       ) : (
         <p className="text-center font-bold">{noPostMessage}</p>
       )}

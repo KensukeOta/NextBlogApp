@@ -5,12 +5,20 @@ import { PostItem } from "../Postitem";
 export const Posts = async ({ query, currentPage }: { query: string; currentPage: number }) => {
   const posts: Post[] = await fetchFilteredPosts(query, currentPage);
 
-  const postItems =
-    posts.length > 0 ? (
-      posts.map((post) => <PostItem key={post.id} post={post} />)
-    ) : (
-      <p className="text-center font-bold">記事が投稿されていません</p>
+  if (posts.length === 0) {
+    // 投稿がないとき
+    return (
+      <section className="mt-2 text-center">
+        <p className="font-bold">記事が投稿されていません</p>
+      </section>
     );
+  }
 
-  return <section className="mt-2">{postItems}</section>;
+  return (
+    <section className="mt-2 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {posts.map((post) => (
+        <PostItem key={post.id} post={post} />
+      ))}
+    </section>
+  );
 };

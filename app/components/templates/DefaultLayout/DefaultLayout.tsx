@@ -5,5 +5,5 @@ export const DefaultLayout = ({
   children: React.ReactNode;
   className?: string;
 }) => {
-  return <div className={`h-full bg-gray-100 ${className}`}>{children}</div>;
+  return <div className={`h-full bg-white ${className}`}>{children}</div>;
 };

@@ -15,7 +15,7 @@ describe("<DefaultLayout />", () => {
     expect(screen.getByText("Child Content")).toBeInTheDocument();
     const container = screen.getByText("Child Content").parentElement;
     expect(container).toHaveClass("h-full");
-    expect(container).toHaveClass("bg-gray-100");
+    expect(container).toHaveClass("bg-white");
     expect(container).toHaveClass("custom-class");
   });
 
@@ -28,6 +28,6 @@ describe("<DefaultLayout />", () => {
     );
     const container = screen.getByText("no className").parentElement;
     expect(container).toHaveClass("h-full");
-    expect(container).toHaveClass("bg-gray-100");
+    expect(container).toHaveClass("bg-white");
   });
 });

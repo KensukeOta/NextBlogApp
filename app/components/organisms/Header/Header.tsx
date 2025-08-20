@@ -9,7 +9,7 @@ export const Header = async () => {
   const session = await auth();
 
   return (
-    <header className="flex min-h-12 justify-between border-b">
+    <header className="flex min-h-12 justify-between border-b bg-blue-50">
       <h1 className="flex h-full items-center">
         <Link href="/" className="flex h-full items-center">
           <Image src="/favicon.ico" alt="hoge" width={32} height={32} />

@@ -6,16 +6,13 @@ import { PostEditLinkButton } from "../../atoms/PostEditLinkButton";
 import { PostDeleteButton } from "../../atoms/PostDeleteButton";
 import { LikeArea } from "../../molecules/LikeArea";
 
-export const PostItem = async ({ post }: { post: Post }) => {
+export const PostItem = async ({ post, className }: { post: Post; className?: string }) => {
   const session = await auth();
 
   return (
-    <article className="border bg-white p-2">
-      <h2 className="text-left font-bold">
-        <Link
-          href={`/${post.user.name}/posts/${post.id}`}
-          className="inline-block w-full hover:underline"
-        >
+    <article className={`rounded-lg border bg-white p-6 ${className}`}>
+      <h2 className="line-clamp-1 text-left font-bold break-words">
+        <Link href={`/${post.user.name}/posts/${post.id}`} className="block w-full hover:underline">
           {post.title}
         </Link>
       </h2>

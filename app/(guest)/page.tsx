@@ -20,7 +20,7 @@ export default async function Page(props: {
   const totalPages = (await fetchPostsPages(query)) as number;
 
   return (
-    <DefaultLayout className="py-6">
+    <DefaultLayout className="px-4 py-6">
       <p>Hello, {session?.user ? session.user.name : "stranger"}</p>
 
       <SessionProvider>

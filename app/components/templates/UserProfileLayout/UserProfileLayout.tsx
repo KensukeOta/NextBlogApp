@@ -15,7 +15,7 @@ export const UserProfileLayout = ({
   user: User;
 }) => {
   return (
-    <div data-testid="UserProfileLayoutRoot" className={`h-full bg-gray-100 ${className}`}>
+    <div data-testid="UserProfileLayoutRoot" className={`h-full bg-white ${className}`}>
       <div className="mx-auto max-w-6xl">
         <Link
           href="/"

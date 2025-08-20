@@ -7,7 +7,10 @@ export const UserTabList = ({ name }: { name: string }) => {
   const pathname = usePathname();
 
   return (
-    <div role="tablist" className="grid grid-cols-2 rounded-md bg-gray-300 p-1 text-center text-sm">
+    <div
+      role="tablist"
+      className="grid grid-cols-2 rounded-md bg-slate-100 p-1 text-center text-sm"
+    >
       <Link
         href={`/${encodeURIComponent(name)}`}
         role="tab"

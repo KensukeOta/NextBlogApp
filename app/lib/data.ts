@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 
-const PER_PAGE = 5;
+const PER_PAGE = 9;
 export async function fetchFilteredPosts(query: string, page: number) {
   try {
     const res = await fetch(
