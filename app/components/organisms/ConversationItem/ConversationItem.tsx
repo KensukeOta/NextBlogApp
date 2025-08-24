@@ -5,7 +5,7 @@ import Link from "next/link";
 export const ConversationItem = ({ conversation }: { conversation: Conversation }) => {
   return (
     <div
-      className={`text-card-foreground cursor-pointer rounded-lg border border-blue-100 ${conversation.unread_count > 0 ? "bg-blue-50" : "bg-white"} shadow-2xs transition-all hover:shadow-md`}
+      className={`text-card-foreground cursor-pointer rounded-lg border border-blue-100 ${conversation.unread_count > 0 ? "bg-blue-50" : "dark:bg-background bg-white"} shadow-2xs transition-all hover:shadow-md`}
     >
       <Link href={`/messages/${conversation.partner.id}`}>
         <div className="p-4">
@@ -21,7 +21,7 @@ export const ConversationItem = ({ conversation }: { conversation: Conversation 
             <div className="min-w-0 flex-1">
               <div className="mb-1 flex items-center justify-between">
                 <h3
-                  className={`font-bold ${conversation.unread_count > 0 ? "text-blue-800" : "text-black"}`}
+                  className={`font-bold ${conversation.unread_count > 0 ? "text-blue-800" : "dark:text-foreground text-black"}`}
                 >
                   {conversation.partner.name}
                 </h3>
@@ -33,7 +33,9 @@ export const ConversationItem = ({ conversation }: { conversation: Conversation 
                   )}
                 </div>
               </div>
-              <p className="truncate text-sm font-medium text-gray-800">
+              <p
+                className={`truncate text-sm font-medium text-gray-800 ${conversation.unread_count > 0 ? "" : "dark:text-foreground"}`}
+              >
                 {conversation.last_message.content}
               </p>
             </div>

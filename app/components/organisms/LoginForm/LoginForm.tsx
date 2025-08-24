@@ -59,7 +59,7 @@ export const LoginForm = () => {
       <button
         type="submit"
         disabled={isPending}
-        className="mt-2 block w-full rounded-lg border py-3 hover:cursor-pointer hover:bg-slate-200 disabled:cursor-default"
+        className="mt-2 block w-full rounded-lg border py-3 hover:cursor-pointer hover:bg-slate-200 disabled:cursor-default dark:hover:bg-slate-800"
       >
         ログイン
       </button>

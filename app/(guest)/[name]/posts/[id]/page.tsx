@@ -38,9 +38,9 @@ export default async function PostShowPage(props: {
   }
 
   return (
-    <DefaultLayout className="py-12">
-      <section className="h-full bg-white px-4 py-6">
-        <h1 className="text-3xl font-bold">{post.title}</h1>
+    <DefaultLayout className="dark:bg-background py-12">
+      <section className="h-full px-4 py-6">
+        <h1 className="text-3xl font-bold dark:text-blue-400">{post.title}</h1>
 
         <ul className="mt-4 flex flex-wrap items-center gap-1">
           <i className="bi bi-tag"></i>
@@ -48,7 +48,7 @@ export default async function PostShowPage(props: {
             <li key={tag.id}>
               <Link
                 href={`/tags/${tag.name}`}
-                className="rounded-sm bg-gray-200 px-1.5 text-sm hover:bg-gray-300"
+                className="rounded-sm bg-gray-200 px-1.5 text-sm hover:bg-gray-300 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-400 dark:hover:bg-blue-900"
               >
                 {tag.name}
               </Link>
@@ -74,7 +74,7 @@ export default async function PostShowPage(props: {
         </SessionProvider>
 
         <div className="mt-12">
-          <div className="markdown-body">
+          <div className="markdown-body !text-foreground dark:bg-background !bg-background">
             <Markdown remarkPlugins={[remarkGfm]}>{post.content}</Markdown>
           </div>
         </div>

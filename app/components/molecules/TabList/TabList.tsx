@@ -19,7 +19,7 @@ export const TabList = <T extends string = string>({
   return (
     <div
       role="tablist"
-      className={`text-muted-foreground grid h-10 w-full grid-cols-3 items-center justify-center rounded-md bg-blue-50 p-1 ${className}`}
+      className={`text-muted-foreground grid h-10 w-full grid-cols-3 items-center justify-center rounded-md bg-blue-50 p-1 dark:bg-slate-800 dark:text-slate-400 ${className}`}
     >
       {tabs.map((tab) => (
         <button
@@ -29,8 +29,8 @@ export const TabList = <T extends string = string>({
           aria-selected={activeTab === tab.value}
           className={`ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-all hover:cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${
             activeTab === tab.value
-              ? "bg-white font-bold text-blue-700"
-              : "bg-blue-50 text-gray-500"
+              ? "dark:bg-background dark:text-foreground bg-white font-bold text-blue-700"
+              : "bg-blue-50 text-gray-500 dark:bg-slate-800"
           } `}
           onClick={() => onChange(tab.value)}
           id={`edit-tab-${tab.value}`}

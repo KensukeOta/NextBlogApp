@@ -82,7 +82,7 @@ export const PostForm = () => {
         required
         value={title}
         onChange={handleInputChange(setTitle)}
-        className="w-full border bg-white p-2"
+        className="dark:bg-background w-full border bg-white p-2"
       />
 
       <ReactTags
@@ -101,8 +101,8 @@ export const PostForm = () => {
         maxLength={10}
         placeholder="文字を入力し、エンターキーを押すとタグが作れます。最大5個、10文字以内で入力してください。"
         classNames={{
-          tag: "bg-black text-white p-1 mr-1",
-          tagInputField: "border w-full p-2 mt-2 bg-white",
+          tag: "bg-black text-white p-1 mr-1 border",
+          tagInputField: "border w-full p-2 mt-2 bg-white dark:bg-background",
           remove: "ml-1 hover:cursor-pointer",
           tags: "tagsClass",
           tagInput: "tagInputClass",
@@ -134,10 +134,10 @@ export const PostForm = () => {
             required
             value={content}
             onChange={handleInputChange(setContent)}
-            className="h-full flex-1 bg-gray-200 p-2"
+            className="h-full flex-1 bg-gray-200 p-2 dark:bg-gray-900"
           />
 
-          <div className="markdown-body flex-1 bg-white p-2">
+          <div className="markdown-body dark:bg-background !text-foreground !bg-background flex-1 p-2">
             <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>
           </div>
         </div>
@@ -146,7 +146,7 @@ export const PostForm = () => {
       <button
         type="submit"
         disabled={isPending}
-        className="mt-2 w-full bg-black p-2 text-white hover:cursor-pointer hover:opacity-70 disabled:cursor-default"
+        className="dark:bg-background mt-2 w-full bg-black p-2 text-white hover:cursor-pointer hover:opacity-70 disabled:cursor-default dark:text-blue-400 dark:hover:bg-slate-800 dark:hover:text-blue-300"
       >
         投稿する
       </button>

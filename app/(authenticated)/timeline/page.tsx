@@ -21,7 +21,7 @@ export default async function TimelinePage() {
   const posts: Post[] = await fetchTimeline();
 
   return (
-    <DefaultLayout className="py-6">
+    <DefaultLayout className="dark:bg-background py-6">
       <h1 className="font-bold">タイムライン</h1>
 
       <SessionProvider>

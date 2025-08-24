@@ -16,7 +16,7 @@ export const UserItem = ({
   followId: string | undefined;
 }) => {
   return (
-    <div className="flex items-start gap-4 rounded-lg border border-blue-100 bg-white px-2 py-4">
+    <div className="dark:bg-background flex items-start gap-4 rounded-lg border border-blue-100 bg-white px-2 py-4">
       <Link href={`/${encodeURIComponent(followUser.name)}`}>
         <Image
           src={followUser.image ?? "/noavatar.png"}

@@ -19,7 +19,7 @@ export const UserProfileEditModal = forwardRef<HTMLDivElement, UserProfileEditMo
           <h2 className="text-lg leading-none font-semibold tracking-tight text-blue-800">
             プロフィール編集
           </h2>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             プロフィール情報を編集して、自分をアピールしましょう。
           </p>
         </div>

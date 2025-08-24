@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -22,18 +24,34 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentcolor);
   }
+  /* Chrome / Safari の autofill 背景色を上書き */
+  input:-webkit-autofill {
+    @apply shadow-inner;
+    box-shadow: 0 0 0px 1000px var(--background) inset !important;
+    -webkit-text-fill-color: var(--foreground) !important;
+  }
 }
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: hsl(222.2 84% 4.9%);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: hsl(222.2 84% 4.9%);
+    --foreground: hsl(210 40% 98%);
   }
+}
+
+/* 手動切替（Cookie→SSR、または no-flash による data-theme 付与で上書き） */
+html[data-theme="light"] {
+  --background: #ffffff;
+  --foreground: hsl(222.2 84% 4.9%);
+}
+html[data-theme="dark"] {
+  --background: hsl(222.2 84% 4.9%);
+  --foreground: hsl(210 40% 98%);
 }
 
 body {

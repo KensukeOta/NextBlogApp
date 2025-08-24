@@ -9,14 +9,14 @@ export const UserDropdownMenu = ({ onCloseMenu }: { onCloseMenu: () => void }) =
     <ul
       role="menu"
       aria-label="ユーザーメニュー"
-      className="absolute top-12 right-4 min-w-64 rounded-lg border bg-white px-2 py-3"
+      className="bg-background absolute top-12 right-4 min-w-64 rounded-lg border px-2 py-3 dark:border-slate-800"
     >
       <li>
         <Link
           href={`/${session?.user.name}`}
           role="menuitem"
           onClick={onCloseMenu}
-          className="flex w-full rounded-sm px-2 py-1 leading-7 hover:bg-slate-200"
+          className="flex w-full rounded-sm px-2 py-1 leading-7 hover:bg-slate-200 dark:text-blue-400 dark:hover:bg-slate-800 dark:hover:text-blue-300"
         >
           マイページ
         </Link>
@@ -24,7 +24,7 @@ export const UserDropdownMenu = ({ onCloseMenu }: { onCloseMenu: () => void }) =
           href="/posts/create"
           role="menuitem"
           onClick={onCloseMenu}
-          className="flex w-full rounded-sm px-2 py-1 leading-7 hover:bg-slate-200"
+          className="flex w-full rounded-sm px-2 py-1 leading-7 hover:bg-slate-200 dark:text-blue-400 dark:hover:bg-slate-800 dark:hover:text-blue-300"
         >
           投稿する
         </Link>
@@ -32,7 +32,7 @@ export const UserDropdownMenu = ({ onCloseMenu }: { onCloseMenu: () => void }) =
           href="/timeline"
           role="menuitem"
           onClick={onCloseMenu}
-          className="flex w-full rounded-sm px-2 py-1 leading-7 hover:bg-slate-200"
+          className="flex w-full rounded-sm px-2 py-1 leading-7 hover:bg-slate-200 dark:text-blue-400 dark:hover:bg-slate-800 dark:hover:text-blue-300"
         >
           タイムライン
         </Link>

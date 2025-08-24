@@ -10,8 +10,8 @@ export const PostItem = async ({ post, className }: { post: Post; className?: st
   const session = await auth();
 
   return (
-    <article className={`rounded-lg border bg-white p-6 ${className}`}>
-      <h2 className="line-clamp-1 text-left font-bold break-words">
+    <article className={`bg-background rounded-lg border p-6 ${className}`}>
+      <h2 className="line-clamp-1 text-left font-bold break-words dark:hover:text-blue-400">
         <Link href={`/${post.user.name}/posts/${post.id}`} className="block w-full hover:underline">
           {post.title}
         </Link>
@@ -23,7 +23,7 @@ export const PostItem = async ({ post, className }: { post: Post; className?: st
           <li key={tag.id}>
             <Link
               href={`/tags/${tag.name}`}
-              className="rounded-sm bg-gray-200 px-1.5 text-sm hover:bg-gray-300"
+              className="rounded-sm bg-gray-200 px-1.5 text-sm hover:bg-gray-300 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-400 dark:hover:bg-blue-900"
             >
               {tag.name}
             </Link>
@@ -31,9 +31,9 @@ export const PostItem = async ({ post, className }: { post: Post; className?: st
         ))}
       </ul>
 
-      <p className="mt-1">
+      <p className="mt-1 dark:text-slate-400">
         by
-        <Link href={`/${post.user.name}`} className="hover:underline">
+        <Link href={`/${post.user.name}`} className="hover:underline dark:hover:text-blue-400">
           <Image
             src={post.user.image ?? "/noavatar.png"}
             alt="ユーザー画像"

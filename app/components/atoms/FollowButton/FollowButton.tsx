@@ -33,7 +33,7 @@ export const FollowButton = ({ user, isFollowing, followId }: FollowButtonProps)
       <button
         type="submit"
         disabled={isPending}
-        className={`inline-flex w-full items-center justify-center gap-2 rounded-md border px-4 py-2 text-sm whitespace-nowrap text-blue-700 ${isFollowing ? "border-gray-300 bg-gray-300 font-bold text-white hover:bg-gray-300/80" : "border-blue-200 font-medium hover:bg-[#f5f8fa] hover:text-black"} hover:cursor-pointer disabled:cursor-default`}
+        className={`inline-flex w-full items-center justify-center gap-2 rounded-md border px-4 py-2 text-sm whitespace-nowrap text-blue-700 ${isFollowing ? "border-gray-300 bg-gray-300 font-bold text-white hover:bg-gray-300/80 dark:bg-slate-800 dark:hover:bg-slate-700" : "border-blue-200 font-medium hover:bg-[#f5f8fa] hover:text-black dark:text-blue-400 dark:hover:bg-slate-800"} disabled:cursor-defaultdark:text-blue-400 hover:cursor-pointer dark:hover:text-blue-400`}
       >
         {isFollowing ? "フォロー中" : "フォロー"}
       </button>

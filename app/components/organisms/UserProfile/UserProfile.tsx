@@ -44,7 +44,7 @@ export const UserProfile = ({ user }: { user: User }) => {
   }, [isVisible]);
 
   return (
-    <section className="rounded-lg border border-blue-100 bg-white p-6">
+    <section className="dark:bg-background rounded-lg border border-blue-100 bg-white p-6 dark:border-blue-900">
       <div className="text-center">
         <Image
           src={user.image ?? "/noavatar.png"}
@@ -57,20 +57,20 @@ export const UserProfile = ({ user }: { user: User }) => {
       </div>
 
       <div className="mt-6 space-y-4">
-        <p className="break-words whitespace-pre-line">{user.bio}</p>
+        <p className="break-words whitespace-pre-line dark:text-slate-400">{user.bio}</p>
         <div className="h-[1px] bg-gray-200"></div>
         <div className="grid grid-cols-4 gap-4 text-center">
           <Link href={`/${encodeURIComponent(user.name)}`} className="hover:underline">
             <div className="text-xl font-bold text-blue-600" aria-label="post-count">
               {user.posts.length}
             </div>
-            <div className="text-xs text-gray-500">投稿</div>
+            <div className="text-xs text-gray-500 dark:text-slate-400">投稿</div>
           </Link>
           <Link href={`/${encodeURIComponent(user.name)}/likes`} className="hover:underline">
             <div className="text-xl font-bold text-blue-600" aria-label="like-count">
               {user.liked_posts.length}
             </div>
-            <div className="text-xs text-gray-500">いいね</div>
+            <div className="text-xs text-gray-500 dark:text-slate-400">いいね</div>
           </Link>
           <Link
             href={`/${encodeURIComponent(user.name)}/following_users`}
@@ -79,13 +79,13 @@ export const UserProfile = ({ user }: { user: User }) => {
             <div className="text-xl font-bold text-blue-600" aria-label="following-count">
               {user.following.length}
             </div>
-            <div className="text-xs text-gray-500">フォロー</div>
+            <div className="text-xs text-gray-500 dark:text-slate-400">フォロー</div>
           </Link>
           <Link href={`/${encodeURIComponent(user.name)}/followers`} className="hover:underline">
             <div className="text-xl font-bold text-blue-600" aria-label="follower-count">
               {user.followers.length}
             </div>
-            <div className="text-xs text-gray-500">フォロワー</div>
+            <div className="text-xs text-gray-500 dark:text-slate-400">フォロワー</div>
           </Link>
         </div>
         <div className="h-[1px] bg-gray-200"></div>
@@ -104,7 +104,7 @@ export const UserProfile = ({ user }: { user: User }) => {
             <button
               type="button"
               onClick={handleVisibleModal}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-blue-200 px-4 py-2 text-sm font-medium whitespace-nowrap text-blue-700 hover:cursor-pointer hover:bg-[#f5f8fa] hover:text-black"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-blue-200 px-4 py-2 text-sm font-medium whitespace-nowrap text-blue-700 hover:cursor-pointer hover:bg-[#f5f8fa] hover:text-black dark:border-blue-800 dark:text-blue-400 dark:hover:bg-slate-800 dark:hover:text-blue-400"
             >
               <i className="bi bi-pencil-square"></i>
               プロフィールを編集
