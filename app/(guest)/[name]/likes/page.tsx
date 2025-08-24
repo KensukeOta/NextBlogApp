@@ -28,7 +28,9 @@ export default async function UserPage(props: { params: Promise<{ name: string }
       <div className="mt-2">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-800">いいねした記事</h3>
+            <h3 className="dark:text-foreground text-lg font-semibold text-gray-800">
+              いいねした記事
+            </h3>
           </div>
           <UserPostsWithSession
             posts={user.liked_posts}

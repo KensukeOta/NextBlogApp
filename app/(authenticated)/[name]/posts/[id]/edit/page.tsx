@@ -30,7 +30,7 @@ export default async function PostEditPage(props: {
   }
 
   return (
-    <DefaultLayout className="py-3">
+    <DefaultLayout className="dark:bg-background py-3">
       <PostEditForm post={post} />
     </DefaultLayout>
   );

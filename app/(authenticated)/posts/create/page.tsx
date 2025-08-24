@@ -16,7 +16,7 @@ export default async function PostPage() {
   }
 
   return (
-    <DefaultLayout className="py-3">
+    <DefaultLayout className="dark:bg-background py-3">
       <PostForm />
     </DefaultLayout>
   );

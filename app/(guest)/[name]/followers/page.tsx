@@ -22,7 +22,7 @@ export default async function FollowersPage(props: { params: Promise<{ name: str
     <UserProfileLayout user={user} className="px-4 py-6">
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-gray-800">フォロワー</h3>
+          <h3 className="dark:text-foreground text-lg font-semibold text-gray-800">フォロワー</h3>
         </div>
         {user.followers.length > 0 ? (
           user.followers.map((f) => {

@@ -64,7 +64,7 @@ export const SearchBox = () => {
             handleSearch(e.target.value.trim());
           }}
           defaultValue={searchParams.get("query")?.toString()}
-          className="h-9 w-full rounded-lg bg-white px-2 py-1"
+          className="h-9 w-full rounded-lg bg-white px-2 py-1 dark:text-black"
         />
       </form>
     </div>

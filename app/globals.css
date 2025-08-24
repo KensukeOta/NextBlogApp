@@ -24,6 +24,12 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentcolor);
   }
+  /* Chrome / Safari の autofill 背景色を上書き */
+  input:-webkit-autofill {
+    @apply shadow-inner;
+    box-shadow: 0 0 0px 1000px var(--background) inset !important;
+    -webkit-text-fill-color: var(--foreground) !important;
+  }
 }
 
 :root {

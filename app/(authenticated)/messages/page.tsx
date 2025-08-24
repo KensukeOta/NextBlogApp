@@ -15,11 +15,11 @@ export default async function ConversationPage() {
   const conversations: Conversation[] = await fetchAllConversations();
 
   return (
-    <DefaultLayout>
+    <DefaultLayout className="dark:bg-background">
       <div className="xxl:max-w-[1400px] mx-auto h-full w-full px-4 py-6">
         <div>
           <h2 className="text-2xl font-bold">メッセージ</h2>
-          <p className="mt-1 text-slate-500">
+          <p className="mt-1 text-slate-500 dark:text-slate-400">
             他のユーザーとのメッセージのやり取りを管理できます。
           </p>
         </div>

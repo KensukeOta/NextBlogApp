@@ -22,7 +22,9 @@ export default async function FollowingUsersPage(props: { params: Promise<{ name
     <UserProfileLayout user={user} className="px-4 py-6">
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-gray-800">フォローしているユーザー</h3>
+          <h3 className="dark:text-foreground text-lg font-semibold text-gray-800">
+            フォローしているユーザー
+          </h3>
         </div>
         {user.following.length > 0 ? (
           user.following.map((f) => {

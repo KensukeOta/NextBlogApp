@@ -20,16 +20,16 @@ export default async function MessagePage(props: { params: Promise<{ id: string 
   const data: Messages = await fetchAllMessages(params.id);
 
   return (
-    <DefaultLayout>
+    <DefaultLayout className="dark:bg-background">
       <div className="xxl:max-w-[1400px] mx-auto h-full w-full px-4 py-6">
         <div className="mx-auto flex h-[calc(100vh-200px)] max-w-4xl flex-col">
-          <div className="text-card-foreground mb-4 rounded-lg border border-blue-100 bg-white">
+          <div className="text-card-foreground dark:bg-background mb-4 rounded-lg border border-blue-100 bg-white">
             <div className="flex flex-col space-y-1.5 p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <Link
                     href="/messages"
-                    className="ring-offset-background focus-visible:ring-ring inline-flex h-9 items-center justify-center gap-2 rounded-md px-3 text-sm font-medium whitespace-nowrap text-blue-700 transition-colors hover:bg-slate-50 hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+                    className="ring-offset-background focus-visible:ring-ring dark:hover:text-foreground inline-flex h-9 items-center justify-center gap-2 rounded-md px-3 text-sm font-medium whitespace-nowrap text-blue-700 transition-colors hover:bg-slate-50 hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-slate-800 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                   >
                     <i className="bi bi-arrow-left"></i>
                     戻る
@@ -44,7 +44,7 @@ export default async function MessagePage(props: { params: Promise<{ id: string 
                   </span>
                   <div>
                     <Link href={`/${encodeURIComponent(data.partner.name)}`}>
-                      <h3 className="cursor-pointer font-semibold text-gray-800 transition-colors hover:text-blue-600">
+                      <h3 className="dark:text-foreground cursor-pointer font-semibold text-gray-800 transition-colors hover:text-blue-600">
                         {data.partner.name}
                       </h3>
                     </Link>
@@ -54,7 +54,7 @@ export default async function MessagePage(props: { params: Promise<{ id: string 
             </div>
           </div>
 
-          <div className="text-card-foreground flex h-full flex-1 flex-col rounded-lg border border-blue-100 bg-white">
+          <div className="text-card-foreground dark:bg-background flex h-full flex-1 flex-col rounded-lg border border-blue-100 bg-white">
             <MessageList data={data} currentUserId={session.user.id} />
             <div className="border-t border-blue-100 p-4">
               <MessageForm userId={data.partner.id} />

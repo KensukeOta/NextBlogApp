@@ -17,7 +17,11 @@ export const Posts = async ({ query, currentPage }: { query: string; currentPage
   return (
     <section className="mt-2 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {posts.map((post) => (
-        <PostItem key={post.id} post={post} />
+        <PostItem
+          key={post.id}
+          post={post}
+          className="dark:border-slate-800 dark:hover:border-blue-800"
+        />
       ))}
     </section>
   );

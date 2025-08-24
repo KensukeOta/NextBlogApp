@@ -14,7 +14,7 @@ export const UserSNSProfile = ({ user }: { user: User }) => {
   )?.url;
 
   return (
-    <div className="rounded-lg border border-blue-100 bg-white p-6">
+    <div className="dark:bg-background rounded-lg border border-blue-100 bg-white p-6 dark:border-blue-900">
       <h3 className="text-2xl leading-none font-semibold text-blue-800">SNS</h3>
 
       <div className="mt-6 space-y-3">
@@ -22,7 +22,7 @@ export const UserSNSProfile = ({ user }: { user: User }) => {
           <a
             href={twitterURL}
             target="_blank"
-            className="flex items-center text-slate-600 hover:text-slate-800"
+            className="flex items-center text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-300"
           >
             <i className="bi bi-twitter-x mr-2"></i>
             <span className="text-sm">X (Twitter)</span>
@@ -33,7 +33,7 @@ export const UserSNSProfile = ({ user }: { user: User }) => {
           <a
             href={instagramURL}
             target="_blank"
-            className="flex items-center text-pink-600 hover:text-pink-800"
+            className="flex items-center text-pink-600 hover:text-pink-800 dark:text-pink-400 dark:hover:text-pink-300"
           >
             <i className="bi bi-instagram mr-2"></i>
             <span className="text-sm">Instagram</span>
@@ -44,7 +44,7 @@ export const UserSNSProfile = ({ user }: { user: User }) => {
           <a
             href={youtubeURL}
             target="_blank"
-            className="flex items-center text-red-600 hover:text-red-800"
+            className="flex items-center text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
           >
             <i className="bi bi-youtube mr-2"></i>
             <span className="text-sm">YouTube</span>

@@ -51,7 +51,9 @@ export const UserSNSForm = ({ user, onCloseModal }: { user: User; onCloseModal: 
               </p>
             ))}
         </div>
-        <p className="text-sm text-slate-500">TwitterのプロフィールURLを入力してください。</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          TwitterのプロフィールURLを入力してください。
+        </p>
       </div>
 
       <div className="space-y-2">
@@ -84,7 +86,9 @@ export const UserSNSForm = ({ user, onCloseModal }: { user: User; onCloseModal: 
               </p>
             ))}
         </div>
-        <p className="text-sm text-slate-500">InstagramのプロフィールURLを入力してください。</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          InstagramのプロフィールURLを入力してください。
+        </p>
       </div>
 
       <div className="space-y-2">
@@ -117,7 +121,9 @@ export const UserSNSForm = ({ user, onCloseModal }: { user: User; onCloseModal: 
               </p>
             ))}
         </div>
-        <p className="text-sm text-slate-500">YouTubeのチャンネルURLを入力してください。</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          YouTubeのチャンネルURLを入力してください。
+        </p>
       </div>
       <input type="hidden" name="name" id="name" value={user.name} />
 
@@ -125,7 +131,7 @@ export const UserSNSForm = ({ user, onCloseModal }: { user: User; onCloseModal: 
         <button
           type="button"
           onClick={onCloseModal}
-          className="ring-offset-background focus-visible:ring-ring bg-background inline-flex h-10 items-center justify-center gap-2 rounded-md border border-blue-200 px-4 py-2 text-sm font-medium whitespace-nowrap text-blue-700 transition-colors hover:cursor-pointer hover:bg-blue-50 hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+          className="ring-offset-background focus-visible:ring-ring bg-background dark:hover:text-foreground inline-flex h-10 items-center justify-center gap-2 rounded-md border border-blue-200 px-4 py-2 text-sm font-medium whitespace-nowrap text-blue-700 transition-colors hover:cursor-pointer hover:bg-blue-50 hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-slate-800"
         >
           キャンセル
         </button>

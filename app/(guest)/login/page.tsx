@@ -19,8 +19,8 @@ export default async function LoginPage() {
   }
 
   return (
-    <DefaultLayout className="py-4">
-      <div className="mx-auto flex h-full w-80 flex-col justify-center gap-4 rounded-2xl border bg-white px-8 py-5">
+    <DefaultLayout className="py-4 dark:bg-gray-800">
+      <div className="dark:bg-background mx-auto flex h-full w-80 flex-col justify-center gap-4 rounded-2xl border bg-white px-8 py-5">
         <LoginForm />
 
         <DividerWithText />

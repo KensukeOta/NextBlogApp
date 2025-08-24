@@ -25,7 +25,7 @@ export const LogoutButton = () => {
       type="submit"
       onClick={handleLogout}
       disabled={isLoding}
-      className="flex w-full gap-2 rounded-sm px-2 py-1 leading-7 hover:cursor-pointer hover:bg-slate-200 disabled:cursor-default"
+      className="flex w-full gap-2 rounded-sm px-2 py-1 leading-7 hover:cursor-pointer hover:bg-slate-200 disabled:cursor-default dark:text-blue-400 dark:hover:bg-slate-800 dark:hover:text-blue-300"
     >
       ログアウト
     </button>

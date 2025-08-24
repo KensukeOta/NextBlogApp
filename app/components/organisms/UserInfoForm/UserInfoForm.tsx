@@ -86,8 +86,8 @@ export const UserInfoForm = ({ user, onCloseModal }: { user: User; onCloseModal:
           maxLength={10}
           placeholder="文字を入力し、エンターキーを押すとタグが作れます。最大5個、10文字以内で入力してください。"
           classNames={{
-            tag: "bg-black text-white p-1 mr-1",
-            tagInputField: "border w-full p-2 mt-2 bg-white",
+            tag: "bg-black text-white p-1 mr-1 border",
+            tagInputField: "border w-full p-2 mt-2 bg-white dark:bg-background",
             remove: "ml-1 hover:cursor-pointer text-xl",
             tags: "tagsClass",
             tagInput: "tagInputClass",
@@ -102,7 +102,9 @@ export const UserInfoForm = ({ user, onCloseModal }: { user: User; onCloseModal:
         />
         <input type="hidden" name="tags" value={JSON.stringify(tagsArray)} />
 
-        <p className="text-sm text-slate-500">得意な言語や興味のある技術を入力してください</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          得意な言語や興味のある技術を入力してください
+        </p>
 
         <input type="hidden" name="name" value={user.name} />
       </div>
@@ -111,7 +113,7 @@ export const UserInfoForm = ({ user, onCloseModal }: { user: User; onCloseModal:
         <button
           type="button"
           onClick={onCloseModal}
-          className="ring-offset-background focus-visible:ring-ring bg-background inline-flex h-10 items-center justify-center gap-2 rounded-md border border-blue-200 px-4 py-2 text-sm font-medium whitespace-nowrap text-blue-700 transition-colors hover:cursor-pointer hover:bg-blue-50 hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+          className="ring-offset-background focus-visible:ring-ring bg-background dark:hover:text-foreground inline-flex h-10 items-center justify-center gap-2 rounded-md border border-blue-200 px-4 py-2 text-sm font-medium whitespace-nowrap text-blue-700 transition-colors hover:cursor-pointer hover:bg-blue-50 hover:text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-slate-800"
         >
           キャンセル
         </button>
