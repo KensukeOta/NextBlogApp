@@ -9,6 +9,12 @@ const nextConfig: NextConfig = {
         hostname: "lh3.googleusercontent.com",
         port: "",
       },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "9000",
+        pathname: "/**", // 例: /user-avatars/users/... を許可
+      },
     ],
   },
 };
