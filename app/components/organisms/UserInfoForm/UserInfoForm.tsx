@@ -9,7 +9,10 @@ import { updateUser, UserState } from "@/app/lib/actions/users";
 export const UserInfoForm = ({ user, onCloseModal }: { user: User; onCloseModal: () => void }) => {
   const initialState: UserState = { message: null, errors: {}, values: {} };
   const updateUsereWithId = updateUser.bind(null, user.id);
-  const [state, formAction, isPending] = useActionState(updateUsereWithId, initialState);
+  const [state, formAction, isPending] = useActionState<UserState, FormData>(
+    updateUsereWithId,
+    initialState,
+  );
   const formattedTags = user.tags.map((tag) => ({
     id: String(tag.id), // id を文字列に変換
     text: tag.name, // name を text に変換
