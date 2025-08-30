@@ -38,11 +38,13 @@ export type UserState = {
   errors?: {
     name?: string[];
     bio?: string[];
+    image?: string[];
   };
   message?: string | null;
   values?: {
     name?: string;
     bio?: string;
+    tags?: string[];
   };
 };
 
@@ -180,6 +182,7 @@ export async function updateUser(
 ) {
   const name = formData.get("name")?.toString() ?? "";
   const bio = formData.get("bio")?.toString() ?? "";
+  const image = formData.get("image") as File | null;
   // ここでタグをJSONとしてparse
   let tags: string[] = [];
   try {
@@ -207,8 +210,54 @@ export async function updateUser(
 
   const { name: validName, bio: validBio } = validatedFields.data;
 
+  const session = await auth();
+
+  // --- 4) 画像があれば先にアップロード ---
   try {
-    const session = await auth();
+    if (image && typeof image.size === "number" && image.size > 0) {
+      // クライアント側の軽いサイズ制限（2MB）
+      const TWO_MB = 2 * 1024 * 1024;
+      if (image.size > TWO_MB) {
+        return {
+          message: "画像サイズは2MB以内にしてください",
+          errors: { image: ["ファイルが大きすぎます"] },
+          values: { name: validName, bio: validBio, tags },
+        } satisfies UserState;
+      }
+
+      // multipart で Rails の /v1/users/:id/image へ
+      const fd = new FormData();
+      fd.append("image", image);
+
+      const resImg = await fetch(`${process.env.API_URL}/v1/users/${userId}/image`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${session?.user.accessToken}` },
+        body: fd, // Content-Type は自動設定（手動で付けないこと）
+      });
+
+      if (!resImg.ok) {
+        let reason = "画像アップロードに失敗しました";
+        try {
+          const j = await resImg.json();
+          reason = j.error || j.errors?.join(", ") || reason;
+        } catch {}
+        return {
+          message: reason,
+          errors: { image: [reason] },
+          values: { name: validName, bio: validBio, tags },
+        } satisfies UserState;
+      }
+    }
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "画像アップロード時にエラーが発生しました";
+    return {
+      message: msg,
+      errors: { image: [msg] },
+      values: { name: validName, bio: validBio, tags },
+    } satisfies UserState;
+  }
+
+  try {
     const res = await fetch(`${process.env.API_URL}/v1/users/${userId}`, {
       method: "PATCH",
       headers: {
