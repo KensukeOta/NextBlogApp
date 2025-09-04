@@ -7,6 +7,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { Header } from "./components/organisms/Header";
 import { Footer } from "./components/organisms/Footer";
 import { Toast } from "./components/atoms/Toast";
+import { LoadingBar } from "./components/atoms/LoadingBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -110,7 +111,7 @@ export default async function RootLayout({
         <Header />
         <main className="flex-1">
           <Toast initialFlash={flash} />
-          {children}
+          <LoadingBar>{children}</LoadingBar>
         </main>
         <Footer />
       </body>
